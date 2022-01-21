@@ -1,0 +1,17 @@
+mail:
+  debug: 'true'
+spring:
+  datasource:
+    password: 123
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/room
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: 'true'
+server:
+  port: 8083
+  error:
+    include-message: always
+

@@ -1,0 +1,64 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="ru"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="robots" content="none" />
+    <meta name="description" content="Метровагонмаш - производит вагоны метро, дизель поезда, рельсовые автобусы." />
+    <meta name="format-detection" content="telephone=no">
+    <link href="/css/style.css" type="text/css" data-template-style="true" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="icon" href="/img/icons/favicon.ico?v=1" type="image/x-icon">
+    <title>Добавление нового департамента</title>
+</head>
+
+<body>
+<header>
+    <nav class="nav">
+        <a href="/" class="nav__logo hidden-sm hidden-xs">
+            <img width="223" src="/img/logo_rus.gif" height="41" alt="Метровагонмаш">
+
+        </a>
+
+        <div class="auth-panel">
+            <a sec:authorize="hasAuthority('admin:read')" class="btn btn-outline-secondary" href="/admin/vscrooms/">Панель администратора</a>
+            <a sec:authorize="hasAuthority('user:read')" class="btn btn-outline-info" href="/user">Профиль</a>
+            <a sec:authorize="isAnonymous()" class="btn btn-outline-secondary" href="/auth/login" role="button">Вход</a>
+            <a sec:authorize="isAnonymous()" class="btn btn-outline-secondary" href="/registration">Регистрация</a>
+            <a sec:authorize="isAuthenticated()" class="btn btn-danger" href="/auth/logout">Выход</a>
+        </div>
+    </nav>
+</header>
+
+<div class="login-p">
+    <div class="login-f">
+        <form class="form-heading" th:action="@{/admin/departments/add}" th:object="${departmentData}" method="post">
+            <h2 class="form-registration-heading">Добавление нового департамента</h2>
+            <div class="form-group">
+                <p class="login-str"></p>
+
+                <input tabindex="1" placeholder="Название департамента" type="text" name="nameDepartment" class="form-control" id="nameDepartment" th:field="*{nameDepartment}" required/>
+
+
+                <input tabindex="2" placeholder="Позиция" type="text" class="form-control" id="position" th:field="*{position}" required/>
+
+
+                <div class="btn-group">
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+                    <div>
+                        <p class="btn-p"></p>
+                        <input tabindex="3" class="btn btn-primary" type="submit" value="Добавить" />
+                        <input tabindex="4" class="btn btn-outline-secondary" type="reset" value="Очистить" />
+                        <a class="btn btn-outline-secondary" href="/admin/departments/">Назад</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+
+</html>

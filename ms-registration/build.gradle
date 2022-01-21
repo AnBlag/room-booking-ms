@@ -1,0 +1,58 @@
+plugins {
+	id 'org.springframework.boot' version '2.6.0'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'ru.roombooking'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('springCloudVersion', "2021.0.0")
+}
+
+dependencies {
+
+	// https://mvnrepository.com/artifact/javax.validation/validation-api
+	implementation group: 'javax.validation', name: 'validation-api', version: '2.0.0.Final'
+
+	compileOnly "org.mapstruct:mapstruct:1.4.2.Final"
+	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
+	annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
+
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+	//implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// https://mvnrepository.com/artifact/org.springframework/spring-tx
+	implementation group: 'org.springframework', name: 'spring-tx', version: '5.3.14'
+
+	//implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'org.postgresql:postgresql'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	//testImplementation 'org.springframework.security:spring-security-test'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+test {
+	useJUnitPlatform()
+}

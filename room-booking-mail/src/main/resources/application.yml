@@ -1,0 +1,19 @@
+mail:
+  debug: 'true'
+spring:
+  mail:
+    host: smtp.yandex.ru
+    username: testr0m@yandex.ru
+    protocol: smtps
+    port: '465'
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+          auth: 'true'
+    password: epusodgawlgpvahr
+server:
+  port: 8081
+  error:
+    include-message: always

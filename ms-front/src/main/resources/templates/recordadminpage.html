@@ -1,0 +1,236 @@
+<html lang="ru"xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="robots" content="none" />
+    <meta name="description" content="Метровагонмаш - производит вагоны метро, дизель поезда, рельсовые автобусы." />
+    <meta name="format-detection" content="telephone=no">
+    <link
+            href="/css/style.css"
+            type="text/css" data-template-style="true" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="icon" href="/img/icons/favicon.ico?v=1" type="image/x-icon">
+    <title>ВКС</title>
+
+
+</head>
+
+<body>
+
+
+
+<header>
+    <nav class="nav ">
+        <a href="/" class="nav__logo hidden-sm hidden-xs">
+            <img width="223" src="/img/logo_rus.gif" height="41" alt="Метровагонмаш">
+        </a>
+        <div class="auth-panel">
+            <a sec:authorize="hasAuthority('admin:read')" class="btn btn-outline-secondary" href="/admin/vscrooms/">Панель администратора</a>
+            <a sec:authorize="hasAuthority('user:read')" class="btn btn-outline-info" href="/user">Профиль</a>
+            <a sec:authorize="isAnonymous()" class="btn btn-outline-secondary" href="/auth/login" role="button">Вход</a>
+            <a sec:authorize="isAnonymous()" class="btn btn-outline-secondary" href="/registration">Регистрация</a>
+            <a sec:authorize="isAuthenticated()" class="btn btn-danger" href="/auth/logout">Выход</a>
+        </div>
+    </nav>
+</header>
+
+
+<!--
+<div th:if="${employeeList==null}">
+-->
+<ul class="nav nav-pills ">
+    <li class="nav-item">
+        <a class="nav-link "  href="/admin/employees/">Сотрудники</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " href="/admin/departments/">Департаменты</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/admin/vscrooms/">Комнаты</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="/admin/records/">Записи</a>
+    </li>
+
+</ul>
+
+
+<div style="text-align: center; padding-top: 15px;" class="dropdown">
+    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+        Добавить бронирование
+    </a>
+
+    <ul class="dropdown-menu"  aria-labelledby="dropdownMenuLink">
+        <div th:each="vscroom : ${vscroomlist}">
+            <li><a class="dropdown-item" th:href="${'/room/' + vscroom.numberRoom}" th:text="${vscroom.numberRoom}"></a></li>
+        </div>
+    </ul>
+</div>
+
+
+<div class="container">
+    <form action="#" th:action="@{/admin/records/}" th:object="${findRecord}" method="post">
+        <span class="content">
+            <table class="table table-striped table-bordered table-responsive-sm text-center caption-top">
+                <caption>Поиск записей бронировании</caption>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ID сотрудника</th>
+                        <th>Имя</th>
+                        <th>Фамилия</th>
+                        <th>Отчество</th>
+                        <th>EMAIL</th>
+                        <th>Комната</th>
+                        <th>Блокировка</th>
+                        <th>Название</th>
+                        <th>Начало</th>
+                        <th>Конец</th>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <input type="text" size="2" id="findById" th:field="*{id}" style="text-align: center" class="form-control" name="findById">
+                        </th>
+                        <th>
+                            <input type="text" size="2" id="findByEmployeeId" th:field="*{employeeId}" style="text-align: center" class="form-control" name="findByEmployeeId">
+                        </th>
+                        <th>
+                            <input type="text" size="2" id="findByEmployeeName" th:field="*{employeeName}" style="text-align: center" class="form-control" name="findByEmployeeName">
+                        </th>
+                        <th>
+                            <input type="text" size="2" id="findByEmployeeSurname" th:field="*{employeeSurname}" style="text-align: center" class="form-control" name="findByEmployeeSurname">
+                        </th>
+                        <th>
+                            <input type="text" size="2" id="findByEmployeeMiddleName" th:field="*{employeeMiddleName}" style="text-align: center" class="form-control" name="findByEmployeeMiddleName">
+                        </th>
+                        <th>
+                            <input type="text" size="2" id="findByEmail" th:field="*{email}" style="text-align: center" class="form-control" name="findByEmail">
+                        </th>
+                        <th>
+                            <input type="text" size="2" id="findByVcsRoomNumberRoom" th:field="*{vcsRoomNumberRoom}" style="text-align: center" class="form-control" name="findByVcsRoomNumberRoom">
+                        </th>
+                        <th>
+                            <select name="findByIsActive" class="form-select" th:field="*{isActive}" >
+                                <option value="">Все</option>
+                                <option value="true">Разблокирован</option>
+                                <option value="false">Заблокирован</option>
+                            </select>
+                            <!-- <input type="text" size="2" id="findByIsActive" th:field="*{isActive}" style="text-align: center" class="form-control" name="findByIsActive"> -->
+                        </th>
+                        <th>
+                            <input type="text" size="2" id="findByTitle" th:field="*{title}" style="text-align: center" class="form-control" name="findByTitle">
+                        </th>
+                        <th>
+                            <input type="text" size="2" id="findByStartEvent" th:field="*{startEvent}" style="text-align: center" class="form-control" name="findByStartEvent">
+                        </th>
+                        <th>
+                            <input type="text" size="2" id="findByEndEvent" th:field="*{endEvent}" style="text-align: center" class="form-control" name="findByEndEvent">
+
+                        </th>
+
+
+                    </tr>
+                </thead>
+            </table>
+
+            <p style="text-align: center" size="10"><input type="submit" class="btn btn-outline-danger"   style="text-align: center; " value="Найти"></p>
+        </span>
+    </form>
+</div>
+
+
+<div class="container">
+<form action="#" th:action="@{/admin/records/save}" method="post">
+
+    <div th:if="${recordTableViewList!=null}">
+    <table class="table table-striped table-bordered table-responsive-sm text-center caption-top">
+        <caption>Редактирование записей о бронировании</caption>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ID сотрудника</th>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Отчество</th>
+                <th>EMAIL</th>
+                <th>Комната</th>
+                <th>Блокировка</th>
+                <th>Название</th>
+                <th>Начало</th>
+                <th>Конец</th>
+                <th>Удаление</th>
+            </tr>
+
+        <tbody>
+
+        <!--    <form method="post" action="/save-user" accept-charset="UTF-8">-->
+        <tr th:each="record : ${recordTableViewList}">
+            <td>
+                <input th:if="${record.id!= null}" th:value="${record.id}" type="text" size="2" id="id" style="text-align: center" class="form-control" name="id" readonly/>
+            </td>
+            <td>
+                <input th:if="${record.employeeId!= null}" th:value="${record.employeeId}" type="text" size="2" id="employeeId" style="text-align: center" class="form-control" name="employeeId" />
+            </td>
+            <td>
+                <input th:if="${record.employeeName!= null}" th:value="${record.employeeName}" type="text" size="2" id="employeeName" style="text-align: center" class="form-control" name="employeeName" readonly/>
+            </td>
+            <td>
+                <input th:if="${record.employeeSurname!= null}" th:value="${record.employeeSurname}" type="text" size="2" id="employeeSurname" style="text-align: center" class="form-control" name="employeeSurname" readonly/>
+            </td>
+            <td>
+                <input th:if="${record.employeeMiddleName!= null}" th:value="${record.employeeMiddleName}" type="text" size="2" id="employeeMiddleName" style="text-align: center" class="form-control" name="employeeMiddleName" readonly/>
+            </td>
+            <td>
+                <input th:if="${record.email!= null}" th:value="${record.email}" type="email" size="2" id="email" style="text-align: center" class="form-control" name="email" />
+            </td>
+            <td>
+                <input th:if="${record.vcsRoomNumberRoom!= null}" th:value="${record.vcsRoomNumberRoom}" type="text" size="2" id="vcsRoomNumberRoom" style="text-align: center" class="form-control" name="vcsRoomNumberRoom"/>
+            </td>
+            <td>
+                <div>
+                    <select tabindex="10" class="form-select" name="isActive" th:value="${record.isActive}" >
+                        <option th:value="false" th:if="${!record.isActive}">Заблокирован</option>
+                        <option th:value="true" th:if="${record.isActive}">Разблокирован</option>
+                        <option th:value="false" th:if="${record.isActive != false}">Заблокирован</option>
+                        <option th:value="true" th:if="${record.isActive != true}">Разблокирован</option>
+                    </select>
+                </div>
+                <!-- <input th:if="${record.isActive!= null}" th:value="${record.isActive}" type="text" size="2" id="isActive" style="text-align: center" class="form-control" name="isActive"/> -->
+            </td>
+            <td>
+                <input th:if="${record.title!= null}" th:value="${record.title}" type="text" size="2" id="title" style="text-align: center" class="form-control" name="title"/>
+            </td>
+            <td>
+                <input th:if="${record.startEvent!= null}" th:value="${record.startEvent}" type="text" size="2" id="startEvent" style="text-align: center" class="form-control" name="startEvent"/>
+            </td>
+            <td>
+                <input th:if="${record.endEvent!= null}" th:value="${record.endEvent}" type="text" size="2" id="endEvent" style="text-align: center" class="form-control" name="endEvent"/>
+            </td>
+            <td>
+                <a th:href="${'/admin/records/delete/' + record.id}" class="btn btn-outline-danger">Удалить</a>
+            </td>
+
+        </tr>
+        <!-- </form>-->
+        </tbody>
+        </thead>
+
+    </table>
+
+            <p style="text-align: center" size="10"><input type="submit" class="btn btn-outline-danger"  value="Сохранить"></p>
+    </div>
+
+</form>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+</script>
+</body>
+</html>

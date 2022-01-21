@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="robots" content="none" />
+    <meta name="description" content="Метровагонмаш - производит вагоны метро, дизель поезда, рельсовые автобусы." />
+    <meta name="format-detection" content="telephone=no">
+    <link href="/css/style.css" type="text/css" data-template-style="true" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="icon" href="/img/icons/favicon.ico?v=1" type="image/x-icon">
+    <title>Ошибка!</title>
+</head>
+<body cz-shortcut-listen="true">
+
+
+
+<nav class="navbar navbar-expand-md navbar-dark bg-secondary">
+    <div class="container-fluid">
+        <a class="navbar-brand">Error</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+<div class="jumbotron text-center">
+    <div class="container">
+        <h2 th:if="${errorStatus != null}" class="display-3" th:text="${errorStatus}"></h2>
+        <p>
+            <a class="btn btn-outline-secondary" onclick="javascript:history.back(-1); return false;">Назад</a>
+            <a class="btn btn-outline-secondary" href="/" role="button">Вернуться на главную</a>
+
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

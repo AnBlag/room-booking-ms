@@ -1,0 +1,286 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="ru"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="robots" content="none"/>
+    <meta name="description" content="Метровагонмаш - производит вагоны метро, дизель поезда, рельсовые автобусы." />
+    <meta name="format-detection" content="telephone=no">
+    <link
+            href="/css/style.css"
+            type="text/css" data-template-style="true" rel="stylesheet" />
+            <link href='/css/calendar.css' rel='stylesheet' />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src='/js/calendar.js'></script>
+    <title>ВКС</title>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+        <a href="/" class="nav__logo hidden-sm hidden-xs">
+            <img width="223" src="/img/logo_rus.gif" height="41" alt="Метровагонмаш">
+        </a>
+        <div class="dropdown">
+            <a class="btn btn-secondary btn-lg dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                Список комнат ВКС
+            </a>
+
+            <ul  class="dropdown-menu"  aria-labelledby="dropdownMenuLink">
+                <div th:each="vscroom : ${vscroomlist}">
+                    <li><a class="dropdown-item" th:href="${'/room/' + vscroom.numberRoom}" th:text="${vscroom.numberRoom}"></a></li>
+                </div>
+            </ul>
+        </div>
+        <div class="auth-panel">
+            <a sec:authorize="hasAuthority('admin:read')" class="btn btn-outline-secondary" href="/admin/vscrooms/">Панель администратора</a>
+            <a sec:authorize="hasAuthority('user:read')" class="btn btn-outline-info" href="/user/edit">Профиль</a>
+            <a sec:authorize="isAnonymous()" class="btn btn-outline-secondary" href="/auth/login" role="button">Вход</a>
+            <a sec:authorize="isAnonymous()" class="btn btn-outline-secondary" href="/registration">Регистрация</a>
+            <a sec:authorize="isAuthenticated()" class="btn btn-danger" href="/auth/logout">Выход</a>
+        </div>
+    </nav>
+</header>
+  
+<script src='/locales/ru.js'></script>
+
+<script>
+  document.getElementById('datePicker').value = new Date().toDateInputValue();
+</script>
+
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var initialLocaleCode = 'ru';
+    var localeSelectorEl = document.getElementById('locale-selector');
+    var calendarEl = document.getElementById('calendar');
+    var url = window.location.href;
+    var urlMassive = url.split('/');
+    var index = urlMassive[urlMassive.length-1];
+    var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    var adminPermission = [[${#authorization.expression('hasAuthority(''admin:update'')')}]];
+
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      locale: initialLocaleCode,
+      buttonIcons: false, // show the prev/next text
+      weekNumbers: true,
+      navLinks: true, // can click day/week names to navigate views
+      eventOverlap: false,
+      views: {
+          dayGridMonth: {
+              selectable: adminPermission
+          },
+          timeGridWeek: {
+              selectable: true
+          },
+          timeGridDay: {
+              selectable: true
+          },
+      },
+      selectMirror: true,
+      select: async function (arg) {
+          var title = prompt('Event Title:');
+          const response = await fetch('/get-user', {
+              method: 'GET', // или 'PUT'
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+          });
+          const json = await response.json();
+          if (title) {
+              calendar.addEvent({
+                  title: title,
+                  start: arg.start,
+                  end: arg.end,
+                  allDay: arg.allDay
+              })
+              const url = '/record/save/';
+            //  const data = arg.event;
+              let data = {
+                  title: title+' / '+json.name+' '+' '+json.surname,
+                  start: arg.start,
+                  end: arg.end,
+                  allDay: arg.allDay,
+                  roomId: window.location.href,
+                  timeZone: timeZone
+              }
+
+              try {
+                  const response = await fetch(url, {
+                      method: 'POST', // или 'PUT'
+                      body: JSON.stringify(data), // данные могут быть 'строкой' или {объектом}!
+                      headers: {
+                          'Content-Type': 'application/json'
+                      }
+                  });
+                  const json = await response.json();
+                  console.log('Успех:', JSON.stringify(json));
+                  window.location.reload(true);
+              } catch (error) {
+                  console.error('Ошибка:', error);
+              }
+          }
+          calendar.unselect()
+      },
+      eventDrop: async function (arg) {
+            //arg.event.remove()
+            const url = '/record/update/';
+            //let data = arg.event;
+            let data = {
+                id: arg.event.id,
+                title: arg.event.title,
+                start: arg.event.start,
+                end: arg.event.end,
+                timeZone: timeZone
+            }
+
+            try {
+                const response = await fetch(url, {
+                    method: 'PUT', // или 'POST'
+                    body: JSON.stringify(data), // данные могут быть 'строкой' или {объектом}!
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                //const json = await response.json();
+                const status = response.status;
+                //  console.log('Успех:', JSON.stringify(json));
+                //if(status=='400' || status=='500') {
+                if(status!='200') {
+                    alert('Ошибка перемещения.');
+                    window.location.reload(true);
+                }
+                else {
+                    window.location.reload(true);
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        },
+      eventResize: async function (arg) {
+            //arg.event.remove()
+            const url = '/record/update/';
+            //let data = arg.event;
+            let data = {
+                id: arg.event.id,
+                title: arg.event.title,
+                start: arg.event.start,
+                end: arg.event.end,
+                timeZone: timeZone
+            }
+
+            try {
+                const response = await fetch(url, {
+                    method: 'PUT', // или 'POST'
+                    body: JSON.stringify(data), // данные могут быть 'строкой' или {объектом}!
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                //const json = await response.json();
+                const status = response.status;
+                //  console.log('Успех:', JSON.stringify(json));
+                //if(status=='400' || status=='500') {
+                if(status!='200') {
+
+                    alert('Ошибка перемещения.');
+                    window.location.reload(true);
+                }
+                else {
+
+                    window.location.reload(true);
+
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        },
+      eventClick: async function (arg) {
+          if (confirm('Are you sure you want to delete this event?')) {
+              arg.event.remove()
+              const url = '/record/delete/';
+             //let data = arg.event;
+              let data = {
+                  id: arg.event.id,
+                  title: arg.event.title,
+                  start: arg.event.start,
+                  end: arg.event.end,
+                  timeZone: timeZone
+              }
+
+              try {
+                  const response = await fetch(url, {
+                      method: 'DELETE', // или 'PUT'
+                      body: JSON.stringify(data), // данные могут быть 'строкой' или {объектом}!
+                      headers: {
+                          'Content-Type': 'application/json'
+                      }
+                  });
+                  //const json = await response.json();
+                  const status = response.status;
+                //  console.log('Успех:', JSON.stringify(json));
+                  //if(status=='400' || status=='500') {
+                  if(status!='200') {
+                      alert('Ошибка удаления. Скорее всего вы пытаетесь удалить запись другого участника');
+                      window.location.reload(true);
+                  }
+                  else {
+                      window.location.reload(true);
+                  }
+              } catch (error) {
+                  console.error('Ошибка:', error);
+              }
+          }
+      },
+      editable: true,
+      dayMaxEvents: true, // allow "more" link when too many events
+
+      eventSources: [
+
+    // your event source
+    {
+      url: '/record/'+index
+        // use the `url` property
+    }
+
+    // any other sources...
+
+  ]
+
+    });
+
+    calendar.render();
+  });
+
+  
+
+</script>
+<style>
+
+  body {
+    margin: 100px 10px;
+    padding: 0;
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+    font-size: 14px;
+  }
+
+  #calendar {
+    max-width: 810px;
+    margin: 0 auto;
+  }
+
+</style>
+
+<div id='top'>
+  
+<div id='calendar'></div>
+
+</body>
+</html>
