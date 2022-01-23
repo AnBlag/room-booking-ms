@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.roombooking.admin.exception.UsersUpdateException;
 import ru.roombooking.admin.feign.EmployeeFeignClient;
 import ru.roombooking.admin.feign.ProfileFeignClient;
-import ru.roombooking.admin.model.Profile;
+import ru.roombooking.admin.model.dto.ProfileDTO;
 import ru.roombooking.admin.model.dto.EmployeeDTO;
 import ru.roombooking.admin.service.EmployeeAndProfileService;
 
@@ -19,7 +19,7 @@ public class EmployeeAndProfileServiceImpl implements EmployeeAndProfileService 
 
     @Override
     @Transactional
-    public void update(EmployeeDTO employeeDTO, Profile profile) {
+    public void update(EmployeeDTO employeeDTO, ProfileDTO profile) {
         try {
             employeeFeignClient.saveEmployee(employeeDTO);
             profileFeignClient.saveProfile(profile);
@@ -41,12 +41,7 @@ public class EmployeeAndProfileServiceImpl implements EmployeeAndProfileService 
     }
 
     @Override
-    public Profile findProfileById(Long aLong) {
+    public ProfileDTO findProfileById(Long aLong) {
         return profileFeignClient.findById(String.valueOf(aLong));
-    }
-
-    @Override
-    public EmployeeDTO findByLogin(String login) {
-        return employeeFeignClient.findByLogin(login);
     }
 }

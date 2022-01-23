@@ -10,9 +10,9 @@ import ru.roombooking.admin.exception.VscRoomBadRequestException;
 import ru.roombooking.admin.feign.RecordTableFeignClient;
 import ru.roombooking.admin.feign.RecordTableViewFeignClient;
 import ru.roombooking.admin.feign.VscRoomFeignClient;
-import ru.roombooking.admin.model.RecordTable;
 import ru.roombooking.admin.model.RecordTableView;
-import ru.roombooking.admin.model.VscRoom;
+import ru.roombooking.admin.model.dto.VscRoomDTO;
+import ru.roombooking.admin.model.dto.RecordTableDTO;
 import ru.roombooking.admin.model.dto.RecordTableRequest;
 import ru.roombooking.admin.model.dto.RecordTableViewListAndVscRoomListRequest;
 
@@ -36,7 +36,7 @@ public class RecordTableNotificationService {
                 recordTableViewList = recordTableViewFeignClient.findAll();
             }
             try {
-                List<VscRoom> vscRoomList = vscRoomFeignClient.findAll();
+                List<VscRoomDTO> vscRoomList = vscRoomFeignClient.findAll();
                 return new RecordTableViewListAndVscRoomListRequest(recordTableViewList, vscRoomList);
             } catch (FeignException e) {
                 throw new VscRoomBadRequestException();
@@ -50,7 +50,7 @@ public class RecordTableNotificationService {
         try {
             List<RecordTableView> list = recordTableViewFeignClient.getRecordTableViewListByRecordTableViewParams(findRecord);
             try {
-                List<VscRoom> vscRoomList = vscRoomFeignClient.findAll();
+                List<VscRoomDTO> vscRoomList = vscRoomFeignClient.findAll();
                 return new RecordTableViewListAndVscRoomListRequest(list, vscRoomList);
             } catch (FeignException e) {
                 throw new VscRoomBadRequestException();
@@ -83,14 +83,14 @@ public class RecordTableNotificationService {
         }
     }
 
-    private List<RecordTable> getRecordTableListFromParams(String id,
-                                                           String email,
-                                                           String employeeId,
-                                                           String vcsRoomNumberRoom,
-                                                           String isActive,
-                                                           String title,
-                                                           String startEvent,
-                                                           String endEvent) {
+    private List<RecordTableDTO> getRecordTableListFromParams(String id,
+                                                              String email,
+                                                              String employeeId,
+                                                              String vcsRoomNumberRoom,
+                                                              String isActive,
+                                                              String title,
+                                                              String startEvent,
+                                                              String endEvent) {
         String[] idMas = id.split(",");
         String[] emailMas = email.split(",");
         String[] employeeIdMas = employeeId.split(",");
@@ -100,11 +100,11 @@ public class RecordTableNotificationService {
         String[] startEventMas = startEvent.split(",");
         String[] endEventMas = endEvent.split(",");
 
-        List<RecordTable> recordTableList = new ArrayList<>();
+        List<RecordTableDTO> recordTableList = new ArrayList<>();
         try {
             for (int i = 0; i < idMas.length; i++) {
                 recordTableList.add(
-                        RecordTable.builder()
+                        RecordTableDTO.builder()
                                 .id(Long.parseLong(idMas[i]))
                                 .email(emailMas[i])
                                 .employeeId(Long.parseLong(employeeIdMas[i]))
@@ -112,8 +112,8 @@ public class RecordTableNotificationService {
                                         .getId())
                                 .isActive(Boolean.valueOf(isActiveMas[i]))
                                 .title(titleMas[i])
-                                .startEvent(ZonedDateTime.parse(startEventMas[i]))
-                                .endEvent(ZonedDateTime.parse(endEventMas[i]))
+                                .start(ZonedDateTime.parse(startEventMas[i]))
+                                .end(ZonedDateTime.parse(endEventMas[i]))
                                 .build()
                 );
             }

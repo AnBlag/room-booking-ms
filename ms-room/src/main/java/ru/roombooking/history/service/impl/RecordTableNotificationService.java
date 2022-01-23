@@ -149,7 +149,7 @@ public class RecordTableNotificationService {
     }
 
     @Transactional(rollbackFor = UpdateRecordTableException.class)
-    public void batchUpdateRecords(List<RecordTable> recordTableList) {
+    public void batchUpdateRecords(List<RecordTableDTO> recordTableList) {
         recordTableService.batchUpdateRecords(recordTableList);
     }
 }

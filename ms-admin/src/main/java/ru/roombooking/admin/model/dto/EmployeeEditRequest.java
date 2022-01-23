@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.roombooking.admin.model.Department;
-import ru.roombooking.admin.model.Profile;
 
 import java.util.List;
 
@@ -17,6 +15,6 @@ import java.util.List;
 @JsonIgnoreProperties(value = "true")
 public class EmployeeEditRequest {
     private EmployeeDTO employeeDTO;
-    private Profile profile;
-    private List<Department> departmentList;
+    private ProfileDTO profile;
+    private List<DepartmentDTO> departmentList;
 }

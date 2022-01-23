@@ -8,7 +8,7 @@ import ru.roombooking.admin.exception.VscRoomSaveException;
 import ru.roombooking.admin.exception.VscRoomUpdateException;
 import ru.roombooking.admin.exception.VscRoomBadRequestException;
 import ru.roombooking.admin.feign.VscRoomFeignClient;
-import ru.roombooking.admin.model.VscRoom;
+import ru.roombooking.admin.model.dto.VscRoomDTO;
 import ru.roombooking.admin.model.dto.VscRoomRequest;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
 public class VscRoomNotificationService {
     private final VscRoomFeignClient vscRoomFeignClient;
 
-    public List<VscRoom> vscRooms() {
+    public List<VscRoomDTO> vscRooms() {
         try {
             return vscRoomFeignClient.findAll();
         } catch (FeignException e) {
@@ -45,7 +45,7 @@ public class VscRoomNotificationService {
         }
     }
 
-    public void saveNewRoom(VscRoom vscRoom) {
+    public void saveNewRoom(VscRoomDTO vscRoom) {
         try {
             vscRoomFeignClient.saveRoom(vscRoom);
         } catch (FeignException e) {
@@ -53,17 +53,17 @@ public class VscRoomNotificationService {
         }
     }
 
-    private List<VscRoom> getVscRoomListFromParams(String id,
-                                                   String isActive,
-                                                   String numberRoom) {
+    private List<VscRoomDTO> getVscRoomListFromParams(String id,
+                                                      String isActive,
+                                                      String numberRoom) {
         String[] idMas = id.split(",");
         String[] isActiveMas = isActive.split(",");
         String[] numberRoomMas = numberRoom.split(",");
 
-        List<VscRoom> vscRoomList = new ArrayList<>();
+        List<VscRoomDTO> vscRoomList = new ArrayList<>();
         for (int i = 0; i < idMas.length; i++) {
             vscRoomList.add(
-                    VscRoom.builder()
+                    VscRoomDTO.builder()
                             .id(Long.parseLong(idMas[i]))
                             .isActive(Boolean.valueOf(isActiveMas[i]))
                             .numberRoom(Long.parseLong(numberRoomMas[i]))

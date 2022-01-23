@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.roombooking.admin.model.Profile;
 
 @Data
 @AllArgsConstructor
@@ -15,5 +14,5 @@ import ru.roombooking.admin.model.Profile;
 public class EmployeeSaveRequest {
     private String id;
     private EmployeeDTO employeeDTO;
-    private Profile profile;
+    private ProfileDTO profile;
 }

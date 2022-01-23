@@ -59,7 +59,7 @@ public class RecordController {
     }
 
     @PutMapping("/batch-update-records")
-    public void batchUpdateRecords(@RequestBody List<RecordTable> recordTableList) {
+    public void batchUpdateRecords(@RequestBody List<RecordTableDTO> recordTableList) {
         recordTableNotificationService.batchUpdateRecords(recordTableList);
     }
 

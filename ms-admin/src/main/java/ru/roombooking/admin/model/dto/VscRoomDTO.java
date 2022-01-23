@@ -1,4 +1,4 @@
-package ru.roombooking.admin.model;
+package ru.roombooking.admin.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @JsonIgnoreProperties(value = "true")
-public class VscRoom {
+public class VscRoomDTO {
     private Long id;
     private Long numberRoom;
     private Boolean isActive;

@@ -1,4 +1,4 @@
-package ru.roombooking.admin.model;
+package ru.roombooking.admin.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @JsonIgnoreProperties(value = "true")
-public class Department {
+public class DepartmentDTO {
     private Long id;
     private String nameDepartment;
     private String position;

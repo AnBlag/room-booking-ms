@@ -9,7 +9,7 @@ import ru.roombooking.admin.exception.DepartmentsSaveException;
 import ru.roombooking.admin.exception.DepartmentsUpdateException;
 import ru.roombooking.admin.feign.DepartmentFeignClient;
 import ru.roombooking.admin.feign.EmployeeFeignClient;
-import ru.roombooking.admin.model.Department;
+import ru.roombooking.admin.model.dto.DepartmentDTO;
 import ru.roombooking.admin.model.dto.DepartmentRequest;
 
 import java.util.ArrayList;
@@ -21,8 +21,8 @@ public class DepartmentNotificationService {
     private final DepartmentFeignClient departmentFeignClient;
     private final EmployeeFeignClient employeeFeignClient;
 
-    public List<Department> departments(String search) {
-        List<Department> departmentList;
+    public List<DepartmentDTO> departments(String search) {
+        List<DepartmentDTO> departmentList;
         if (search != null) {
             departmentList = departmentFeignClient.getDepartmentListByURLParams(search);
         } else {
@@ -35,7 +35,7 @@ public class DepartmentNotificationService {
         return departmentList;
     }
 
-    public List<Department> findDepartments(Department findDepartment) {
+    public List<DepartmentDTO> findDepartments(DepartmentDTO findDepartment) {
         return departmentFeignClient.getDepartmentListByDepartmentParams(findDepartment);
     }
 
@@ -61,7 +61,7 @@ public class DepartmentNotificationService {
         }
     }
 
-    public void saveNewDepartment(Department department) {
+    public void saveNewDepartment(DepartmentDTO department) {
         try {
             departmentFeignClient.saveDepartment(department);
         } catch (FeignException e) {
@@ -69,17 +69,17 @@ public class DepartmentNotificationService {
         }
     }
 
-    private List<Department> getDepartmentListFromParams(String id,
-                                                         String departmentName,
-                                                         String position) {
+    private List<DepartmentDTO> getDepartmentListFromParams(String id,
+                                                            String departmentName,
+                                                            String position) {
         String[] idMas = id.split(",");
         String[] departmentNameMas = departmentName.split(",");
         String[] positionMas = position.split(",");
 
-        List<Department> departmentList = new ArrayList<>();
+        List<DepartmentDTO> departmentList = new ArrayList<>();
         for (int i = 0; i < idMas.length; i++) {
             departmentList.add(
-                    Department.builder()
+                    DepartmentDTO.builder()
                             .id(Long.parseLong(idMas[i]))
                             .nameDepartment(departmentNameMas[i])
                             .position(positionMas[i])

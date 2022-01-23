@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import ru.roombooking.admin.exception.*;
 import ru.roombooking.admin.feign.DepartmentFeignClient;
 import ru.roombooking.admin.feign.EmployeeViewFeignClient;
-import ru.roombooking.admin.model.Department;
+import ru.roombooking.admin.model.dto.DepartmentDTO;
 import ru.roombooking.admin.model.EmployeeView;
-import ru.roombooking.admin.model.Profile;
+import ru.roombooking.admin.model.dto.ProfileDTO;
 import ru.roombooking.admin.model.dto.EmployeeDTO;
 import ru.roombooking.admin.model.dto.EmployeeEditRequest;
 import ru.roombooking.admin.model.dto.EmployeeRequest;
@@ -64,8 +64,8 @@ public class EmployeeNotificationService {
 
     public EmployeeEditRequest editEmployee(String id) {
         EmployeeDTO employeeDTO = employeeAndProfileService.findEmployeeByProfileId(Long.parseLong(id));
-        Profile profile = employeeAndProfileService.findProfileById(Long.parseLong(id));
-        List<Department> departmentList;
+        ProfileDTO profile = employeeAndProfileService.findProfileById(Long.parseLong(id));
+        List<DepartmentDTO> departmentList;
         try {
             departmentList = departmentFeignClient.findAll();
         } catch (FeignException e) {
@@ -76,7 +76,7 @@ public class EmployeeNotificationService {
 
     public void saveEmployee(String id,
                              EmployeeDTO employeeDTO,
-                             Profile profile) {
+                             ProfileDTO profile) {
         try {
             saveEmployeeFromPageData(Long.parseLong(id), employeeDTO, profile);
         } catch (Exception e) {
@@ -124,9 +124,9 @@ public class EmployeeNotificationService {
         return employeeViewList;
     }
 
-    private void saveEmployeeFromPageData(Long id, EmployeeDTO employeeDTO, Profile profile) {
+    private void saveEmployeeFromPageData(Long id, EmployeeDTO employeeDTO, ProfileDTO profile) {
         EmployeeDTO tempEmployeeDTO = employeeAndProfileService.findEmployeeByProfileId(id);
-        Profile tempProfile = employeeAndProfileService.findProfileById(id);
+        ProfileDTO tempProfile = employeeAndProfileService.findProfileById(id);
         profile.setId(id);
         profile.setPassword(tempProfile.getPassword());
         employeeDTO.setIsActive(tempEmployeeDTO.getIsActive());

@@ -146,7 +146,7 @@ public class RecordTableServiceImpl implements RecordTableService {
 
     @Transactional
     @Override
-    public void batchUpdateRecords(List<RecordTable> recordTableList) {
+    public void batchUpdateRecords(List<RecordTableDTO> recordTableList) {
         jdbcTemplate.batchUpdate("" + "update record_table set employee_id=?, number_room_id=?, " +
                         "is_active=?, email=?, title=?, start_event=?, end_event=? where id=?",
                 new BatchPreparedStatementSetter() {
@@ -157,8 +157,8 @@ public class RecordTableServiceImpl implements RecordTableService {
                         ps.setBoolean(3,recordTableList.get(i).getIsActive());
                         ps.setString(4,recordTableList.get(i).getEmail());
                         ps.setString(5,recordTableList.get(i).getTitle());
-                        ps.setTimestamp(6,Timestamp.from(recordTableList.get(i).getStartEvent().toInstant()));
-                        ps.setTimestamp(7,Timestamp.from(recordTableList.get(i).getEndEvent().toInstant()));
+                        ps.setTimestamp(6,Timestamp.from(recordTableList.get(i).getStart().toInstant()));
+                        ps.setTimestamp(7,Timestamp.from(recordTableList.get(i).getEnd().toInstant()));
                         ps.setLong(8,recordTableList.get(i).getId());
                     }
 

@@ -11,5 +11,5 @@ public interface RecordTableService extends RoomServiceCRUD<RecordTableDTO, Long
   RecordTableDTO delete(RecordTableDTO recordTableDTO);
   RecordTableDTO findById(Long id);
   List<RecordTableDTO> findByNumberRoom(Long id);
-  void batchUpdateRecords(List<RecordTable> recordTableList);
+  void batchUpdateRecords(List<RecordTableDTO> recordTableList);
 }
