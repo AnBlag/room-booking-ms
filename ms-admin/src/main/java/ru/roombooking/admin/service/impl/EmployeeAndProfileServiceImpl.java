@@ -4,13 +4,12 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.roombooking.admin.exception.UpdateUsersException;
+import ru.roombooking.admin.exception.UsersUpdateException;
 import ru.roombooking.admin.feign.EmployeeFeignClient;
 import ru.roombooking.admin.feign.ProfileFeignClient;
 import ru.roombooking.admin.model.Profile;
 import ru.roombooking.admin.model.dto.EmployeeDTO;
 import ru.roombooking.admin.service.EmployeeAndProfileService;
-
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +24,8 @@ public class EmployeeAndProfileServiceImpl implements EmployeeAndProfileService 
             employeeFeignClient.saveEmployee(employeeDTO);
             profileFeignClient.saveProfile(profile);
         } catch (FeignException e) {
-            throw new UpdateUsersException();
+            throw new UsersUpdateException();
         }
-
     }
 
     @Override
@@ -47,13 +45,8 @@ public class EmployeeAndProfileServiceImpl implements EmployeeAndProfileService 
         return profileFeignClient.findById(String.valueOf(aLong));
     }
 
-
     @Override
     public EmployeeDTO findByLogin(String login) {
         return employeeFeignClient.findByLogin(login);
     }
-
-
-
-
 }

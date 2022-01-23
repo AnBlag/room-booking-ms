@@ -1,14 +1,11 @@
 package ru.roombooking.admin.feign;
 
-
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.roombooking.admin.model.Department;
 
 import java.util.List;
-
 
 @FeignClient(name = "department", url = "http://localhost:8084", path = "/department")
 public interface DepartmentFeignClient {
@@ -35,8 +32,8 @@ public interface DepartmentFeignClient {
     List<Department> getDepartmentListByURLParams(@RequestParam String search);
 
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-                    method = RequestMethod.POST,
-                    value = "/get-department-list-by-department-params",
-                    produces = MediaType.APPLICATION_JSON_VALUE)
+            method = RequestMethod.POST,
+            value = "/get-department-list-by-department-params",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     List<Department> getDepartmentListByDepartmentParams(@RequestBody Department departmentParams);
 }

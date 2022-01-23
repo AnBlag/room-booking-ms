@@ -21,13 +21,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class EmployeeNotificationService {
-
     private final EmployeeAndProfileService employeeAndProfileService;
     private final DepartmentFeignClient departmentFeignClient;
     private final EmployeeViewFeignClient employeeViewFeignClient;
 
     public void updateUsers(EmployeeRequest employeeRequest) {
-
         try {
             employeeViewFeignClient.batchUpdateProfileAndEmployee(getProfileViewListFromParams(String.valueOf(employeeRequest.getId()),
                     employeeRequest.getName(),
@@ -37,7 +35,7 @@ public class EmployeeNotificationService {
                     employeeRequest.getEmail(),
                     employeeRequest.getBanned()));
         } catch (FeignException e) {
-            throw new UpdateUsersException();
+            throw new UsersUpdateException();
         }
     }
 
@@ -47,8 +45,7 @@ public class EmployeeNotificationService {
             if (search != null) {
                 //list = profileViewSearchCriteriaRepository.search(searchByURLParams.getParamsFromSearch(search));
                 list = employeeViewFeignClient.getEmployeeViewListByURLParams(search);
-            }
-            else {
+            } else {
                 list = employeeViewFeignClient.findAll();
             }
             return list;
@@ -58,14 +55,12 @@ public class EmployeeNotificationService {
     }
 
     public List<EmployeeView> findByParamPage(@RequestBody EmployeeView employeeView) {
-        //return profileViewSearchCriteriaRepository.search(getParamsFromProfileView(employeeView));
         try {
             return employeeViewFeignClient.getEmployeeViewListByEmployeeViewParams(employeeView);
         } catch (FeignException e) {
             throw new EmployeeViewBadRequestException();
         }
     }
-
 
     public EmployeeEditRequest editEmployee(String id) {
         EmployeeDTO employeeDTO = employeeAndProfileService.findEmployeeByProfileId(Long.parseLong(id));
@@ -80,12 +75,12 @@ public class EmployeeNotificationService {
     }
 
     public void saveEmployee(String id,
-                               EmployeeDTO employeeDTO,
-                               Profile profile) {
+                             EmployeeDTO employeeDTO,
+                             Profile profile) {
         try {
             saveEmployeeFromPageData(Long.parseLong(id), employeeDTO, profile);
         } catch (Exception e) {
-            throw new SaveUsersException();
+            throw new UsersSaveException();
         }
     }
 
@@ -113,7 +108,7 @@ public class EmployeeNotificationService {
         String[] bannedMas = banned.split(",");
 
         List<EmployeeView> employeeViewList = new ArrayList<>();
-        for (int i=0; i<idMas.length; i++) {
+        for (int i = 0; i < idMas.length; i++) {
             employeeViewList.add(
                     EmployeeView.builder()
                             .id(Long.parseLong(idMas[i]))
@@ -129,7 +124,7 @@ public class EmployeeNotificationService {
         return employeeViewList;
     }
 
-    private void saveEmployeeFromPageData (Long id, EmployeeDTO employeeDTO, Profile profile) {
+    private void saveEmployeeFromPageData(Long id, EmployeeDTO employeeDTO, Profile profile) {
         EmployeeDTO tempEmployeeDTO = employeeAndProfileService.findEmployeeByProfileId(id);
         Profile tempProfile = employeeAndProfileService.findProfileById(id);
         profile.setId(id);
@@ -139,5 +134,4 @@ public class EmployeeNotificationService {
         employeeDTO.setProfileId(id);
         employeeAndProfileService.update(employeeDTO, profile);
     }
-
 }

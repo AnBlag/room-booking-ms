@@ -12,9 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @JsonIgnoreProperties(value = "true")
 public class VscRoom {
-
     private Long id;
     private Long numberRoom;
     private Boolean isActive;
-
 }

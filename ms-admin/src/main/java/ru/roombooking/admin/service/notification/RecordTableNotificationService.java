@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.roombooking.admin.exception.RecordTableDeleteException;
 import ru.roombooking.admin.exception.RecordTableViewBadRequestException;
-import ru.roombooking.admin.exception.UpdateRecordTableException;
+import ru.roombooking.admin.exception.RecordTableUpdateException;
 import ru.roombooking.admin.exception.VscRoomBadRequestException;
 import ru.roombooking.admin.feign.RecordTableFeignClient;
 import ru.roombooking.admin.feign.RecordTableViewFeignClient;
@@ -27,15 +27,12 @@ public class RecordTableNotificationService {
     private final VscRoomFeignClient vscRoomFeignClient;
     private final RecordTableViewFeignClient recordTableViewFeignClient;
 
-
-    // FIXME: 19.01.2022 разобраться с try catch
     public RecordTableViewListAndVscRoomListRequest records(String search) {
         List<RecordTableView> recordTableViewList;
         try {
             if (search != null) {
                 recordTableViewList = recordTableViewFeignClient.getRecordTableViewListByURLParams(search);
-            }
-            else {
+            } else {
                 recordTableViewList = recordTableViewFeignClient.findAll();
             }
             try {
@@ -47,9 +44,7 @@ public class RecordTableNotificationService {
         } catch (FeignException e) {
             throw new RecordTableViewBadRequestException();
         }
-
     }
-
 
     public RecordTableViewListAndVscRoomListRequest findRecords(RecordTableView findRecord) {
         try {
@@ -66,7 +61,6 @@ public class RecordTableNotificationService {
     }
 
     public void updateRecords(RecordTableRequest recordTableRequest) {
-
         try {
             recordTableFeignClient.batchUpdateRecords(getRecordTableListFromParams(recordTableRequest.getId(),
                     recordTableRequest.getEmail(),
@@ -77,7 +71,7 @@ public class RecordTableNotificationService {
                     recordTableRequest.getStartEvent(),
                     recordTableRequest.getEndEvent()));
         } catch (FeignException e) {
-            throw new UpdateRecordTableException();
+            throw new RecordTableUpdateException();
         }
     }
 
@@ -108,7 +102,7 @@ public class RecordTableNotificationService {
 
         List<RecordTable> recordTableList = new ArrayList<>();
         try {
-            for (int i=0; i<idMas.length; i++) {
+            for (int i = 0; i < idMas.length; i++) {
                 recordTableList.add(
                         RecordTable.builder()
                                 .id(Long.parseLong(idMas[i]))

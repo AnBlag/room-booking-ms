@@ -16,7 +16,7 @@ public class EmployeeView {
     private String name;
     private String surname;
     private String middleName;
-    private String  phone;
+    private String phone;
     private String email;
     private Boolean banned;
 }

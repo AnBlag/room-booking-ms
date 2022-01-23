@@ -1,4 +1,3 @@
-
 package ru.roombooking.admin.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,14 +14,12 @@ import java.time.ZonedDateTime;
 @Builder
 @JsonIgnoreProperties(value = "true")
 public class RecordTable {
-
     private Long id;
     private String email;
     private String title;
     private ZonedDateTime startEvent;
-    private ZonedDateTime  endEvent;
+    private ZonedDateTime endEvent;
     private Boolean isActive;
     private Long numberRoomId;
     private Long employeeId;
-
 }

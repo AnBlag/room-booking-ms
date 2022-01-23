@@ -16,7 +16,4 @@ public class EmployeeSaveRequest {
     private String id;
     private EmployeeDTO employeeDTO;
     private Profile profile;
-
-
-
 }

@@ -16,9 +16,7 @@ import java.util.List;
 @Builder
 @JsonIgnoreProperties(value = "true")
 public class EmployeeEditRequest {
-
     private EmployeeDTO employeeDTO;
     private Profile profile;
     private List<Department> departmentList;
-
 }

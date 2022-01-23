@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.roombooking.admin.exception.DepartmentsDeleteException;
 import ru.roombooking.admin.exception.DepartmentBadRequestException;
-import ru.roombooking.admin.exception.SaveDepartmentsException;
-import ru.roombooking.admin.exception.UpdateDepartmentsException;
+import ru.roombooking.admin.exception.DepartmentsSaveException;
+import ru.roombooking.admin.exception.DepartmentsUpdateException;
 import ru.roombooking.admin.feign.DepartmentFeignClient;
 import ru.roombooking.admin.feign.EmployeeFeignClient;
 import ru.roombooking.admin.model.Department;
@@ -21,13 +21,11 @@ public class DepartmentNotificationService {
     private final DepartmentFeignClient departmentFeignClient;
     private final EmployeeFeignClient employeeFeignClient;
 
-
     public List<Department> departments(String search) {
         List<Department> departmentList;
         if (search != null) {
             departmentList = departmentFeignClient.getDepartmentListByURLParams(search);
-        }
-        else {
+        } else {
             try {
                 departmentList = departmentFeignClient.findAll();
             } catch (FeignException e) {
@@ -47,7 +45,7 @@ public class DepartmentNotificationService {
                     departmentRequest.getNameDepartment(),
                     departmentRequest.getPosition()));
         } catch (FeignException e) {
-            throw new UpdateDepartmentsException("Ошибка обновления департаментов");
+            throw new DepartmentsUpdateException("Ошибка обновления департаментов");
         }
     }
 
@@ -67,7 +65,7 @@ public class DepartmentNotificationService {
         try {
             departmentFeignClient.saveDepartment(department);
         } catch (FeignException e) {
-            throw new SaveDepartmentsException();
+            throw new DepartmentsSaveException();
         }
     }
 
@@ -79,7 +77,7 @@ public class DepartmentNotificationService {
         String[] positionMas = position.split(",");
 
         List<Department> departmentList = new ArrayList<>();
-        for (int i=0; i<idMas.length; i++) {
+        for (int i = 0; i < idMas.length; i++) {
             departmentList.add(
                     Department.builder()
                             .id(Long.parseLong(idMas[i]))
@@ -91,7 +89,7 @@ public class DepartmentNotificationService {
         return departmentList;
     }
 
-    private String getMessageForDeleteDepartmentPage (Long id) {
+    private String getMessageForDeleteDepartmentPage(Long id) {
         try {
             String departmentName = departmentFeignClient.findById(String.valueOf(id)).getNameDepartment();
             if (employeeFeignClient.isPresentByDepartmentId(String.valueOf(id)))
@@ -100,7 +98,5 @@ public class DepartmentNotificationService {
         } catch (FeignException e) {
             throw new DepartmentBadRequestException();
         }
-
     }
-
 }

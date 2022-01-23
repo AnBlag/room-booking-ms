@@ -21,6 +21,4 @@ public class EmployeeDTO {
     private Boolean isActive;
     private Long profileId;
     private Long departmentId;
-
-
 }

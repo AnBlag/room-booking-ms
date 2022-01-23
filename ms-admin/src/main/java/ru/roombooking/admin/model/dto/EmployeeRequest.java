@@ -19,6 +19,4 @@ public class EmployeeRequest {
     private String phone;
     private String email;
     private String banned;
-
-
 }
