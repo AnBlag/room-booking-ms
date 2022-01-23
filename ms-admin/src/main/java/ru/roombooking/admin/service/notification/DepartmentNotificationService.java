@@ -3,7 +3,7 @@ package ru.roombooking.admin.service.notification;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.roombooking.admin.exception.DeleteDepartmentsException;
+import ru.roombooking.admin.exception.DepartmentsDeleteException;
 import ru.roombooking.admin.exception.DepartmentBadRequestException;
 import ru.roombooking.admin.exception.SaveDepartmentsException;
 import ru.roombooking.admin.exception.UpdateDepartmentsException;
@@ -59,7 +59,7 @@ public class DepartmentNotificationService {
         try {
             departmentFeignClient.deleteDepartment(id);
         } catch (FeignException e) {
-            throw new DeleteDepartmentsException();
+            throw new DepartmentsDeleteException();
         }
     }
 

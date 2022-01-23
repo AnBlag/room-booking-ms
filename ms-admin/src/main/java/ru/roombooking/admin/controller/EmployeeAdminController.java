@@ -44,12 +44,6 @@ public class EmployeeAdminController {
                 employeeSaveRequest.getProfile());
     }
 
-    /*@GetMapping("/delete/{id}")
-    public String askDeleteEmployee(@PathVariable String id, ModelMap modelMap) {
-        modelMap.addAttribute("profileId", id);
-        return "deleteemployee";
-    }*/
-
     @DeleteMapping("/delete/{id}")
     public void deleteEmployee(@PathVariable String id) {
         employeeNotificationService.deleteEmployee(id);

@@ -1,23 +1,23 @@
 package ru.roombooking.admin.exception;
 
-public class DeleteRecordTableException extends RuntimeException {
-    public DeleteRecordTableException() {
+public class RecordTableDeleteException extends RuntimeException {
+    public RecordTableDeleteException() {
         super();
     }
 
-    public DeleteRecordTableException(String message) {
+    public RecordTableDeleteException(String message) {
         super(message);
     }
 
-    public DeleteRecordTableException(String message, Throwable cause) {
+    public RecordTableDeleteException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public DeleteRecordTableException(Throwable cause) {
+    public RecordTableDeleteException(Throwable cause) {
         super(cause);
     }
 
-    protected DeleteRecordTableException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected RecordTableDeleteException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

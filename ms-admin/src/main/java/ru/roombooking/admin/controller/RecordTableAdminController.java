@@ -29,12 +29,6 @@ public class RecordTableAdminController {
         recordTableNotificationService.updateRecords(recordTableRequest);
     }
 
-    /*@GetMapping("/delete/{id}")
-    public String askDeleteRecord(@PathVariable String id, ModelMap modelMap) {
-        modelMap.addAttribute("recordTableId", id);
-        return "deleterecord";
-    }*/
-
     @DeleteMapping("/delete/{id}")
     public void deleteRecord(@PathVariable String id) {
         recordTableNotificationService.deleteRecord(id);

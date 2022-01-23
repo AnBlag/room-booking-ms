@@ -3,7 +3,7 @@ package ru.roombooking.admin.service.notification;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.roombooking.admin.exception.DeleteRecordTableException;
+import ru.roombooking.admin.exception.RecordTableDeleteException;
 import ru.roombooking.admin.exception.RecordTableViewBadRequestException;
 import ru.roombooking.admin.exception.UpdateRecordTableException;
 import ru.roombooking.admin.exception.VscRoomBadRequestException;
@@ -85,7 +85,7 @@ public class RecordTableNotificationService {
         try {
             recordTableFeignClient.deleteRecordById(id);
         } catch (FeignException e) {
-            throw new DeleteRecordTableException();
+            throw new RecordTableDeleteException();
         }
     }
 

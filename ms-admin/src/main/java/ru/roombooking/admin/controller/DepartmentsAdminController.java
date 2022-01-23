@@ -40,12 +40,6 @@ public class DepartmentsAdminController {
         departmentNotificationService.deleteDepartment(id);
     }
 
-    /*@GetMapping("/add")
-    public String addDepartment(ModelMap modelMap) {
-        modelMap.addAttribute("departmentData", new Department());
-        return "addingdepartment";
-    }*/
-
     @PostMapping("/add")
     public void saveNewDepartment(@RequestBody Department department) {
         departmentNotificationService.saveNewDepartment(department);

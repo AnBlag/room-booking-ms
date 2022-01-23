@@ -25,26 +25,13 @@ public class VscRoomAdminController {
         vscRoomNotificationService.updateVscRoom(vscRoomRequest);
     }
 
-    /*@GetMapping("/delete/{id}")
-    public String askDeleteRoom(@PathVariable String id, ModelMap modelMap) {
-        modelMap.addAttribute("roomId", id);
-        return "deleteroom";
-    }*/
-
     @DeleteMapping("/delete/{id}")
     public void deleteRoom(@PathVariable String id) {
         vscRoomNotificationService.deleteRoom(id);
     }
 
-    /*@GetMapping("/addroom")
-    public String addRoom(ModelMap modelMap) {
-        modelMap.addAttribute("roomData", new VscRoom());
-        return "addingroom";
-    }*/
-
     @PostMapping("/addroom")
     public void saveNewRoom(@RequestBody VscRoom vscRoom) {
         vscRoomNotificationService.saveNewRoom(vscRoom);
     }
-
 }

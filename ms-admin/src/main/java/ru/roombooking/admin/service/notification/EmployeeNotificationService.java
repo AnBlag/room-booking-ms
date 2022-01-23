@@ -93,7 +93,7 @@ public class EmployeeNotificationService {
         try {
             employeeAndProfileService.deleteByProfileId(Long.parseLong(id));
         } catch (Exception e) {
-            throw new DeleteUsersException();
+            throw new UsersDeleteException();
         }
     }
 
