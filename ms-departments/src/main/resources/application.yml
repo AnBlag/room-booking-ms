@@ -1,6 +1,6 @@
 spring:
   datasource:
-    password: 123
+    password: postgres
     driver-class-name: org.postgresql.Driver
     username: postgres
     url: jdbc:postgresql://localhost:5432/room
@@ -12,4 +12,8 @@ server:
   port: 8084
   error:
     include-message: always
+
+sql:
+  query:
+    batch-update: UPDATE department SET name_department=?, position=? WHERE id=?
 

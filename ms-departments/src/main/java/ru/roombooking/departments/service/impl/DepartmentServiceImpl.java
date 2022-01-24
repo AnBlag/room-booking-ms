@@ -1,6 +1,7 @@
 package ru.roombooking.departments.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ import java.util.List;
 public class DepartmentServiceImpl implements DepartmentService {
     private final DepartmentRepository departmentRepository;
     private final JdbcTemplate jdbcTemplate;
+    @Value("${sql.query.batch-update}")
+    private String batchUpdateQuery;
 
     @Override
     public Department save(Department model) {
@@ -53,7 +56,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Transactional
     @Override
     public void batchUpdateDepartment(List<Department> departmentList) {
-        jdbcTemplate.batchUpdate("" + "update department set name_department=?, position=? where id=?",
+        jdbcTemplate.batchUpdate("" + batchUpdateQuery,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
