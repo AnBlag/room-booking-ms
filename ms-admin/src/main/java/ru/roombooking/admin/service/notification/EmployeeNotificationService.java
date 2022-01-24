@@ -11,7 +11,7 @@ import ru.roombooking.admin.model.dto.DepartmentDTO;
 import ru.roombooking.admin.model.EmployeeView;
 import ru.roombooking.admin.model.dto.ProfileDTO;
 import ru.roombooking.admin.model.dto.EmployeeDTO;
-import ru.roombooking.admin.model.dto.EmployeeEditRequest;
+import ru.roombooking.admin.model.dto.EmployeeEditDTO;
 import ru.roombooking.admin.model.dto.EmployeeRequest;
 import ru.roombooking.admin.service.EmployeeAndProfileService;
 
@@ -27,7 +27,7 @@ public class EmployeeNotificationService {
 
     public void updateUsers(EmployeeRequest employeeRequest) {
         try {
-            employeeViewFeignClient.batchUpdateProfileAndEmployee(getProfileViewListFromParams(String.valueOf(employeeRequest.getId()),
+            employeeViewFeignClient.batchUpdateProfileAndEmployee(getEmployeeViewListFromParams(String.valueOf(employeeRequest.getId()),
                     employeeRequest.getName(),
                     employeeRequest.getSurname(),
                     employeeRequest.getMiddleName(),
@@ -62,7 +62,7 @@ public class EmployeeNotificationService {
         }
     }
 
-    public EmployeeEditRequest editEmployee(String id) {
+    public EmployeeEditDTO editEmployee(String id) {
         EmployeeDTO employeeDTO = employeeAndProfileService.findEmployeeByProfileId(Long.parseLong(id));
         ProfileDTO profile = employeeAndProfileService.findProfileById(Long.parseLong(id));
         List<DepartmentDTO> departmentList;
@@ -71,7 +71,7 @@ public class EmployeeNotificationService {
         } catch (FeignException e) {
             throw new DepartmentBadRequestException();
         }
-        return new EmployeeEditRequest(employeeDTO, profile, departmentList);
+        return new EmployeeEditDTO(employeeDTO, profile, departmentList);
     }
 
     public void saveEmployee(String id,
@@ -92,13 +92,13 @@ public class EmployeeNotificationService {
         }
     }
 
-    private List<EmployeeView> getProfileViewListFromParams(String id,
-                                                            String name,
-                                                            String surname,
-                                                            String middleName,
-                                                            String phone,
-                                                            String email,
-                                                            String banned) {
+    private List<EmployeeView> getEmployeeViewListFromParams(String id,
+                                                             String name,
+                                                             String surname,
+                                                             String middleName,
+                                                             String phone,
+                                                             String email,
+                                                             String banned) {
         String[] idMas = id.split(",");
         String[] nameMas = name.split(",");
         String[] surnameMas = surname.split(",");

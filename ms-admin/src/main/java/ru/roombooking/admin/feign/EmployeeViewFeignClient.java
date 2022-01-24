@@ -1,19 +1,17 @@
 package ru.roombooking.admin.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.roombooking.admin.model.dto.DepartmentDTO;
 import ru.roombooking.admin.model.EmployeeView;
+import ru.roombooking.admin.model.dto.DepartmentDTO;
 
 import java.util.List;
 
-@PropertySource("classpath:feign-url.properties")
-@FeignClient(name = "employeeView", url = "employee.url", path = "/employee-view")
+@FeignClient(name = "employeeView", url = "${feign.employee.url}", path = "/employee-view")
 public interface EmployeeViewFeignClient {
 
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET, value = "/")

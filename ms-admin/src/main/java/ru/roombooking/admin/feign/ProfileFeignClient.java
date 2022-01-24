@@ -1,13 +1,11 @@
 package ru.roombooking.admin.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.roombooking.admin.model.dto.ProfileDTO;
 
-@PropertySource("classpath:feign-url.properties")
-@FeignClient(name = "profile", url = "profile.url", path = "/profile")
+@FeignClient(name = "profile", url = "${feign.profile.url}", path = "/profile")
 public interface ProfileFeignClient {
 
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST, value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -1,7 +1,6 @@
 package ru.roombooking.admin.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,8 +10,7 @@ import ru.roombooking.admin.model.dto.RecordTableDTO;
 
 import java.util.List;
 
-@PropertySource("classpath:feign-url.properties")
-@FeignClient(name = "recordTable", url = "record-table-and-vsc-room.url", path = "/record")
+@FeignClient(name = "recordTable", url = "${feign.record-table-and-vsc-room.url}", path = "/record")
 public interface RecordTableFeignClient {
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.GET,

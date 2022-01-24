@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.roombooking.admin.model.EmployeeView;
-import ru.roombooking.admin.model.dto.EmployeeEditRequest;
+import ru.roombooking.admin.model.dto.EmployeeEditDTO;
 import ru.roombooking.admin.model.dto.EmployeeRequest;
-import ru.roombooking.admin.model.dto.EmployeeSaveRequest;
+import ru.roombooking.admin.model.dto.EmployeeSaveDTO;
 import ru.roombooking.admin.service.notification.EmployeeNotificationService;
 
 import java.util.List;
@@ -33,15 +33,15 @@ public class EmployeeAdminController {
     }
 
     @GetMapping("/edit/{id}")
-    public ResponseEntity<EmployeeEditRequest> editEmployee(@PathVariable String id) {
+    public ResponseEntity<EmployeeEditDTO> editEmployee(@PathVariable String id) {
         return ResponseEntity.ok(employeeNotificationService.editEmployee(id));
     }
 
     @PostMapping("/edit/")
-    public void saveEmployee(@RequestBody EmployeeSaveRequest employeeSaveRequest) {
-        employeeNotificationService.saveEmployee(employeeSaveRequest.getId(),
-                employeeSaveRequest.getEmployeeDTO(),
-                employeeSaveRequest.getProfile());
+    public void saveEmployee(@RequestBody EmployeeSaveDTO employeeSaveDTO) {
+        employeeNotificationService.saveEmployee(employeeSaveDTO.getId(),
+                employeeSaveDTO.getEmployeeDTO(),
+                employeeSaveDTO.getProfile());
     }
 
     @DeleteMapping("/delete/{id}")

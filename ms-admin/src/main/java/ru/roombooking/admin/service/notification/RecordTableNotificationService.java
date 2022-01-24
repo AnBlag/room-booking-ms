@@ -14,7 +14,7 @@ import ru.roombooking.admin.model.RecordTableView;
 import ru.roombooking.admin.model.dto.VscRoomDTO;
 import ru.roombooking.admin.model.dto.RecordTableDTO;
 import ru.roombooking.admin.model.dto.RecordTableRequest;
-import ru.roombooking.admin.model.dto.RecordTableViewListAndVscRoomListRequest;
+import ru.roombooking.admin.model.dto.RecordTableViewListAndVscRoomListDTO;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class RecordTableNotificationService {
     private final VscRoomFeignClient vscRoomFeignClient;
     private final RecordTableViewFeignClient recordTableViewFeignClient;
 
-    public RecordTableViewListAndVscRoomListRequest records(String search) {
+    public RecordTableViewListAndVscRoomListDTO records(String search) {
         List<RecordTableView> recordTableViewList;
         try {
             if (search != null) {
@@ -37,7 +37,7 @@ public class RecordTableNotificationService {
             }
             try {
                 List<VscRoomDTO> vscRoomList = vscRoomFeignClient.findAll();
-                return new RecordTableViewListAndVscRoomListRequest(recordTableViewList, vscRoomList);
+                return new RecordTableViewListAndVscRoomListDTO(recordTableViewList, vscRoomList);
             } catch (FeignException e) {
                 throw new VscRoomBadRequestException();
             }
@@ -46,12 +46,12 @@ public class RecordTableNotificationService {
         }
     }
 
-    public RecordTableViewListAndVscRoomListRequest findRecords(RecordTableView findRecord) {
+    public RecordTableViewListAndVscRoomListDTO findRecords(RecordTableView findRecord) {
         try {
             List<RecordTableView> list = recordTableViewFeignClient.getRecordTableViewListByRecordTableViewParams(findRecord);
             try {
                 List<VscRoomDTO> vscRoomList = vscRoomFeignClient.findAll();
-                return new RecordTableViewListAndVscRoomListRequest(list, vscRoomList);
+                return new RecordTableViewListAndVscRoomListDTO(list, vscRoomList);
             } catch (FeignException e) {
                 throw new VscRoomBadRequestException();
             }

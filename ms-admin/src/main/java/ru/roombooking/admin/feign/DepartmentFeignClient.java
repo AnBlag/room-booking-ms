@@ -1,15 +1,13 @@
 package ru.roombooking.admin.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.roombooking.admin.model.dto.DepartmentDTO;
 
 import java.util.List;
 
-@PropertySource("classpath:feign-url.properties")
-@FeignClient(name = "department", url = "department.url", path = "/department")
+@FeignClient(name = "department", url = "${feign.department.url}", path = "/department")
 public interface DepartmentFeignClient {
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET, value = "/find-by-id/{id}")
     DepartmentDTO findById(@PathVariable String id);

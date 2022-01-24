@@ -31,13 +31,13 @@ public interface EmployeeAdminFeignClient {
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.GET,
             value = "/edit/{id}")
-    EmployeeEditRequest editEmployee(@PathVariable String id);
+    EmployeeEditDTO editEmployee(@PathVariable String id);
 
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.POST,
             value = "/edit/",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    void saveEmployee(@RequestBody EmployeeSaveRequest employeeSaveRequest);
+    void saveEmployee(@RequestBody EmployeeSaveDTO employeeSaveDTO);
 
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.DELETE,

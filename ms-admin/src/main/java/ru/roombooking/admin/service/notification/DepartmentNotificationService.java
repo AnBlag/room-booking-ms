@@ -49,7 +49,7 @@ public class DepartmentNotificationService {
         }
     }
 
-    public String askDeleteDepartment(String id) {
+    public String askToDeleteDepartment(String id) {
         return getMessageForDeleteDepartmentPage(Long.parseLong(id));
     }
 

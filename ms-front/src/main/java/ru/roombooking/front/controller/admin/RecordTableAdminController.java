@@ -10,7 +10,7 @@ import ru.roombooking.front.exception.RecordTableBadRequestException;
 import ru.roombooking.front.feign.admin.RecordTableAdminFeignClient;
 import ru.roombooking.front.model.RecordTableView;
 import ru.roombooking.front.model.dto.RecordTableRequest;
-import ru.roombooking.front.model.dto.RecordTableViewListAndVscRoomListRequest;
+import ru.roombooking.front.model.dto.RecordTableViewListAndVscRoomListDTO;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class RecordTableAdminController {
     @GetMapping("/")
     public String records(@RequestParam(value = "search", required = false) String search,
                           ModelMap modelMap) {
-        RecordTableViewListAndVscRoomListRequest request;
+        RecordTableViewListAndVscRoomListDTO request;
         try {
             request = recordTableAdminFeignClient.records(search);
         } catch (FeignException e) {
@@ -38,7 +38,7 @@ public class RecordTableAdminController {
     @PostMapping("/")
     public String findRecords(@ModelAttribute("findRecord") RecordTableView findRecord,
                                   ModelMap modelMap) {
-        RecordTableViewListAndVscRoomListRequest request;
+        RecordTableViewListAndVscRoomListDTO request;
         try {
             request = recordTableAdminFeignClient.findRecords(findRecord);
         } catch (FeignException e) {

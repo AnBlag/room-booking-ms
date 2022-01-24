@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.roombooking.admin.model.RecordTableView;
 import ru.roombooking.admin.model.dto.RecordTableRequest;
-import ru.roombooking.admin.model.dto.RecordTableViewListAndVscRoomListRequest;
+import ru.roombooking.admin.model.dto.RecordTableViewListAndVscRoomListDTO;
 import ru.roombooking.admin.service.notification.RecordTableNotificationService;
 
 @RestController
@@ -15,12 +15,12 @@ public class RecordTableAdminController {
     private final RecordTableNotificationService recordTableNotificationService;
 
     @GetMapping("/")
-    public ResponseEntity<RecordTableViewListAndVscRoomListRequest> records(@RequestParam(required = false) String search) {
+    public ResponseEntity<RecordTableViewListAndVscRoomListDTO> records(@RequestParam(required = false) String search) {
         return ResponseEntity.ok(recordTableNotificationService.records(search));
     }
 
     @PostMapping("/")
-    public ResponseEntity<RecordTableViewListAndVscRoomListRequest> findRecords(@RequestBody RecordTableView findRecord) {
+    public ResponseEntity<RecordTableViewListAndVscRoomListDTO> findRecords(@RequestBody RecordTableView findRecord) {
         return ResponseEntity.ok(recordTableNotificationService.findRecords(findRecord));
     }
 

@@ -1,5 +1,13 @@
-
 server:
   port: 8088
   error:
     include-message: always
+feign:
+  department:
+    url: http://localhost:8084
+  employee:
+    url: http://localhost:8085
+  profile:
+    url: http://localhost:8086
+  record-table-and-vsc-room:
+    url: http://localhost:8087

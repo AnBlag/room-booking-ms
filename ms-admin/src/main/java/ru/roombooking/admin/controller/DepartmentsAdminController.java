@@ -32,7 +32,7 @@ public class DepartmentsAdminController {
 
     @GetMapping("/delete/{id}")
     public ResponseEntity<String> askDeleteDepartment(@PathVariable String id) {
-        return ResponseEntity.ok(departmentNotificationService.askDeleteDepartment(id));
+        return ResponseEntity.ok(departmentNotificationService.askToDeleteDepartment(id));
     }
 
     @DeleteMapping("/delete/{id}")

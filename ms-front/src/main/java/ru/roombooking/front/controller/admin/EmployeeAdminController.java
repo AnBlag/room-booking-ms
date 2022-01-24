@@ -69,15 +69,15 @@ public class EmployeeAdminController {
 
     @GetMapping("/edit/{id}")
     public String editEmployee(@PathVariable String id, ModelMap modelMap) {
-        EmployeeEditRequest employeeEditRequest;
+        EmployeeEditDTO employeeEditDTO;
         try {
-            employeeEditRequest = employeeAdminFeignClient.editEmployee(id);
+            employeeEditDTO = employeeAdminFeignClient.editEmployee(id);
         } catch (FeignException e) {
             throw new EditEmployeeBadRequestException();
         }
-        modelMap.addAttribute("employeeData", employeeEditRequest.getEmployeeDTO());
-        modelMap.addAttribute("profileData", employeeEditRequest.getProfile());
-        modelMap.addAttribute("departmentData", employeeEditRequest.getDepartmentList());
+        modelMap.addAttribute("employeeData", employeeEditDTO.getEmployeeDTO());
+        modelMap.addAttribute("profileData", employeeEditDTO.getProfile());
+        modelMap.addAttribute("departmentData", employeeEditDTO.getDepartmentList());
         return "editemployee";
     }
 
@@ -86,7 +86,7 @@ public class EmployeeAdminController {
                                @ModelAttribute("employeeData")final @Valid EmployeeDTO employeeDTO,
                                @ModelAttribute("profileData")final @Valid ProfileDTO profileDTO) {
         try {
-            employeeAdminFeignClient.saveEmployee(new EmployeeSaveRequest(id, employeeDTO, profileDTO));
+            employeeAdminFeignClient.saveEmployee(new EmployeeSaveDTO(id, employeeDTO, profileDTO));
         } catch (FeignException e) {
             throw new SaveEmployeeBadRequestException();
         }

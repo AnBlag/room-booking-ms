@@ -4,11 +4,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.roombooking.front.model.RecordTableView;
-import ru.roombooking.front.model.dto.RecordTableDTO;
 import ru.roombooking.front.model.dto.RecordTableRequest;
-import ru.roombooking.front.model.dto.RecordTableViewListAndVscRoomListRequest;
-
-import java.util.List;
+import ru.roombooking.front.model.dto.RecordTableViewListAndVscRoomListDTO;
 
 
 @FeignClient(name = "recordTableAdmin", url = "http://localhost:8088", path = "/admin/records")
@@ -17,13 +14,13 @@ public interface RecordTableAdminFeignClient {
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
                     method = RequestMethod.GET,
                     value = "/")
-    RecordTableViewListAndVscRoomListRequest records(@RequestParam(required = false) String search);
+    RecordTableViewListAndVscRoomListDTO records(@RequestParam(required = false) String search);
 
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.POST,
             value = "/",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    RecordTableViewListAndVscRoomListRequest findRecords(@RequestBody RecordTableView findRecord);
+    RecordTableViewListAndVscRoomListDTO findRecords(@RequestBody RecordTableView findRecord);
 
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.PUT,
