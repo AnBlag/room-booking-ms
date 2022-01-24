@@ -5,7 +5,6 @@ import ru.roombooking.departments.config.search.specification.SearchCriteria;
 import ru.roombooking.departments.config.search.specification.ViewConsumer;
 import ru.roombooking.departments.model.Department;
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;

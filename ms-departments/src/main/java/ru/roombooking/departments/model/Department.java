@@ -21,11 +21,11 @@ public class Department {
     @Column(name = "position")
     private String position;
 
-
     @Override
     public int hashCode() {
         return 13;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -39,12 +39,13 @@ public class Department {
             return false;
         } else return id.equals(other.getId());
     }
+
     @Override
     public String toString() {
         return "Department{" +
-            "id=" + id +
-            ", nameDepartment='" + nameDepartment + '\'' +
-            ", position='" + position + '\'' +
-            '}';
+                "id=" + id +
+                ", nameDepartment='" + nameDepartment + '\'' +
+                ", position='" + position + '\'' +
+                '}';
     }
 }

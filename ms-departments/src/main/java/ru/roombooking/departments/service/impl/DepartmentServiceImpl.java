@@ -19,6 +19,7 @@ import java.util.List;
 public class DepartmentServiceImpl implements DepartmentService {
     private final DepartmentRepository departmentRepository;
     private final JdbcTemplate jdbcTemplate;
+
     @Override
     public Department save(Department model) {
         return departmentRepository.save(model);
@@ -56,9 +57,9 @@ public class DepartmentServiceImpl implements DepartmentService {
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setString(1,departmentList.get(i).getNameDepartment());
-                        ps.setString(2,departmentList.get(i).getPosition());
-                        ps.setLong(3,departmentList.get(i).getId());
+                        ps.setString(1, departmentList.get(i).getNameDepartment());
+                        ps.setString(2, departmentList.get(i).getPosition());
+                        ps.setLong(3, departmentList.get(i).getId());
                     }
 
                     @Override

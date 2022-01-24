@@ -40,7 +40,7 @@ public class DepartmentController {
     }
 
     @PutMapping("/batch-update-department")
-    public void batchUpdateDepartment (@RequestBody List<Department> departmentList) {
+    public void batchUpdateDepartment(@RequestBody List<Department> departmentList) {
         notificationService.batchUpdateDepartment(departmentList);
     }
 
@@ -53,5 +53,4 @@ public class DepartmentController {
     public ResponseEntity<List<Department>> getDepartmentListByDepartmentParams(@RequestBody Department departmentParams) {
         return ResponseEntity.ok(notificationService.getDepartmentListByDepartmentParams(departmentParams));
     }
-
 }

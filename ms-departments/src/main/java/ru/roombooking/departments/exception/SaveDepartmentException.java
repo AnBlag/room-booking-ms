@@ -1,6 +1,6 @@
 package ru.roombooking.departments.exception;
 
-public class SaveDepartmentException extends RuntimeException{
+public class SaveDepartmentException extends RuntimeException {
     public SaveDepartmentException() {
         super();
     }

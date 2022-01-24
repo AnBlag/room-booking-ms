@@ -1,6 +1,5 @@
 package ru.roombooking.departments.service.impl;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +33,7 @@ public class NotificationService {
 
     @Transactional(rollbackFor = UpdateDepartmentException.class)
     public Department updateDepartment(Department department, String id) {
-        return departmentService.update(department,Long.parseLong(id));
+        return departmentService.update(department, Long.parseLong(id));
     }
 
     @Transactional(rollbackFor = DeleteDepartmentException.class)
@@ -60,7 +59,4 @@ public class NotificationService {
     public List<Department> getDepartmentListByDepartmentParams(Department departmentParams) {
         return searchCriteriaViewRepository.search(searchByParams.getParamsFromDepartment(departmentParams));
     }
-
-
 }
-
