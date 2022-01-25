@@ -12,3 +12,6 @@ server:
   port: 8086
   error:
     include-message: always
+sql:
+  query:
+    sql-change-account-non-locked: update profile set account_non_locked = ? where id = ?

@@ -12,3 +12,14 @@ server:
   port: 8085
   error:
     include-message: always
+feign:
+  department:
+    url: http://localhost:8084
+  profile:
+    url: http://localhost:8086
+
+sql:
+  query:
+    batch-update:
+      employee: update employee set email=?, name=?, middle_name=?, surname=?, phone=? where profile_id=?
+      profile: update profile set account_non_locked = ? where id=?

@@ -12,9 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @JsonIgnoreProperties(value = "true")
 public class DepartmentRequest {
-
     private String id;
     private String nameDepartment;
     private String position;
-
 }

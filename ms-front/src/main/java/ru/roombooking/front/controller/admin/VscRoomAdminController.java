@@ -18,6 +18,7 @@ import java.util.List;
 @RequestMapping("/admin/vscrooms")
 public class VscRoomAdminController {
     private final VscRoomAdminFeignClient vscRoomAdminFeignClient;
+
     @GetMapping("/")
     public String vscRooms(ModelMap modelMap) {
         List<VscRoomDTO> vscRoomList;
@@ -33,8 +34,8 @@ public class VscRoomAdminController {
 
     @PostMapping("/save")
     public String updateVscRoom(@RequestParam(name = "id") String id,
-                                    @RequestParam(name = "isActive") String isActive,
-                                    @RequestParam(name = "numberRoom") String numberRoom
+                                @RequestParam(name = "isActive") String isActive,
+                                @RequestParam(name = "numberRoom") String numberRoom
     ) {
         try {
             vscRoomAdminFeignClient.updateVscRoom(new VscRoomRequest(id, isActive, numberRoom));
@@ -69,7 +70,7 @@ public class VscRoomAdminController {
     }
 
     @PostMapping("/addroom")
-    public String saveNewRoom(@ModelAttribute("roomData")final @Valid VscRoomDTO vscRoom) {
+    public String saveNewRoom(@ModelAttribute("roomData") final @Valid VscRoomDTO vscRoom) {
         try {
             vscRoomAdminFeignClient.saveNewRoom(vscRoom);
         } catch (FeignException e) {

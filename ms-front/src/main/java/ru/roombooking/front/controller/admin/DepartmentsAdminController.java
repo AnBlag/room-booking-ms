@@ -49,8 +49,8 @@ public class DepartmentsAdminController {
 
     @PostMapping("/save")
     public String updateDepartments(@RequestParam(name = "id") String id,
-                              @RequestParam(name = "departmentName") String departmentName,
-                              @RequestParam(name = "position") String position) {
+                                    @RequestParam(name = "departmentName") String departmentName,
+                                    @RequestParam(name = "position") String position) {
         try {
             departmentAdminFeignClient.updateDepartments(new DepartmentRequest(id, departmentName, position));
         } catch (FeignException e) {
@@ -90,7 +90,7 @@ public class DepartmentsAdminController {
     }
 
     @PostMapping("/add")
-    public String saveNewDepartment(@ModelAttribute("departmentData")final @Valid DepartmentDTO department) {
+    public String saveNewDepartment(@ModelAttribute("departmentData") final @Valid DepartmentDTO department) {
         try {
             departmentAdminFeignClient.saveNewDepartment(department);
         } catch (FeignException e) {

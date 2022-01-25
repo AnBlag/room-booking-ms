@@ -26,7 +26,6 @@ public class PasswordController {
     @PostMapping("/forget-password/send")
     public String forgetPassword(@RequestParam(value = "username") String username, ModelMap modelMap) {
 
-
         try {
             passwordFeignClient.forgetPassword(username);
             return "succesfulSendEmailForgetPassword";
@@ -34,17 +33,14 @@ public class PasswordController {
             modelMap.addAttribute("error", true);
             return "forgetpassword";
         }
-
     }
 
     @GetMapping("/reset-password")
     public String resetPassword(@RequestParam("token") String confirmationToken, ModelMap modelMap) {
-
-
         try {
             modelMap.addAttribute("profileData", passwordFeignClient.resetPassword(confirmationToken));
 
-        } catch (FeignException e){
+        } catch (FeignException e) {
             modelMap.addAttribute("error", true);
         }
         return "resetpassword";
@@ -56,7 +52,7 @@ public class PasswordController {
         try {
             passwordFeignClient.saveNewPassword(newProfileData);
             return "succesfulSendEmailForgetPassword";
-        } catch (FeignException e){
+        } catch (FeignException e) {
             throw new SetNewPasswordException();
         }
     }

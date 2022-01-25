@@ -1,16 +1,16 @@
 package ru.roombooking.employee.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.roombooking.employee.model.Employee;
-import ru.roombooking.employee.model.Profile;
+import ru.roombooking.employee.model.dto.ProfileDTO;
 import ru.roombooking.employee.model.EmployeeView;
 import ru.roombooking.employee.repository.EmployeeViewRepository;
 import ru.roombooking.employee.service.RoomService;
-
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -19,10 +19,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class EmployeeViewServiceImpl implements RoomService<EmployeeView,Long> {
-
+public class EmployeeViewServiceImpl implements RoomService<EmployeeView, Long> {
     private final JdbcTemplate jdbcTemplate;
     private final EmployeeViewRepository employeeViewRepository;
+    @Value("${sql.query.batch-update.employee}")
+    private String batchUpdateEmployeeQuery;
+    @Value("${sql.query.batch-update.profile}")
+    private String batchUpdateProfileQuery;
 
     @Transactional
     @Override
@@ -43,11 +46,11 @@ public class EmployeeViewServiceImpl implements RoomService<EmployeeView,Long> {
                 .map(this::toEmployee)
                 .collect(Collectors.toList());
 
-        List<Profile> profileList = employeeViewList.stream()
+        List<ProfileDTO> profileList = employeeViewList.stream()
                 .map(this::toProfile)
                 .collect(Collectors.toList());
 
-        batchUpdateProfileAndEmployee(profileList,employeeList);
+        batchUpdateProfileAndEmployee(profileList, employeeList);
     }
 
     private Employee toEmployee(EmployeeView employeeView) {
@@ -60,24 +63,25 @@ public class EmployeeViewServiceImpl implements RoomService<EmployeeView,Long> {
                 .profileId(employeeView.getId())
                 .build();
     }
-    private Profile toProfile(EmployeeView employeeView) {
-        return Profile.builder()
+
+    private ProfileDTO toProfile(EmployeeView employeeView) {
+        return ProfileDTO.builder()
                 .id(employeeView.getId())
                 .accountNonLocked(employeeView.getBanned())
                 .build();
     }
-    private void batchUpdateProfileAndEmployee(List<Profile> profileList, List<Employee> employeeList) {
-        jdbcTemplate.batchUpdate("" +
-                        "update employee set email=?, name=?, middle_name=?, surname=?, phone=? where profile_id=?",
+
+    private void batchUpdateProfileAndEmployee(List<ProfileDTO> profileList, List<Employee> employeeList) {
+        jdbcTemplate.batchUpdate(batchUpdateEmployeeQuery,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setString(1,employeeList.get(i).getEmail());
-                        ps.setString(2,employeeList.get(i).getName());
-                        ps.setString(3,employeeList.get(i).getMiddleName());
-                        ps.setString(4,employeeList.get(i).getSurname());
-                        ps.setString(5,employeeList.get(i).getPhone());
-                        ps.setLong(6,employeeList.get(i).getProfileId());
+                        ps.setString(1, employeeList.get(i).getEmail());
+                        ps.setString(2, employeeList.get(i).getName());
+                        ps.setString(3, employeeList.get(i).getMiddleName());
+                        ps.setString(4, employeeList.get(i).getSurname());
+                        ps.setString(5, employeeList.get(i).getPhone());
+                        ps.setLong(6, employeeList.get(i).getProfileId());
                     }
 
                     @Override
@@ -86,14 +90,12 @@ public class EmployeeViewServiceImpl implements RoomService<EmployeeView,Long> {
                     }
                 });
 
-        jdbcTemplate.batchUpdate("update profile set account_non_locked = ? where id=?",
+        jdbcTemplate.batchUpdate(batchUpdateProfileQuery,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        // Здесь можно увидеть работу транзации, если мы раскоментируем.
-                        //  ps.setLong(1,4);
-                        ps.setBoolean(1,profileList.get(i).getAccountNonLocked());
-                        ps.setLong(2,profileList.get(i).getId());
+                        ps.setBoolean(1, profileList.get(i).getAccountNonLocked());
+                        ps.setLong(2, profileList.get(i).getId());
                     }
 
                     @Override
@@ -102,5 +104,4 @@ public class EmployeeViewServiceImpl implements RoomService<EmployeeView,Long> {
                     }
                 });
     }
-
 }

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import ru.roombooking.employee.config.search.specification.SearchCriteria;
 import ru.roombooking.employee.model.EmployeeView;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -15,7 +14,7 @@ import java.util.regex.Pattern;
 @Data
 public class SearchByURLParams {
 
-    public List<SearchCriteria> getParamsFromSearch (String search) {
+    public List<SearchCriteria> getParamsFromSearch(String search) {
         List<SearchCriteria> params = new ArrayList<>();
 
         Pattern pattern = Pattern.compile("(\\w+?)([:<>])(\\w+?|.*?),", Pattern.UNICODE_CHARACTER_CLASS);
@@ -26,23 +25,23 @@ public class SearchByURLParams {
         return params;
     }
 
-    public List<SearchCriteria> getParamsFromProfileView (EmployeeView employeeView) {
+    public List<SearchCriteria> getParamsFromProfileView(EmployeeView employeeView) {
         List<SearchCriteria> params = new ArrayList<>();
 
         if (employeeView.getId() != null)
-            params.add(new SearchCriteria("id",":", employeeView.getId()));
+            params.add(new SearchCriteria("id", ":", employeeView.getId()));
         if (employeeView.getName() != null)
-            params.add(new SearchCriteria("name",":", employeeView.getName()));
+            params.add(new SearchCriteria("name", ":", employeeView.getName()));
         if (employeeView.getSurname() != null)
-            params.add(new SearchCriteria("surname",":", employeeView.getSurname()));
+            params.add(new SearchCriteria("surname", ":", employeeView.getSurname()));
         if (employeeView.getMiddleName() != null)
-            params.add(new SearchCriteria("middleName",":", employeeView.getMiddleName()));
+            params.add(new SearchCriteria("middleName", ":", employeeView.getMiddleName()));
         if (employeeView.getPhone() != null)
-            params.add(new SearchCriteria("phone",":", employeeView.getPhone()));
+            params.add(new SearchCriteria("phone", ":", employeeView.getPhone()));
         if (employeeView.getEmail() != null)
-            params.add(new SearchCriteria("email",":", employeeView.getEmail()));
+            params.add(new SearchCriteria("email", ":", employeeView.getEmail()));
         if (employeeView.getBanned() != null)
-            params.add(new SearchCriteria("banned",":", employeeView.getBanned()));
+            params.add(new SearchCriteria("banned", ":", employeeView.getBanned()));
 
         return params;
     }

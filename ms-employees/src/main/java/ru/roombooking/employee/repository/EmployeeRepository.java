@@ -10,14 +10,15 @@ import java.util.Optional;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    @Query( nativeQuery = true,
+    @Query(nativeQuery = true,
             value = "select * from employee where department_id=?1")
     List<Employee> findAllByDepartmentId(Long aLong);
-    @Query( nativeQuery = true,
+
+    @Query(nativeQuery = true,
             value = "select * from employee where department_id=?1 and profile_id=?2")
     Optional<Employee> findByDepartmentIdAndProfileId(Long depId, Long profId);
 
-    @Query( nativeQuery = true,
+    @Query(nativeQuery = true,
             value = "select * from employee where department_id=?")
     Optional<Employee> findByDepartmentId(Long depId);
 
@@ -25,7 +26,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             "where login=?1")
     Optional<Employee> findByLogin(String login);
 
-    @Query( nativeQuery = true,
+    @Query(nativeQuery = true,
             value = "select * from employee where profile_id=?")
     Optional<Employee> findByProfileId(Long profileID);
 }

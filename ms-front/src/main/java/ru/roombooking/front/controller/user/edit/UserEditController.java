@@ -19,11 +19,9 @@ import ru.roombooking.front.service.EmployeeAndProfileService;
 
 import javax.validation.Valid;
 
-
 @Controller
 @RequiredArgsConstructor
 public class UserEditController {
-
     private final EmployeeAndProfileService employeeAndProfileService;
     private final DepartmentFeignClient departmentFeignClient;
 
@@ -37,7 +35,7 @@ public class UserEditController {
 
         try {
             modelMap.addAttribute("departmentData", departmentFeignClient.findAll());
-        } catch (FeignException e){
+        } catch (FeignException e) {
             throw new DepartmentBadRequestException();
         }
 
@@ -45,8 +43,8 @@ public class UserEditController {
     }
 
     @PostMapping("/user")
-    public String saveEmployee(@ModelAttribute("employeeData")final @Valid EmployeeDTO employeeDTO,
-                               @ModelAttribute("profileData")final @Valid ProfileDTO profile) {
+    public String saveEmployee(@ModelAttribute("employeeData") final @Valid EmployeeDTO employeeDTO,
+                               @ModelAttribute("profileData") final @Valid ProfileDTO profile) {
 
         EmployeeDTO tempEmployeeDTO = employeeAndProfileService.findByLogin(profile.getLogin());
         ProfileDTO tempProfile = employeeAndProfileService.findProfileById(tempEmployeeDTO.getProfileId());
@@ -62,9 +60,8 @@ public class UserEditController {
         return "redirect:/user/edit";
     }
 
-    private User getUserAuth () {
+    private User getUserAuth() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (User) authentication.getPrincipal();
     }
 }
-

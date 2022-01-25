@@ -19,8 +19,7 @@ public class RecordTableAdminController {
     private final RecordTableAdminFeignClient recordTableAdminFeignClient;
 
     @GetMapping("/")
-    public String records(@RequestParam(value = "search", required = false) String search,
-                          ModelMap modelMap) {
+    public String records(@RequestParam(value = "search", required = false) String search, ModelMap modelMap) {
         RecordTableViewListAndVscRoomListDTO request;
         try {
             request = recordTableAdminFeignClient.records(search);
@@ -29,15 +28,14 @@ public class RecordTableAdminController {
         }
 
         modelMap.addAttribute("recordTableViewList", request.getRecordTableViewList());
-        modelMap.addAttribute("findRecord",new RecordTableView());
+        modelMap.addAttribute("findRecord", new RecordTableView());
         modelMap.addAttribute("vscroomlist", request.getVscRoomList());
 
         return "recordadminpage";
     }
 
     @PostMapping("/")
-    public String findRecords(@ModelAttribute("findRecord") RecordTableView findRecord,
-                                  ModelMap modelMap) {
+    public String findRecords(@ModelAttribute("findRecord") RecordTableView findRecord, ModelMap modelMap) {
         RecordTableViewListAndVscRoomListDTO request;
         try {
             request = recordTableAdminFeignClient.findRecords(findRecord);
@@ -64,13 +62,13 @@ public class RecordTableAdminController {
     ) {
         try {
             recordTableAdminFeignClient.updateRecords(new RecordTableRequest(id,
-                                                            email,
-                                                            employeeId,
-                                                            vcsRoomNumberRoom,
-                                                            isActive,
-                                                            title,
-                                                            startEvent,
-                                                            endEvent));
+                    email,
+                    employeeId,
+                    vcsRoomNumberRoom,
+                    isActive,
+                    title,
+                    startEvent,
+                    endEvent));
         } catch (FeignException e) {
             throw new RecordTableBadRequestException();
         }
@@ -94,5 +92,4 @@ public class RecordTableAdminController {
 
         return "redirect:/admin/records/";
     }
-
 }

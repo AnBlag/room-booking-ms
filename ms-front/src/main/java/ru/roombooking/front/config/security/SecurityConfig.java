@@ -1,5 +1,6 @@
 package ru.roombooking.front.config.security;
 
+import static org.springframework.security.config.http.SessionCreationPolicy.*;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -10,11 +11,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.roombooking.front.config.security.auth.UserService;
-
 
 @Configuration
 @EnableWebSecurity
@@ -23,17 +22,18 @@ import ru.roombooking.front.config.security.auth.UserService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userDetailsService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .sessionCreationPolicy(IF_REQUIRED)
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/auth/login/**").anonymous()
-                .antMatchers("/enable/**").hasAnyAuthority("admin:read","user:read")
+                .antMatchers("/enable/**").hasAnyAuthority("admin:read", "user:read")
                 .and()
                 .formLogin()
                 .loginPage("/auth/login")
@@ -45,10 +45,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
-                .deleteCookies("sessionone","remember-me")
+                .deleteCookies("sessionone", "remember-me")
                 .logoutSuccessUrl("/");
-
     }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     protected PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2Y,12);
+        return new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2Y, 12);
     }
 
     @Bean

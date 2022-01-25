@@ -19,13 +19,4 @@ public class SecurityController {
     public ResponseEntity<Boolean> isAdmin(@RequestParam String login) {
         return ResponseEntity.ok(notificationService.isAdmin(login));
     }
-
-    /*@GetMapping("/get-user-auth")
-    public ResponseEntity<LoginSuccessResponse> getUserAuth(@RequestHeader(value = "Authorization", required = false) String authorization) {
-
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
-        return ResponseEntity.ok(notificationService.getUserAuth());
-    }*/
 }

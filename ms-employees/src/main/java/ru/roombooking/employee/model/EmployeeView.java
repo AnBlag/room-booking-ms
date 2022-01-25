@@ -24,25 +24,24 @@ public class EmployeeView {
     @Id
     @Column(name = "id")
     private Long id;
-    @Column(name ="name")
+    @Column(name = "name")
     private String name;
-    @Column(name ="surname")
+    @Column(name = "surname")
     private String surname;
-    @Column(name ="middle_name")
+    @Column(name = "middle_name")
     private String middleName;
-    @Column(name ="phone")
-    private String  phone;
-    @Column(name ="email")
+    @Column(name = "phone")
+    private String phone;
+    @Column(name = "email")
     private String email;
     @Column(name = "banned")
     private Boolean banned;
-
-
 
     @Override
     public int hashCode() {
         return 13;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -60,13 +59,13 @@ public class EmployeeView {
     @Override
     public String toString() {
         return "ProfileView{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", surname='" + surname + '\'' +
-            ", middleName='" + middleName + '\'' +
-            ", phone='" + phone + '\'' +
-            ", email='" + email + '\'' +
-            ", banned=" + banned +
-            '}';
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", banned=" + banned +
+                '}';
     }
 }

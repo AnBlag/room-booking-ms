@@ -24,15 +24,15 @@ public class EmployeeAdminController {
 
     @PostMapping("/save")
     public String updateUsers(@RequestParam(name = "id") String id,
-                              @RequestParam(name = "name") String name,
                               @RequestParam(name = "surname") String surname,
+                              @RequestParam(name = "name") String name,
                               @RequestParam(name = "middleName") String middleName,
                               @RequestParam(name = "phone") String phone,
                               @RequestParam(name = "email") String email,
                               @RequestParam(name = "banned") String banned
     ) {
         try {
-            employeeAdminFeignClient.updateUsers(new EmployeeRequest(id, name, surname, middleName, phone, email, banned));
+            employeeAdminFeignClient.updateUsers(new EmployeeRequest(id, surname, name, middleName, phone, email, banned));
         } catch (FeignException e) {
             throw new EmployeeBadRequestException();
         }
@@ -83,8 +83,8 @@ public class EmployeeAdminController {
 
     @PostMapping("/edit/{id}")
     public String saveEmployee(@PathVariable String id,
-                               @ModelAttribute("employeeData")final @Valid EmployeeDTO employeeDTO,
-                               @ModelAttribute("profileData")final @Valid ProfileDTO profileDTO) {
+                               @ModelAttribute("employeeData") final @Valid EmployeeDTO employeeDTO,
+                               @ModelAttribute("profileData") final @Valid ProfileDTO profileDTO) {
         try {
             employeeAdminFeignClient.saveEmployee(new EmployeeSaveDTO(id, employeeDTO, profileDTO));
         } catch (FeignException e) {

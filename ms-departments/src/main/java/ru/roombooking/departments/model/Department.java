@@ -2,6 +2,8 @@ package ru.roombooking.departments.model;
 
 import lombok.*;
 
+import static javax.persistence.GenerationType.*;
+
 import javax.persistence.*;
 
 @NoArgsConstructor
@@ -14,7 +16,7 @@ import javax.persistence.*;
 public class Department {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
     @Column(name = "name_department")
     private String nameDepartment;

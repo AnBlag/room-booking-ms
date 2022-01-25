@@ -1,6 +1,5 @@
 package ru.roombooking.employee.controller;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,13 +32,12 @@ public class EmployeeViewController {
     }
 
     @GetMapping("/get-employee-view-list-by-URL-params")
-    public  ResponseEntity<List<EmployeeView>> getEmployeeViewListByURLParams(@RequestParam String search) {
+    public ResponseEntity<List<EmployeeView>> getEmployeeViewListByURLParams(@RequestParam String search) {
         return ResponseEntity.ok(notificationService.getEmployeeViewListByURLParams(search));
     }
 
     @PostMapping("/get-employee-view-list-by-employee-view-params")
-    public  ResponseEntity<List<EmployeeView>> getEmployeeViewListByEmployeeViewParams(@RequestBody EmployeeView employeeViewParams) {
+    public ResponseEntity<List<EmployeeView>> getEmployeeViewListByEmployeeViewParams(@RequestBody EmployeeView employeeViewParams) {
         return ResponseEntity.ok(notificationService.getEmployeeViewListByEmployeeViewParams(employeeViewParams));
     }
-
 }

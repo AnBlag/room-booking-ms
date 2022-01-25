@@ -24,13 +24,12 @@ public class GetUserController {
 
         try {
             return () -> ResponseEntity.ok(getUserFeignClient.getUser(getUserAuth().getUsername()));
-        }
-        catch (FeignException e){
+        } catch (FeignException e) {
             throw new EmployeeNotFoundException();
         }
     }
 
-    private User getUserAuth () {
+    private User getUserAuth() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (User) authentication.getPrincipal();
     }

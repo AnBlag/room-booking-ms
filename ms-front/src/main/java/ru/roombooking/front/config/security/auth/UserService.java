@@ -12,11 +12,10 @@ import ru.roombooking.front.model.dto.ProfileDTO;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-    //private final ProfileService profileService;
     private final ProfileFeignClient profileFeignClient;
+
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        //ProfileDTO profile = profileService.findByLogin(login);
         ProfileDTO profileDTO = profileFeignClient.findByLogin(login);
         return AuthUser.fromUser(profileDTO);
     }

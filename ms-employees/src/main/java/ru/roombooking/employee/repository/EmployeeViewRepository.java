@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface EmployeeViewRepository extends JpaRepository<EmployeeView, Long> {
     List<EmployeeView> findAllBySurname(String surname);
+
     List<EmployeeView> findAllByName(String name);
 }

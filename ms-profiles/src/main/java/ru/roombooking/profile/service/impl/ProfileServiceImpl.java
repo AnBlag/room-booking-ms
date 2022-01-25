@@ -1,6 +1,7 @@
 package ru.roombooking.profile.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import ru.roombooking.profile.exception.ProfileNotFoundException;
@@ -8,14 +9,13 @@ import ru.roombooking.profile.model.Profile;
 import ru.roombooking.profile.repository.ProfileRepository;
 import ru.roombooking.profile.service.ProfileService;
 
-
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class ProfileServiceImpl implements ProfileService {
-    //language=sql
-    private final String SQL_CHANGE_ACCOUNT_NON_LOCKED = "update profile set account_non_locked = ? where id = ?";
+    @Value("${sql.query.sql-change-account-non-locked}")
+    private String SQL_CHANGE_ACCOUNT_NON_LOCKED;
     private final JdbcTemplate jdbcTemplate;
     private final ProfileRepository profileRepository;
 
@@ -55,7 +55,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Profile changeAccountNonLocked(Boolean account_non_locked, Long id ) {
+    public Profile changeAccountNonLocked(Boolean account_non_locked, Long id) {
         jdbcTemplate.update(SQL_CHANGE_ACCOUNT_NON_LOCKED, account_non_locked, id);
         return profileRepository.findById(id)
                 .orElseThrow(() -> new ProfileNotFoundException("Не найден ID"));

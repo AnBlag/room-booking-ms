@@ -18,14 +18,13 @@ import java.util.concurrent.Callable;
 @RequiredArgsConstructor
 @RequestMapping("/record")
 public class RecordController {
-
     private final RecordTableFeignClient recordTableFeignClient;
 
     @GetMapping("/")
     public Callable<ResponseEntity<List<RecordTableDTO>>> findAll() {
         try {
             return () -> ResponseEntity.ok(recordTableFeignClient.findAll());
-        } catch (FeignException e){
+        } catch (FeignException e) {
             throw new RecordTableBadRequestException();
         }
     }
@@ -34,7 +33,7 @@ public class RecordController {
     public Callable<ResponseEntity<List<RecordTableDTO>>> findByIndex(@PathVariable String index) {
         try {
             return () -> ResponseEntity.ok(recordTableFeignClient.findByIndex(index));
-        } catch (FeignException e){
+        } catch (FeignException e) {
             throw new RecordTableBadRequestException();
         }
     }
@@ -43,7 +42,7 @@ public class RecordController {
     public Callable<ResponseEntity<RecordTableDTO>> saveRecord(@RequestBody RecordTableDTO recordTableDTO) {
         try {
             return () -> ResponseEntity.ok(recordTableFeignClient.saveRecord(recordTableDTO, getUserAuth().getUsername()));
-        } catch (FeignException e){
+        } catch (FeignException e) {
             throw new RecordTableBadRequestException();
         }
     }
@@ -52,7 +51,7 @@ public class RecordController {
     public Callable<ResponseEntity<RecordTableDTO>> updateRecord(@RequestBody RecordTableDTO recordTableDTO) {
         try {
             return () -> ResponseEntity.ok(recordTableFeignClient.updateRecord(recordTableDTO, getUserAuth().getUsername()));
-        } catch (FeignException e){
+        } catch (FeignException e) {
             throw new RecordTableBadRequestException();
         }
     }
@@ -61,7 +60,7 @@ public class RecordController {
     public Callable<ResponseEntity<RecordTableDTO>> deleteRecord(@RequestBody RecordTableDTO recordTableDTO) {
         try {
             return () -> ResponseEntity.ok(recordTableFeignClient.deleteRecord(recordTableDTO, getUserAuth().getUsername()));
-        } catch (FeignException e){
+        } catch (FeignException e) {
             throw new RecordTableBadRequestException();
         }
     }
@@ -71,7 +70,7 @@ public class RecordController {
         try {
             return () -> ResponseEntity.ok(recordTableFeignClient
                     .findAllByEmployeeFullNameAndRecordAndIsActiveAndNumberRoom());
-        } catch (FeignException e){
+        } catch (FeignException e) {
             throw new RecordTableBadRequestException();
         }
     }

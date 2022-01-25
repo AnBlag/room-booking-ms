@@ -1,8 +1,8 @@
-
 package ru.roombooking.profile.model;
 
-import lombok.*;
+import static javax.persistence.GenerationType.*;
 
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,10 +16,8 @@ import javax.validation.constraints.NotNull;
 @Table(name = "profile")
 @SequenceGenerator(name = "default_gen", sequenceName = "role_seq", allocationSize = 1)
 public class Profile {
-
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @NotNull
@@ -40,12 +38,11 @@ public class Profile {
     @Column(name = "account_non_locked")
     private Boolean accountNonLocked;
 
-
-
     @Override
     public int hashCode() {
         return 13;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -63,13 +60,12 @@ public class Profile {
     @Override
     public String toString() {
         return "Profile{" +
-            "id=" + id +
-            ", login='" + login + '\'' +
-            ", password='" + password + '\'' +
-            ", role=" + role +
-            ", isActive=" + isActive +
-            ", accountNonLocked=" + accountNonLocked +
-            '}';
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", isActive=" + isActive +
+                ", accountNonLocked=" + accountNonLocked +
+                '}';
     }
 }
-

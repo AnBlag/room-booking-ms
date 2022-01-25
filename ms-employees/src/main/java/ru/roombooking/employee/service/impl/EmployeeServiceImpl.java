@@ -10,7 +10,7 @@ import ru.roombooking.employee.feign.DepartmentFeignClient;
 import ru.roombooking.employee.feign.ProfileFeignClient;
 import ru.roombooking.employee.mapper.VCMapper;
 import ru.roombooking.employee.model.Employee;
-import ru.roombooking.employee.model.Profile;
+import ru.roombooking.employee.model.dto.ProfileDTO;
 import ru.roombooking.employee.model.dto.EmployeeDTO;
 import ru.roombooking.employee.repository.EmployeeRepository;
 import ru.roombooking.employee.service.EmployeeService;
@@ -23,11 +23,8 @@ import java.util.stream.Collectors;
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final VCMapper<Employee, EmployeeDTO> myMapper;
-    //private final DepartmentService departmentService;
-    //private final ProfileService profileService;
     private final ProfileFeignClient profileFeignClient;
     private final DepartmentFeignClient departmentFeignClient;
-
 
     @Override
     public EmployeeDTO save(EmployeeDTO model) {
@@ -62,25 +59,12 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(() -> new EmployeeBadRequestException("Не найден ID")));
     }
 
-    /*@Override
-    public EmployeeDTO findEmployeeByProfileId(Long aLong) {
-        return myMapper.toDTO(employeeRepository.findByProfileId(aLong)
-                .orElseThrow(() -> new EmployeeBadRequestException("Не найден ID")));
-    }*/
-
     @Override
     public EmployeeDTO findByLogin(String login) {
-        /*
-        return myMapper.toDTO(employeeRepository.findByLogin(login)
-                .orElseThrow(() -> new EmployeeBadRequestException("Не найден логин")));
-        */
-
-
-
         try {
             return myMapper.toDTO(employeeRepository.findByProfileId(profileFeignClient.findByLogin(login).getId())
                     .orElseThrow(() -> new EmployeeBadRequestException("Не найден employee с таким profileId")));
-        } catch (FeignException e){
+        } catch (FeignException e) {
             throw new ProfileBadRequestException();
         }
     }
@@ -96,16 +80,14 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(() -> new EmployeeBadRequestException("Не найден ID")));
     }
 
-
     @Override
-    public Profile getProfileById(Long id) {
+    public ProfileDTO getProfileById(Long id) {
         try {
             return profileFeignClient
                     .findById(String.valueOf(employeeRepository.findById(id).orElseThrow().getProfileId()));
-        } catch (FeignException e){
+        } catch (FeignException e) {
             throw new ProfileBadRequestException();
         }
-
     }
 
     private Employee toEmployee(EmployeeDTO model) {
@@ -114,15 +96,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             employee.setDepartmentId(departmentFeignClient
                     .findById(String.valueOf(model.getDepartmentId())).getId());
-        } catch (FeignException e){
+        } catch (FeignException e) {
             throw new DepartmentBadRequestException();
         }
 
-
-
         try {
             employee.setProfileId(profileFeignClient.findById(String.valueOf(model.getProfileId())).getId());
-        } catch (FeignException e){
+        } catch (FeignException e) {
             throw new ProfileBadRequestException();
         }
 

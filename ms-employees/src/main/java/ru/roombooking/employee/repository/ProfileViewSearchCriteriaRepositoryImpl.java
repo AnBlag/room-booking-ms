@@ -5,7 +5,6 @@ import ru.roombooking.employee.config.search.specification.SearchCriteria;
 import ru.roombooking.employee.config.search.specification.ViewConsumer;
 import ru.roombooking.employee.model.EmployeeView;
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -18,6 +17,7 @@ import java.util.List;
 public class ProfileViewSearchCriteriaRepositoryImpl implements SearchCriteriaViewRepository<EmployeeView> {
     @PersistenceContext
     private EntityManager entityManager;
+
     @Override
     public List<EmployeeView> search(List<SearchCriteria> params) {
         final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -37,5 +37,4 @@ public class ProfileViewSearchCriteriaRepositoryImpl implements SearchCriteriaVi
     public void save(EmployeeView entity) {
         entityManager.persist(entity);
     }
-
 }

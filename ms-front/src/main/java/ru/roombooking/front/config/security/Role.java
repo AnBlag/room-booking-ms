@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 import static ru.roombooking.front.config.security.Permission.*;
 
 public enum Role {
-    ADMIN(Sets.newHashSet(ADMIN_CREATE,ADMIN_READ,ADMIN_UPDATE,ADMIN_DELETE)),
-    EMPLOYEE(Sets.newHashSet(USER_UPDATE,USER_READ, USER_CREATE, USER_UPDATE));
+    ADMIN(Sets.newHashSet(ADMIN_CREATE, ADMIN_READ, ADMIN_UPDATE, ADMIN_DELETE)),
+    EMPLOYEE(Sets.newHashSet(USER_UPDATE, USER_READ, USER_CREATE, USER_UPDATE));
     public final Set<Permission> permissions;
 
     Role(Set<Permission> permissions) {

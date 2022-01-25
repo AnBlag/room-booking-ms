@@ -21,10 +21,8 @@ public class UserRoomController {
             vscRoomFeignClient.findByNumberRoomId(idRoom);
             modelMap.addAttribute("vscroomlist", vscRoomFeignClient.findAll());
             return "calendar";
-        }
-        catch (FeignException e) {
+        } catch (FeignException e) {
             throw new VscRoomBadRequestException();
         }
     }
-
 }

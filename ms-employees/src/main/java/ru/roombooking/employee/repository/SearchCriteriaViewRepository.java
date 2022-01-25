@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface SearchCriteriaViewRepository<Model> {
     List<Model> search(List<SearchCriteria> params);
+
     void save(Model entity);
 }

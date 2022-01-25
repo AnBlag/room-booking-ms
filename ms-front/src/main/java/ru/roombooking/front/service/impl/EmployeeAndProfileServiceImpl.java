@@ -12,13 +12,11 @@ import ru.roombooking.front.model.dto.EmployeeDTO;
 import ru.roombooking.front.model.dto.ProfileDTO;
 import ru.roombooking.front.service.EmployeeAndProfileService;
 
-
 @Service
 @RequiredArgsConstructor
 public class EmployeeAndProfileServiceImpl implements EmployeeAndProfileService {
     private final EmployeeFeignClient employeeFeignClient;
     private final ProfileFeignClient profileFeignClient;
-
 
     @Override
     @Transactional
@@ -26,30 +24,16 @@ public class EmployeeAndProfileServiceImpl implements EmployeeAndProfileService 
 
         try {
             employeeFeignClient.saveEmployee(employeeDTO);
-        }
-        catch (FeignException e) {
+        } catch (FeignException e) {
             throw new EmployeeBadRequestException();
         }
 
         try {
             profileFeignClient.saveProfile(profile);
-        }
-        catch (FeignException e) {
+        } catch (FeignException e) {
             throw new ProfileBadRequestException();
         }
     }
-
-    /*@Override
-    @Transactional
-    public void deleteByProfileId(Long aLong) {
-        employeeService.deleteById(findEmployeeByProfileId(aLong).getId());
-        profileService.deleteById(aLong);
-    }*/
-
-    /*@Override
-    public EmployeeDTO findEmployeeByProfileId(Long aLong) {
-        return employeeService.findEmployeeByProfileId(aLong);
-    }*/
 
     @Override
     public ProfileDTO findProfileById(Long aLong) {
@@ -66,12 +50,8 @@ public class EmployeeAndProfileServiceImpl implements EmployeeAndProfileService 
 
         try {
             return employeeFeignClient.findByLogin(login);
-        } catch (FeignException e){
+        } catch (FeignException e) {
             throw new EmployeeBadRequestException();
         }
     }
-
-
-
-
 }

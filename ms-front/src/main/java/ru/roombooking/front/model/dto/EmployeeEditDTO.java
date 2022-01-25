@@ -14,9 +14,7 @@ import java.util.List;
 @Builder
 @JsonIgnoreProperties(value = "true")
 public class EmployeeEditDTO {
-
     private EmployeeDTO employeeDTO;
     private ProfileDTO profile;
     private List<DepartmentDTO> departmentList;
-
 }

@@ -15,7 +15,4 @@ public class EmployeeSaveDTO {
     private String id;
     private EmployeeDTO employeeDTO;
     private ProfileDTO profile;
-
-
-
 }

@@ -1,10 +1,10 @@
 package ru.roombooking.front.exception;
 
+import static org.springframework.http.HttpStatus.*;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.BAD_REQUEST)
+@ResponseStatus(BAD_REQUEST)
 public class RecordTableBadRequestException extends IllegalArgumentException {
     public RecordTableBadRequestException() {
     }
