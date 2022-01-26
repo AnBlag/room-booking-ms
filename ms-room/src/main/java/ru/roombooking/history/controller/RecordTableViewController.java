@@ -12,7 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/record-table-view")
 public class RecordTableViewController {
-
     private final RecordTableViewNotificationService recordTableViewNotificationService;
 
     @GetMapping("/")

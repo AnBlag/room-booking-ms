@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.roombooking.history.model.RecordTableView;
 
 @Repository
-public interface RecordTableViewRepository extends JpaRepository<RecordTableView,Long> {
+public interface RecordTableViewRepository extends JpaRepository<RecordTableView, Long> {
 }

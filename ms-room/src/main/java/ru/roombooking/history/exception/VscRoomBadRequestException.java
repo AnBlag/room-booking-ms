@@ -1,9 +1,10 @@
 package ru.roombooking.history.exception;
 
-import org.springframework.http.HttpStatus;
+import static org.springframework.http.HttpStatus.*;
+
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.BAD_REQUEST)
+@ResponseStatus(BAD_REQUEST)
 public class VscRoomBadRequestException extends IllegalArgumentException {
     public VscRoomBadRequestException() {
         super();

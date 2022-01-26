@@ -1,9 +1,7 @@
-
 package ru.roombooking.registration.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-
 
 @Data
 @AllArgsConstructor
@@ -18,4 +16,3 @@ public class Profile {
     private Boolean isActive;
     private Boolean accountNonLocked;
 }
-

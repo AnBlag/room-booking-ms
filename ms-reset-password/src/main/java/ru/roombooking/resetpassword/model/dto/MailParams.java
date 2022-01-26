@@ -11,10 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @JsonIgnoreProperties(value = "true")
-public class MailRequest {
-
+public class MailParams {
     private String emailTo;
     private String subject;
     private String message;
-
 }

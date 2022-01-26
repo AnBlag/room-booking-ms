@@ -6,9 +6,7 @@ import ru.roombooking.resetpassword.model.PasswordConfirmationToken;
 import ru.roombooking.resetpassword.repository.PasswordConfirmationTokenRepository;
 import ru.roombooking.resetpassword.service.PasswordConfirmationTokenService;
 
-
 import java.util.NoSuchElementException;
-
 
 @RequiredArgsConstructor
 @Service
@@ -20,7 +18,6 @@ public class PasswordConfirmationTokenServiceImpl implements PasswordConfirmatio
         return passwordConfirmationTokenRepository.findByToken(token)
                 .orElseThrow(() -> new NoSuchElementException("Не найден токен"));
     }
-
 
     public PasswordConfirmationToken save(PasswordConfirmationToken passwordConfirmationToken) {
 

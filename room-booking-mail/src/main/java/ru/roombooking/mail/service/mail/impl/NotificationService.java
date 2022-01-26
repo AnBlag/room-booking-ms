@@ -61,7 +61,7 @@ public class NotificationService {
                 + "Дата бронирования: " + recordTableDTO.getStart().toLocalDate() + "\n"
                 + "Время бронирования: с " + recordTableDTO.getStart().toLocalTime()
                 + " по " + recordTableDTO.getEnd().toLocalTime() + "\n"
-                + "Подробнее: " + recordUrl  + recordTableDTO.getRoomId();
+                + "Подробнее: " + recordUrl + recordTableDTO.getRoomId();
     }
 
     public void sendConfirmDeleteMessageToEmployee(RecordTableDTO recordTableDTO) {
@@ -72,7 +72,6 @@ public class NotificationService {
         } catch (Exception e) {
             throw new MailDoNotSendException();
         }
-
     }
 
     private String getMessageForDeleteRecord(RecordTableDTO recordTableDTO) {
@@ -81,17 +80,15 @@ public class NotificationService {
                 + "Дата бронирования: " + recordTableDTO.getStart().toLocalDate() + "\n"
                 + "Время бронирования: с " + recordTableDTO.getStart().toLocalTime()
                 + " по " + recordTableDTO.getEnd().toLocalTime() + "\n"
-                + "Подробнее: " + recordUrl  + recordTableDTO.getRoomId();
+                + "Подробнее: " + recordUrl + recordTableDTO.getRoomId();
     }
-
 
     private void setCurrentZone(RecordTableDTO recordTableDTO) {
         recordTableDTO.setStart(recordTableDTO.getStart().withZoneSameInstant(recordTableDTO.getTimeZone()));
         recordTableDTO.setEnd(recordTableDTO.getEnd().withZoneSameInstant(recordTableDTO.getTimeZone()));
     }
 
-
-    public void send (MailRequest mailRequest) {
+    public void send(MailRequest mailRequest) {
         try {
             mailSenderService.send(mailRequest.getEmailTo(), mailRequest.getSubject(), mailRequest.getMessage());
         } catch (Exception e) {

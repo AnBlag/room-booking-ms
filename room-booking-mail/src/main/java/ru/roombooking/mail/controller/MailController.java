@@ -13,10 +13,8 @@ import ru.roombooking.mail.service.mail.impl.NotificationService;
 public class MailController {
     private final NotificationService notificationService;
 
-    // FIXME: 16.12.2021 Изменены url с "send" на "send-confirmation"
     @PostMapping("/send-confirmation/{roomId}")
-    public void sendConfirmMessageToEmployee(@RequestBody RecordTableDTO recordTableDTO,
-                                                                        @PathVariable String roomId) {
+    public void sendConfirmMessageToEmployee(@RequestBody RecordTableDTO recordTableDTO, @PathVariable String roomId) {
         notificationService.sendConfirmMessageToEmployee(recordTableDTO, roomId);
 
     }
@@ -24,7 +22,7 @@ public class MailController {
     @PostMapping("/send-confirmation/")
     public void sendConfirmUpdateMessageToEmployee(@RequestBody PreviousAndCurrentRecordTableDTO previousAndCurrentRecordTableDTO) {
         notificationService.sendConfirmUpdateMessageToEmployee(previousAndCurrentRecordTableDTO.getPrevious(),
-                        previousAndCurrentRecordTableDTO.getCurrent());
+                previousAndCurrentRecordTableDTO.getCurrent());
     }
 
     @PostMapping("/delete-confirmation/")
@@ -33,7 +31,7 @@ public class MailController {
     }
 
     @PostMapping("/send")
-    public void send (@RequestBody MailRequest mailRequest) {
+    public void send(@RequestBody MailRequest mailRequest) {
         notificationService.send(mailRequest);
     }
 }

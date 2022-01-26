@@ -12,7 +12,6 @@ import ru.roombooking.history.service.RecordTableService;
 @Service
 @RequiredArgsConstructor
 public class HistoryRecordTableEmployeeAndRecordTableServiceImpl implements HistoryRecordTableEmployeeAndRecordTableService<RecordTableDTO, String, Long> {
-
     private final HistoryRecordTableEmployeeService historyRecordTableEmployeeService;
     private final RecordTableAndEmployeeService recordTableAndEmployeeService;
     private final RecordTableService recordTableService;
@@ -24,13 +23,11 @@ public class HistoryRecordTableEmployeeAndRecordTableServiceImpl implements Hist
         return recordTableDTO;
     }
 
-
     @Transactional
     public RecordTableDTO update(RecordTableDTO model, Long aLong) {
         model.setId(aLong);
         recordTableService.update(model, aLong);
         historyRecordTableEmployeeService.save(model);
-        return model ;
+        return model;
     }
-
 }

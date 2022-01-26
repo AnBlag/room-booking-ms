@@ -1,6 +1,7 @@
 package ru.roombooking.history.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,9 @@ import java.util.List;
 public class VscRoomServiceImpl implements VscRoomService {
     private final VscRoomRepository vscRepository;
     private final JdbcTemplate jdbcTemplate;
+    @Value("${sql.query.batch-update.vsc-room-list}")
+    private String batchUpdateVscRoom;
+
     @Override
     public VscRoom save(VscRoom model) {
         return vscRepository.save(model);
@@ -42,6 +46,7 @@ public class VscRoomServiceImpl implements VscRoomService {
         vscRepository.deleteById(aLong);
         return vscRoom;
     }
+
     @Override
     public void findByNumberRoomIfNotFoundByNumberRoomThrowException(Long number) {
         vscRepository.findByNumberRoom(number).orElseThrow(
@@ -63,13 +68,13 @@ public class VscRoomServiceImpl implements VscRoomService {
     @Transactional
     @Override
     public void batchUpdateVscRoom(List<VscRoom> vscRoomList) {
-        jdbcTemplate.batchUpdate("" + "update vsc_room set is_active=?, number_room=? where id=?",
+        jdbcTemplate.batchUpdate(batchUpdateVscRoom,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setBoolean(1,vscRoomList.get(i).getIsActive());
-                        ps.setLong(2,vscRoomList.get(i).getNumberRoom());
-                        ps.setLong(3,vscRoomList.get(i).getId());
+                        ps.setBoolean(1, vscRoomList.get(i).getIsActive());
+                        ps.setLong(2, vscRoomList.get(i).getNumberRoom());
+                        ps.setLong(3, vscRoomList.get(i).getId());
                     }
 
                     @Override

@@ -1,6 +1,6 @@
 spring:
   datasource:
-    password: postgres
+    password: 123
     driver-class-name: org.postgresql.Driver
     username: postgres
     url: jdbc:postgresql://localhost:5432/room
@@ -12,3 +12,17 @@ server:
   port: 8087
   error:
     include-message: always
+feign:
+  front:
+    url: http://localhost:8080
+  mail:
+    url: http://localhost:8081
+  employee:
+    url: http://localhost:8085
+  profile:
+    url: http://localhost:8086
+sql:
+  query:
+    batch-update:
+      record-table: update record_table set employee_id=?, number_room_id=?, is_active=?, email=?, title=?, start_event=?, end_event=? where id=?
+      vsc-room-list: update vsc_room set is_active=?, number_room=? where id=?

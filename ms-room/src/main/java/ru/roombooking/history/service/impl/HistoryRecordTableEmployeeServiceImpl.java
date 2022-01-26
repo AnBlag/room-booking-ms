@@ -16,17 +16,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class HistoryRecordTableEmployeeServiceImpl implements HistoryRecordTableEmployeeService {
-
     private final HistoryRecordTableEmployeeRepository recordTableRepository;
     private final VCMapper<HistoryRecordTableEmployee, RecordTableDTO> mapper;
-
 
     @Override
     public RecordTableDTO save(RecordTableDTO model) {
         return mapper.toDTO(recordTableRepository.save(mapper.toModel(model)));
     }
-
-
 
     @Override
     public RecordTableDTO update(RecordTableDTO model, Long aLong) {
@@ -44,10 +40,7 @@ public class HistoryRecordTableEmployeeServiceImpl implements HistoryRecordTable
 
     @Override
     public RecordTableDTO deleteById(Long aLong) {
-        return mapper.toDTO( recordTableRepository.findById(aLong)
+        return mapper.toDTO(recordTableRepository.findById(aLong)
                 .orElseThrow(() -> new RecordTableBadRequestException("Не найден ID")));
     }
-
-
-
 }

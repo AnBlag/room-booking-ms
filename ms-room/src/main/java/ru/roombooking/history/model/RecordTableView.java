@@ -28,19 +28,19 @@ public class RecordTableView {
     @Id
     @Column(name = "id")
     private Long id;
-    @Column(name ="email")
+    @Column(name = "email")
     private String email;
-    @Column(name ="employee_id")
+    @Column(name = "employee_id")
     private Long employeeId;
-    @Column(name ="name")
+    @Column(name = "name")
     private String employeeName;
-    @Column(name ="surname")
+    @Column(name = "surname")
     private String employeeSurname;
-    @Column(name ="middle_name")
+    @Column(name = "middle_name")
     private String employeeMiddleName;
-    @Column(name ="number_room")
+    @Column(name = "number_room")
     private Long vcsRoomNumberRoom;
-    @Column(name ="is_active")
+    @Column(name = "is_active")
     private Boolean isActive;
     @Column(name = "title")
     private String title;
@@ -49,12 +49,13 @@ public class RecordTableView {
     private ZonedDateTime startEvent;
     @Column(name = "end_event")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private ZonedDateTime  endEvent;
+    private ZonedDateTime endEvent;
 
     @Override
     public int hashCode() {
         return 13;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -72,17 +73,17 @@ public class RecordTableView {
     @Override
     public String toString() {
         return "RecordTableView{" +
-            "id=" + id +
-            ", email='" + email + '\'' +
-            ", employeeId=" + employeeId +
-            ", employeeName='" + employeeName + '\'' +
-            ", employeeSurname='" + employeeSurname + '\'' +
-            ", employeeMiddleName='" + employeeMiddleName + '\'' +
-            ", vcsRoomNumberRoom=" + vcsRoomNumberRoom +
-            ", isActive=" + isActive +
-            ", title='" + title + '\'' +
-            ", startEvent=" + startEvent +
-            ", endEvent=" + endEvent +
-            '}';
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", employeeId=" + employeeId +
+                ", employeeName='" + employeeName + '\'' +
+                ", employeeSurname='" + employeeSurname + '\'' +
+                ", employeeMiddleName='" + employeeMiddleName + '\'' +
+                ", vcsRoomNumberRoom=" + vcsRoomNumberRoom +
+                ", isActive=" + isActive +
+                ", title='" + title + '\'' +
+                ", startEvent=" + startEvent +
+                ", endEvent=" + endEvent +
+                '}';
     }
 }

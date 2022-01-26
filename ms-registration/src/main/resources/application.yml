@@ -2,3 +2,10 @@ server:
   port: 8082
   error:
     include-message: always
+feign:
+  department:
+    url: http://localhost:8084
+  employee:
+    url: http://localhost:8085
+  profile:
+    url: http://localhost:8086

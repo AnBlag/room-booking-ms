@@ -1,18 +1,19 @@
 package ru.roombooking.resetpassword.feign;
 
+import static org.springframework.http.MediaType.*;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import ru.roombooking.resetpassword.model.dto.MailRequest;
+import ru.roombooking.resetpassword.model.dto.MailParams;
 
-
-@FeignClient(name = "mail", url = "http://localhost:8081",path = "/mail")
+@FeignClient(name = "mail", url = "${feign.mail.url}", path = "/mail")
 public interface MailFeignClient {
 
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST, value ="/send",
-                    produces = MediaType.APPLICATION_JSON_VALUE)
-    void send(@RequestBody MailRequest mailRequest);
+    @RequestMapping(consumes = APPLICATION_JSON_VALUE,
+            method = POST,
+            value = "/send",
+            produces = APPLICATION_JSON_VALUE)
+    void send(@RequestBody MailParams mailParams);
 }

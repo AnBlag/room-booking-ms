@@ -2,6 +2,8 @@ package ru.roombooking.history.model;
 
 import lombok.*;
 
+import static javax.persistence.GenerationType.*;
+
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 
@@ -13,9 +15,8 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HistoryRecordTableEmployee {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id")
     private Long id;
     @Column(name = "email")
@@ -28,7 +29,7 @@ public class HistoryRecordTableEmployee {
     private ZonedDateTime startEvent;
 
     @Column(name = "end_event")
-    private ZonedDateTime  endEvent;
+    private ZonedDateTime endEvent;
 
     @Column(name = "is_active")
     private Boolean isActive;
@@ -41,6 +42,7 @@ public class HistoryRecordTableEmployee {
     public int hashCode() {
         return 13;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -58,14 +60,14 @@ public class HistoryRecordTableEmployee {
     @Override
     public String toString() {
         return "HistoryRecordTableEmployee{" +
-            "id=" + id +
-            ", email='" + email + '\'' +
-            ", title='" + title + '\'' +
-            ", startEvent=" + startEvent +
-            ", endEvent=" + endEvent +
-            ", isActive=" + isActive +
-            ", numberRoomId=" + numberRoomId +
-            ", employeeId=" + employeeId +
-            '}';
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", title='" + title + '\'' +
+                ", startEvent=" + startEvent +
+                ", endEvent=" + endEvent +
+                ", isActive=" + isActive +
+                ", numberRoomId=" + numberRoomId +
+                ", employeeId=" + employeeId +
+                '}';
     }
 }

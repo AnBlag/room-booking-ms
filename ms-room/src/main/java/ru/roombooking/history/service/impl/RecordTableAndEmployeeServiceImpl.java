@@ -38,15 +38,14 @@ public class RecordTableAndEmployeeServiceImpl implements RecordTableAndEmployee
 
         if (overlappingRecordTable.isPresent()) {
             throw new RecordTableBadRequestException("Данное время занято");
-        }
-        else {
+        } else {
             return mapper.toDTO(recordTableRepository.save(toRecordTable(recordTableDTO, login)));
         }
     }
 
     @Override
     public RecordTableDTO delete(RecordTableDTO recordTableDTO, String login) {
-        RecordTable recordTable= recordTableRepository.findByLoginAndId(login, recordTableDTO.getId())
+        RecordTable recordTable = recordTableRepository.findByLoginAndId(login, recordTableDTO.getId())
                 .orElseThrow(() -> new RecordTableBadRequestException("Не найдена запись"));
         recordTableRepository.delete(recordTable);
         return recordTableDTO;
@@ -59,14 +58,14 @@ public class RecordTableAndEmployeeServiceImpl implements RecordTableAndEmployee
             try {
                 return ((securityFeignClient.isAdmin(login)) |
                         (employeeFeignClient.getProfileById(String.valueOf(recordTableRepository
-                                    .findById(recordId)
-                                    .orElseThrow(RecordTableAndEmployeeException::new)
-                                    .getEmployeeId()))
+                                .findById(recordId)
+                                .orElseThrow(RecordTableAndEmployeeException::new)
+                                .getEmployeeId()))
                                 .getLogin().equals(login)));
-            } catch (FeignException e){
+            } catch (FeignException e) {
                 throw new EmployeeBadRequestException();
             }
-        } catch (FeignException e){
+        } catch (FeignException e) {
             throw new SecurityBadRequestException();
         }
     }
@@ -75,7 +74,7 @@ public class RecordTableAndEmployeeServiceImpl implements RecordTableAndEmployee
         return recordTableViewRepository.findAll();
     }
 
-    private RecordTable toRecordTable (RecordTableDTO recordTableDTO, String login) {
+    private RecordTable toRecordTable(RecordTableDTO recordTableDTO, String login) {
 
         try {
             EmployeeDTO employee = employeeFeignClient.findByLogin(login);
@@ -85,15 +84,14 @@ public class RecordTableAndEmployeeServiceImpl implements RecordTableAndEmployee
             recordTable.setEmployeeId(employee.getId());
             recordTable.setNumberRoomId(getRoomFromRecordTableDTO(recordTableDTO).getId());
             return recordTable;
-        } catch (FeignException e){
+        } catch (FeignException e) {
             throw new EmployeeBadRequestException();
         }
 
     }
 
-    private VscRoom getRoomFromRecordTableDTO (RecordTableDTO recordTableDTO) {
+    private VscRoom getRoomFromRecordTableDTO(RecordTableDTO recordTableDTO) {
         return vscRoomRepository.findByNumberRoom(Long.parseLong(recordTableDTO.getRoomId()))
                 .orElseThrow(() -> new VscRoomBadRequestException("Не найден id комнаты"));
     }
-
 }

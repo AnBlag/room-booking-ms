@@ -17,11 +17,9 @@ public class SearchCriteria {
     private Object value;
     private boolean orPredicate;
 
-
     public SearchCriteria(String key, String operation, Object value) {
         this.key = key;
         this.operation = operation;
         this.value = value;
     }
-
 }

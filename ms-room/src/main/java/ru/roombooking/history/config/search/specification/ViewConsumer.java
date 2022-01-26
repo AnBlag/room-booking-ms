@@ -1,4 +1,5 @@
 package ru.roombooking.history.config.search.specification;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

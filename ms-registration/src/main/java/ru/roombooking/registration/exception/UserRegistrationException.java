@@ -1,6 +1,6 @@
 package ru.roombooking.registration.exception;
 
-public class UserRegistrationException extends RuntimeException{
+public class UserRegistrationException extends RuntimeException {
     public UserRegistrationException() {
         super();
     }

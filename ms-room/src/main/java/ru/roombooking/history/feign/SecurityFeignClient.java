@@ -1,23 +1,17 @@
 package ru.roombooking.history.feign;
 
+import static org.springframework.http.MediaType.*;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
+
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-
-@FeignClient(name = "security", url = "http://localhost:8080", path = "/security")
+@FeignClient(name = "security", url = "${feign.front.url}", path = "/security")
 public interface SecurityFeignClient {
 
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-                    method = RequestMethod.GET,
-                    value ="/is-admin")
+    @RequestMapping(consumes = APPLICATION_JSON_VALUE,
+            method = GET,
+            value = "/is-admin")
     Boolean isAdmin(@RequestParam String login);
-
-    /*@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-            method = RequestMethod.GET,
-            value ="/get-user-auth")
-    LoginSuccessResponse getUserAuth();*/
 }

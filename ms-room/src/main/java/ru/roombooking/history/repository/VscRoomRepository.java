@@ -7,6 +7,6 @@ import ru.roombooking.history.model.VscRoom;
 import java.util.Optional;
 
 @Repository
-public interface VscRoomRepository extends JpaRepository<VscRoom,Long> {
+public interface VscRoomRepository extends JpaRepository<VscRoom, Long> {
     Optional<VscRoom> findByNumberRoom(Long room);
 }

@@ -2,6 +2,7 @@ package ru.roombooking.history.service.impl;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -34,13 +35,13 @@ public class RecordTableServiceImpl implements RecordTableService {
     private final VCMapper<RecordTableView, RecordTableDTO> mapperView;
     private final JdbcTemplate jdbcTemplate;
     private final EmployeeFeignClient employeeFeignClient;
+    @Value("${sql.query.batch-update.record-table}")
+    private String batchUpdateRecordTable;
 
     @Override
     public RecordTableDTO save(RecordTableDTO model) {
         return mapper.toDTO(recordTableRepository.save(toRecordTable(model)));
     }
-
-
 
     @Override
     public RecordTableDTO update(RecordTableDTO model, Long aLong) {
@@ -57,8 +58,6 @@ public class RecordTableServiceImpl implements RecordTableService {
         recordTableRepository.save(recordTable);
 
         return mapper.toDTO(recordTable);
-
-
     }
 
     @Override
@@ -71,7 +70,7 @@ public class RecordTableServiceImpl implements RecordTableService {
 
     @Override
     public RecordTableDTO deleteById(Long aLong) {
-        RecordTableDTO recordTableDTO = mapper.toDTO( recordTableRepository.findById(aLong)
+        RecordTableDTO recordTableDTO = mapper.toDTO(recordTableRepository.findById(aLong)
                 .orElseThrow(() -> new RecordTableBadRequestException("Не найден ID")));
         recordTableRepository.deleteById(aLong);
         return recordTableDTO;
@@ -96,24 +95,24 @@ public class RecordTableServiceImpl implements RecordTableService {
 
     @Override
     public RecordTableDTO save(RecordTableDTO recordTableDTO, String login) {
-        Optional<RecordTable> recordTable= recordTableRepository.findByLogin(login);
-        if(recordTable.isPresent()) {
+        Optional<RecordTable> recordTable = recordTableRepository.findByLogin(login);
+        if (recordTable.isPresent()) {
 
             try {
                 EmployeeDTO employeeDTO = employeeFeignClient
                         .findById(String.valueOf(recordTable.get().getEmployeeId()));
                 recordTableDTO.setEmail(employeeDTO.getEmail());
                 recordTableDTO.setIsActive(employeeDTO.getIsActive());
-            } catch (FeignException e){
+            } catch (FeignException e) {
                 throw new EmployeeBadRequestException();
             }
             RecordTable recordTable1 = mapper.toModel(recordTableDTO);
             recordTable1.setEmployeeId(recordTable.get().getEmployeeId());
             recordTable1.setNumberRoomId(recordTable.get().getNumberRoomId());
             return mapper.toDTO(recordTableRepository.save(recordTable1));
+        } else {
+            throw new RecordTableBadRequestException();
         }
-
-        throw new RecordTableBadRequestException();
     }
 
     @Override
@@ -125,8 +124,6 @@ public class RecordTableServiceImpl implements RecordTableService {
         return recordTableDTO;
     }
 
-
-
     @Override
     public List<RecordTableDTO> findByNumberRoom(Long id) {
         return recordTableRepository.findAllByNumberRoom(id)
@@ -135,31 +132,26 @@ public class RecordTableServiceImpl implements RecordTableService {
                 .collect(Collectors.toList());
     }
 
-
     @Override
     public RecordTableDTO findById(Long id) {
         return mapper.toDTO(recordTableRepository.findById(id).orElseThrow(() -> new RecordTableBadRequestException("Не найдена запись")));
     }
 
-
-
-
     @Transactional
     @Override
     public void batchUpdateRecords(List<RecordTableDTO> recordTableList) {
-        jdbcTemplate.batchUpdate("" + "update record_table set employee_id=?, number_room_id=?, " +
-                        "is_active=?, email=?, title=?, start_event=?, end_event=? where id=?",
+        jdbcTemplate.batchUpdate(batchUpdateRecordTable,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setLong(1,recordTableList.get(i).getEmployeeId());
-                        ps.setLong(2,recordTableList.get(i).getNumberRoomId());
-                        ps.setBoolean(3,recordTableList.get(i).getIsActive());
-                        ps.setString(4,recordTableList.get(i).getEmail());
-                        ps.setString(5,recordTableList.get(i).getTitle());
-                        ps.setTimestamp(6,Timestamp.from(recordTableList.get(i).getStart().toInstant()));
-                        ps.setTimestamp(7,Timestamp.from(recordTableList.get(i).getEnd().toInstant()));
-                        ps.setLong(8,recordTableList.get(i).getId());
+                        ps.setLong(1, recordTableList.get(i).getEmployeeId());
+                        ps.setLong(2, recordTableList.get(i).getNumberRoomId());
+                        ps.setBoolean(3, recordTableList.get(i).getIsActive());
+                        ps.setString(4, recordTableList.get(i).getEmail());
+                        ps.setString(5, recordTableList.get(i).getTitle());
+                        ps.setTimestamp(6, Timestamp.from(recordTableList.get(i).getStart().toInstant()));
+                        ps.setTimestamp(7, Timestamp.from(recordTableList.get(i).getEnd().toInstant()));
+                        ps.setLong(8, recordTableList.get(i).getId());
                     }
 
                     @Override

@@ -1,9 +1,11 @@
 package ru.roombooking.history.model;
+
+import static javax.persistence.GenerationType.*;
+
 import lombok.*;
 
 import javax.persistence.*;
 
-//@EqualsAndHashCode(callSuper = true)
 @Builder
 @Getter
 @Setter
@@ -13,12 +15,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class VscRoom {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @Column(name = "number_room")
     private Long numberRoom;
-
 
     @Column(name = "is_active")
     private Boolean isActive;
@@ -27,6 +28,7 @@ public class VscRoom {
     public int hashCode() {
         return 13;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -44,9 +46,9 @@ public class VscRoom {
     @Override
     public String toString() {
         return "VscRoom{" +
-            "id=" + id +
-            ", numberRoom=" + numberRoom +
-            ", isActive=" + isActive +
-            '}';
+                "id=" + id +
+                ", numberRoom=" + numberRoom +
+                ", isActive=" + isActive +
+                '}';
     }
 }

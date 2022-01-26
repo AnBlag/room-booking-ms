@@ -1,6 +1,5 @@
 package ru.roombooking.registration.service.impl;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,18 +10,14 @@ import ru.roombooking.registration.model.Role;
 import ru.roombooking.registration.model.dto.RegistrationDTO;
 import ru.roombooking.registration.service.RegistrationService;
 
-
-
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
-
     private final RegistrationService registrationService;
 
     @Transactional(rollbackFor = UserRegistrationException.class)
     public void userRegistration(RegistrationDTO registrationDTO) {
-
-        if(!registrationService.doesUserExist(registrationDTO)) {
+        if (!registrationService.doesUserExist(registrationDTO)) {
             registrationDTO.setPassword(passwordEncoder().encode(registrationDTO.getPassword()));
             registrationDTO.setAccountNonLocked(true);
             registrationDTO.setIsActive(true);
@@ -35,7 +30,6 @@ public class NotificationService {
     }
 
     protected PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2Y,12);
+        return new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2Y, 12);
     }
-
 }
