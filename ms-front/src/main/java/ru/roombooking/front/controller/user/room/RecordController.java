@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
-import ru.roombooking.front.exception.RecordTableBadRequestException;
+import ru.roombooking.front.exception.RecordTableRequestException;
 import ru.roombooking.front.feign.RecordTableFeignClient;
 import ru.roombooking.front.model.dto.RecordTableDTO;
 
@@ -25,7 +25,7 @@ public class RecordController {
         try {
             return () -> ResponseEntity.ok(recordTableFeignClient.findAll());
         } catch (FeignException e) {
-            throw new RecordTableBadRequestException();
+            throw new RecordTableRequestException();
         }
     }
 
@@ -34,7 +34,7 @@ public class RecordController {
         try {
             return () -> ResponseEntity.ok(recordTableFeignClient.findByIndex(index));
         } catch (FeignException e) {
-            throw new RecordTableBadRequestException();
+            throw new RecordTableRequestException();
         }
     }
 
@@ -43,7 +43,7 @@ public class RecordController {
         try {
             return () -> ResponseEntity.ok(recordTableFeignClient.saveRecord(recordTableDTO, getUserAuth().getUsername()));
         } catch (FeignException e) {
-            throw new RecordTableBadRequestException();
+            throw new RecordTableRequestException();
         }
     }
 
@@ -52,7 +52,7 @@ public class RecordController {
         try {
             return () -> ResponseEntity.ok(recordTableFeignClient.updateRecord(recordTableDTO, getUserAuth().getUsername()));
         } catch (FeignException e) {
-            throw new RecordTableBadRequestException();
+            throw new RecordTableRequestException();
         }
     }
 
@@ -61,7 +61,7 @@ public class RecordController {
         try {
             return () -> ResponseEntity.ok(recordTableFeignClient.deleteRecord(recordTableDTO, getUserAuth().getUsername()));
         } catch (FeignException e) {
-            throw new RecordTableBadRequestException();
+            throw new RecordTableRequestException();
         }
     }
 
@@ -71,7 +71,7 @@ public class RecordController {
             return () -> ResponseEntity.ok(recordTableFeignClient
                     .findAllByEmployeeFullNameAndRecordAndIsActiveAndNumberRoom());
         } catch (FeignException e) {
-            throw new RecordTableBadRequestException();
+            throw new RecordTableRequestException();
         }
     }
 

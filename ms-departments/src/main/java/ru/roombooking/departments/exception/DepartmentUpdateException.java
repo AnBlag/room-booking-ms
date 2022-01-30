@@ -1,5 +1,10 @@
 package ru.roombooking.departments.exception;
 
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import static org.springframework.http.HttpStatus.*;
+
+@ResponseStatus(BAD_REQUEST)
 public class DepartmentUpdateException extends RuntimeException {
     public DepartmentUpdateException() {
         super();

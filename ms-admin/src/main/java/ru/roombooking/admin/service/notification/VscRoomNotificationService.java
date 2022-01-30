@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.roombooking.admin.exception.VscRoomDeleteException;
 import ru.roombooking.admin.exception.VscRoomSaveException;
 import ru.roombooking.admin.exception.VscRoomUpdateException;
-import ru.roombooking.admin.exception.VscRoomBadRequestException;
+import ru.roombooking.admin.exception.VscRoomRequestException;
 import ru.roombooking.admin.feign.VscRoomFeignClient;
 import ru.roombooking.admin.model.dto.VscRoomDTO;
 import ru.roombooking.admin.model.dto.VscRoomRequest;
@@ -23,7 +23,7 @@ public class VscRoomNotificationService {
         try {
             return vscRoomFeignClient.findAll();
         } catch (FeignException e) {
-            throw new VscRoomBadRequestException();
+            throw new VscRoomRequestException();
         }
     }
 

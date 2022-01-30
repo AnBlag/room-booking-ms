@@ -11,7 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.roombooking.front.exception.DepartmentBadRequestException;
+import ru.roombooking.front.exception.DepartmentRequestException;
 import ru.roombooking.front.feign.DepartmentFeignClient;
 import ru.roombooking.front.model.dto.EmployeeDTO;
 import ru.roombooking.front.model.dto.ProfileDTO;
@@ -36,7 +36,7 @@ public class UserEditController {
         try {
             modelMap.addAttribute("departmentData", departmentFeignClient.findAll());
         } catch (FeignException e) {
-            throw new DepartmentBadRequestException();
+            throw new DepartmentRequestException();
         }
 
         return "edituserpage";

@@ -1,5 +1,10 @@
 package ru.roombooking.registration.exception;
 
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import static org.springframework.http.HttpStatus.*;
+
+@ResponseStatus(SERVICE_UNAVAILABLE)
 public class ProfileSaveException extends RuntimeException {
     public ProfileSaveException() {
         super();

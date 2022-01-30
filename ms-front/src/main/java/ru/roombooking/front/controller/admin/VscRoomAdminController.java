@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import ru.roombooking.front.exception.VscRoomBadRequestException;
+import ru.roombooking.front.exception.VscRoomRequestException;
 import ru.roombooking.front.feign.admin.VscRoomAdminFeignClient;
 import ru.roombooking.front.model.dto.VscRoomDTO;
 import ru.roombooking.front.model.dto.VscRoomRequest;
@@ -25,7 +25,7 @@ public class VscRoomAdminController {
         try {
             vscRoomList = vscRoomAdminFeignClient.vscRooms();
         } catch (FeignException e) {
-            throw new VscRoomBadRequestException();
+            throw new VscRoomRequestException();
         }
         modelMap.addAttribute("vscRoomList", vscRoomList);
 
@@ -40,7 +40,7 @@ public class VscRoomAdminController {
         try {
             vscRoomAdminFeignClient.updateVscRoom(new VscRoomRequest(id, isActive, numberRoom));
         } catch (FeignException e) {
-            throw new VscRoomBadRequestException();
+            throw new VscRoomRequestException();
         }
 
         return "redirect:/admin/vscrooms/";
@@ -57,7 +57,7 @@ public class VscRoomAdminController {
         try {
             vscRoomAdminFeignClient.deleteRoom(id);
         } catch (FeignException e) {
-            throw new VscRoomBadRequestException();
+            throw new VscRoomRequestException();
         }
 
         return "redirect:/admin/vscrooms/";
@@ -74,7 +74,7 @@ public class VscRoomAdminController {
         try {
             vscRoomAdminFeignClient.saveNewRoom(vscRoom);
         } catch (FeignException e) {
-            throw new VscRoomBadRequestException();
+            throw new VscRoomRequestException();
         }
 
         return "redirect:/admin/vscrooms/";

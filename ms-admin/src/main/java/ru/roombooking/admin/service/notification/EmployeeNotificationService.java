@@ -50,7 +50,7 @@ public class EmployeeNotificationService {
             }
             return list;
         } catch (FeignException e) {
-            throw new EmployeeViewBadRequestException();
+            throw new EmployeeViewRequestException();
         }
     }
 
@@ -58,7 +58,7 @@ public class EmployeeNotificationService {
         try {
             return employeeViewFeignClient.getEmployeeViewListByEmployeeViewParams(employeeView);
         } catch (FeignException e) {
-            throw new EmployeeViewBadRequestException();
+            throw new EmployeeViewRequestException();
         }
     }
 
@@ -69,7 +69,7 @@ public class EmployeeNotificationService {
         try {
             departmentList = departmentFeignClient.findAll();
         } catch (FeignException e) {
-            throw new DepartmentBadRequestException();
+            throw new DepartmentRequestException();
         }
         return new EmployeeEditDTO(employeeDTO, profile, departmentList);
     }

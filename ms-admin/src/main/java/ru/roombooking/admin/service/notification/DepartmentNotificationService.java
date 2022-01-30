@@ -4,7 +4,7 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.roombooking.admin.exception.DepartmentsDeleteException;
-import ru.roombooking.admin.exception.DepartmentBadRequestException;
+import ru.roombooking.admin.exception.DepartmentRequestException;
 import ru.roombooking.admin.exception.DepartmentsSaveException;
 import ru.roombooking.admin.exception.DepartmentsUpdateException;
 import ru.roombooking.admin.feign.DepartmentFeignClient;
@@ -29,7 +29,7 @@ public class DepartmentNotificationService {
             try {
                 departmentList = departmentFeignClient.findAll();
             } catch (FeignException e) {
-                throw new DepartmentBadRequestException();
+                throw new DepartmentRequestException();
             }
         }
         return departmentList;
@@ -96,7 +96,7 @@ public class DepartmentNotificationService {
                 return "В департаменте " + departmentName + " остались сотрудники, удалить его?";
             else return "Удалить департамент " + departmentName + "?";
         } catch (FeignException e) {
-            throw new DepartmentBadRequestException();
+            throw new DepartmentRequestException();
         }
     }
 }

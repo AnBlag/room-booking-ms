@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.roombooking.front.exception.DepartmentBadRequestException;
+import ru.roombooking.front.exception.DepartmentRequestException;
 import ru.roombooking.front.feign.DepartmentFeignClient;
 import ru.roombooking.front.feign.RegistrationFeignClient;
 import ru.roombooking.front.model.dto.RegistrationDTO;
@@ -30,7 +30,7 @@ public class RegistrationController {
         try {
             model.addAttribute("departmentList", departmentFeignClient.findAll());
         } catch (FeignException e) {
-            throw new DepartmentBadRequestException();
+            throw new DepartmentRequestException();
         }
 
         return "registration";
@@ -42,7 +42,7 @@ public class RegistrationController {
         try {
             model.addAttribute("departmentList", departmentFeignClient.findAll());
         } catch (FeignException e) {
-            throw new DepartmentBadRequestException();
+            throw new DepartmentRequestException();
         }
 
         try {

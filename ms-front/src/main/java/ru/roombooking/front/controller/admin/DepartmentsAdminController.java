@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import ru.roombooking.front.exception.DepartmentBadRequestException;
+import ru.roombooking.front.exception.DepartmentRequestException;
 import ru.roombooking.front.feign.admin.DepartmentAdminFeignClient;
 import ru.roombooking.front.model.dto.DepartmentDTO;
 import ru.roombooking.front.model.dto.DepartmentRequest;
@@ -26,7 +26,7 @@ public class DepartmentsAdminController {
         try {
             departmentList = departmentAdminFeignClient.departments(search);
         } catch (FeignException e) {
-            throw new DepartmentBadRequestException();
+            throw new DepartmentRequestException();
         }
         modelMap.addAttribute("departmentList", departmentList);
         modelMap.addAttribute("findDepartment", new DepartmentDTO());
@@ -40,7 +40,7 @@ public class DepartmentsAdminController {
         try {
             departmentList = departmentAdminFeignClient.findDepartments(findDepartment);
         } catch (FeignException e) {
-            throw new DepartmentBadRequestException();
+            throw new DepartmentRequestException();
         }
 
         modelMap.addAttribute("departmentList", departmentList);
@@ -54,7 +54,7 @@ public class DepartmentsAdminController {
         try {
             departmentAdminFeignClient.updateDepartments(new DepartmentRequest(id, departmentName, position));
         } catch (FeignException e) {
-            throw new DepartmentBadRequestException();
+            throw new DepartmentRequestException();
         }
 
         return "redirect:/admin/departments/";
@@ -66,7 +66,7 @@ public class DepartmentsAdminController {
         try {
             message = departmentAdminFeignClient.askDeleteDepartment(id);
         } catch (FeignException e) {
-            throw new DepartmentBadRequestException();
+            throw new DepartmentRequestException();
         }
         modelMap.addAttribute("departmentId", id);
         modelMap.addAttribute("message", message);
@@ -78,7 +78,7 @@ public class DepartmentsAdminController {
         try {
             departmentAdminFeignClient.deleteDepartment(id);
         } catch (FeignException e) {
-            throw new DepartmentBadRequestException();
+            throw new DepartmentRequestException();
         }
         return "redirect:/admin/departments/";
     }
@@ -94,7 +94,7 @@ public class DepartmentsAdminController {
         try {
             departmentAdminFeignClient.saveNewDepartment(department);
         } catch (FeignException e) {
-            throw new DepartmentBadRequestException();
+            throw new DepartmentRequestException();
         }
         return "redirect:/admin/departments/";
     }

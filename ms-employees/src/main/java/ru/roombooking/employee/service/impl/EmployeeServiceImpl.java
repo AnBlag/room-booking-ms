@@ -3,9 +3,9 @@ package ru.roombooking.employee.service.impl;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.roombooking.employee.exception.DepartmentBadRequestException;
+import ru.roombooking.employee.exception.DepartmentRequestException;
 import ru.roombooking.employee.exception.EmployeeBadRequestException;
-import ru.roombooking.employee.exception.ProfileBadRequestException;
+import ru.roombooking.employee.exception.ProfileRequestException;
 import ru.roombooking.employee.feign.DepartmentFeignClient;
 import ru.roombooking.employee.feign.ProfileFeignClient;
 import ru.roombooking.employee.mapper.VCMapper;
@@ -65,7 +65,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             return myMapper.toDTO(employeeRepository.findByProfileId(profileFeignClient.findByLogin(login).getId())
                     .orElseThrow(() -> new EmployeeBadRequestException("Не найден employee с таким profileId")));
         } catch (FeignException e) {
-            throw new ProfileBadRequestException();
+            throw new ProfileRequestException();
         }
     }
 
@@ -86,7 +86,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             return profileFeignClient
                     .findById(String.valueOf(employeeRepository.findById(id).orElseThrow().getProfileId()));
         } catch (FeignException e) {
-            throw new ProfileBadRequestException();
+            throw new ProfileRequestException();
         }
     }
 
@@ -97,13 +97,13 @@ public class EmployeeServiceImpl implements EmployeeService {
             employee.setDepartmentId(departmentFeignClient
                     .findById(String.valueOf(model.getDepartmentId())).getId());
         } catch (FeignException e) {
-            throw new DepartmentBadRequestException();
+            throw new DepartmentRequestException();
         }
 
         try {
             employee.setProfileId(profileFeignClient.findById(String.valueOf(model.getProfileId())).getId());
         } catch (FeignException e) {
-            throw new ProfileBadRequestException();
+            throw new ProfileRequestException();
         }
 
         return employee;

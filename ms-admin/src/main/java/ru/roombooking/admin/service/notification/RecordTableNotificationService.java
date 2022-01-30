@@ -4,9 +4,9 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.roombooking.admin.exception.RecordTableDeleteException;
-import ru.roombooking.admin.exception.RecordTableViewBadRequestException;
+import ru.roombooking.admin.exception.RecordTableViewRequestException;
 import ru.roombooking.admin.exception.RecordTableUpdateException;
-import ru.roombooking.admin.exception.VscRoomBadRequestException;
+import ru.roombooking.admin.exception.VscRoomRequestException;
 import ru.roombooking.admin.feign.RecordTableFeignClient;
 import ru.roombooking.admin.feign.RecordTableViewFeignClient;
 import ru.roombooking.admin.feign.VscRoomFeignClient;
@@ -39,10 +39,10 @@ public class RecordTableNotificationService {
                 List<VscRoomDTO> vscRoomList = vscRoomFeignClient.findAll();
                 return new RecordTableViewListAndVscRoomListDTO(recordTableViewList, vscRoomList);
             } catch (FeignException e) {
-                throw new VscRoomBadRequestException();
+                throw new VscRoomRequestException();
             }
         } catch (FeignException e) {
-            throw new RecordTableViewBadRequestException();
+            throw new RecordTableViewRequestException();
         }
     }
 
@@ -53,10 +53,10 @@ public class RecordTableNotificationService {
                 List<VscRoomDTO> vscRoomList = vscRoomFeignClient.findAll();
                 return new RecordTableViewListAndVscRoomListDTO(list, vscRoomList);
             } catch (FeignException e) {
-                throw new VscRoomBadRequestException();
+                throw new VscRoomRequestException();
             }
         } catch (FeignException e) {
-            throw new RecordTableViewBadRequestException();
+            throw new RecordTableViewRequestException();
         }
     }
 
@@ -118,7 +118,7 @@ public class RecordTableNotificationService {
                 );
             }
         } catch (FeignException e) {
-            throw new VscRoomBadRequestException();
+            throw new VscRoomRequestException();
         }
         return recordTableList;
     }

@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ru.roombooking.registration.exception.DepartmentBadRequestException;
-import ru.roombooking.registration.exception.ProfileBadRequestException;
+import ru.roombooking.registration.exception.DepartmentRequestException;
+import ru.roombooking.registration.exception.ProfileRequestException;
 import ru.roombooking.registration.exception.EmployeeSaveException;
 import ru.roombooking.registration.exception.ProfileSaveException;
 import ru.roombooking.registration.feign.DepartmentFeignClient;
@@ -50,13 +50,13 @@ public class RegistrationServiceImpl implements RegistrationService {
         try {
             employeeDTO.setProfileId(profileFeignClient.findByLogin(model.getLogin()).getId());
         } catch (FeignException e) {
-            throw new ProfileBadRequestException();
+            throw new ProfileRequestException();
         }
 
         try {
             employeeDTO.setDepartmentId(departmentFeignClient.findById(String.valueOf(model.getDepartmentId())).getId());
         } catch (FeignException e) {
-            throw new DepartmentBadRequestException();
+            throw new DepartmentRequestException();
         }
 
         return employeeDTO;

@@ -1,5 +1,10 @@
 package ru.roombooking.history.exception;
 
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import static org.springframework.http.HttpStatus.*;
+
+@ResponseStatus(BAD_REQUEST)
 public class VscRoomDeleteException extends RuntimeException {
     public VscRoomDeleteException() {
         super();

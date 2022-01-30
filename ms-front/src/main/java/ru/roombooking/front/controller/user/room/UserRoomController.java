@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import ru.roombooking.front.exception.VscRoomBadRequestException;
+import ru.roombooking.front.exception.VscRoomRequestException;
 import ru.roombooking.front.feign.VscRoomFeignClient;
 
 @Controller
@@ -22,7 +22,7 @@ public class UserRoomController {
             modelMap.addAttribute("vscroomlist", vscRoomFeignClient.findAll());
             return "calendar";
         } catch (FeignException e) {
-            throw new VscRoomBadRequestException();
+            throw new VscRoomRequestException();
         }
     }
 }

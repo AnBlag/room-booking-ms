@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import ru.roombooking.front.exception.RecordTableAndVscRoomBadRequestException;
-import ru.roombooking.front.exception.RecordTableBadRequestException;
+import ru.roombooking.front.exception.RecordTableAndVscRoomRequestException;
+import ru.roombooking.front.exception.RecordTableRequestException;
 import ru.roombooking.front.feign.admin.RecordTableAdminFeignClient;
 import ru.roombooking.front.model.RecordTableView;
 import ru.roombooking.front.model.dto.RecordTableRequest;
@@ -24,7 +24,7 @@ public class RecordTableAdminController {
         try {
             request = recordTableAdminFeignClient.records(search);
         } catch (FeignException e) {
-            throw new RecordTableAndVscRoomBadRequestException();
+            throw new RecordTableAndVscRoomRequestException();
         }
 
         modelMap.addAttribute("recordTableViewList", request.getRecordTableViewList());
@@ -40,7 +40,7 @@ public class RecordTableAdminController {
         try {
             request = recordTableAdminFeignClient.findRecords(findRecord);
         } catch (FeignException e) {
-            throw new RecordTableAndVscRoomBadRequestException();
+            throw new RecordTableAndVscRoomRequestException();
         }
 
         modelMap.addAttribute("recordTableViewList", request.getRecordTableViewList());
@@ -70,7 +70,7 @@ public class RecordTableAdminController {
                     startEvent,
                     endEvent));
         } catch (FeignException e) {
-            throw new RecordTableBadRequestException();
+            throw new RecordTableRequestException();
         }
 
         return "redirect:/admin/records/";
@@ -87,7 +87,7 @@ public class RecordTableAdminController {
         try {
             recordTableAdminFeignClient.deleteRecord(id);
         } catch (FeignException e) {
-            throw new RecordTableBadRequestException();
+            throw new RecordTableRequestException();
         }
 
         return "redirect:/admin/records/";

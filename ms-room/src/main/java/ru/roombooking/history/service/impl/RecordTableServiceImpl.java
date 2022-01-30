@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.roombooking.history.exception.EmployeeBadRequestException;
+import ru.roombooking.history.exception.EmployeeRequestException;
 import ru.roombooking.history.exception.RecordTableBadRequestException;
 import ru.roombooking.history.feign.EmployeeFeignClient;
 import ru.roombooking.history.maper.VCMapper;
@@ -104,7 +104,7 @@ public class RecordTableServiceImpl implements RecordTableService {
                 recordTableDTO.setEmail(employeeDTO.getEmail());
                 recordTableDTO.setIsActive(employeeDTO.getIsActive());
             } catch (FeignException e) {
-                throw new EmployeeBadRequestException();
+                throw new EmployeeRequestException();
             }
             RecordTable recordTable1 = mapper.toModel(recordTableDTO);
             recordTable1.setEmployeeId(recordTable.get().getEmployeeId());

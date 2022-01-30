@@ -4,8 +4,8 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.roombooking.front.exception.EmployeeBadRequestException;
-import ru.roombooking.front.exception.ProfileBadRequestException;
+import ru.roombooking.front.exception.EmployeeRequestException;
+import ru.roombooking.front.exception.ProfileRequestException;
 import ru.roombooking.front.feign.EmployeeFeignClient;
 import ru.roombooking.front.feign.ProfileFeignClient;
 import ru.roombooking.front.model.dto.EmployeeDTO;
@@ -25,13 +25,13 @@ public class EmployeeAndProfileServiceImpl implements EmployeeAndProfileService 
         try {
             employeeFeignClient.saveEmployee(employeeDTO);
         } catch (FeignException e) {
-            throw new EmployeeBadRequestException();
+            throw new EmployeeRequestException();
         }
 
         try {
             profileFeignClient.saveProfile(profile);
         } catch (FeignException e) {
-            throw new ProfileBadRequestException();
+            throw new ProfileRequestException();
         }
     }
 
@@ -41,7 +41,7 @@ public class EmployeeAndProfileServiceImpl implements EmployeeAndProfileService 
         try {
             return profileFeignClient.findById(String.valueOf(aLong));
         } catch (FeignException e) {
-            throw new ProfileBadRequestException();
+            throw new ProfileRequestException();
         }
     }
 
@@ -51,7 +51,7 @@ public class EmployeeAndProfileServiceImpl implements EmployeeAndProfileService 
         try {
             return employeeFeignClient.findByLogin(login);
         } catch (FeignException e) {
-            throw new EmployeeBadRequestException();
+            throw new EmployeeRequestException();
         }
     }
 }

@@ -5,10 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import ru.roombooking.front.exception.EditEmployeeBadRequestException;
-import ru.roombooking.front.exception.EmployeeBadRequestException;
-import ru.roombooking.front.exception.EmployeeViewBadRequestException;
-import ru.roombooking.front.exception.SaveEmployeeBadRequestException;
+import ru.roombooking.front.exception.EditEmployeeRequestException;
+import ru.roombooking.front.exception.EmployeeRequestException;
+import ru.roombooking.front.exception.EmployeeViewRequestException;
+import ru.roombooking.front.exception.SaveEmployeeRequestException;
 import ru.roombooking.front.feign.admin.EmployeeAdminFeignClient;
 import ru.roombooking.front.model.EmployeeView;
 import ru.roombooking.front.model.dto.*;
@@ -34,7 +34,7 @@ public class EmployeeAdminController {
         try {
             employeeAdminFeignClient.updateUsers(new EmployeeRequest(id, surname, name, middleName, phone, email, banned));
         } catch (FeignException e) {
-            throw new EmployeeBadRequestException();
+            throw new EmployeeRequestException();
         }
 
         return "redirect:/admin/employees/";
@@ -47,7 +47,7 @@ public class EmployeeAdminController {
         try {
             employeeViewList = employeeAdminFeignClient.employees(search);
         } catch (FeignException e) {
-            throw new EmployeeViewBadRequestException();
+            throw new EmployeeViewRequestException();
         }
         modelMap.addAttribute("employeeList", employeeViewList);
         modelMap.addAttribute("findEmployeeView", new EmployeeView());
@@ -61,7 +61,7 @@ public class EmployeeAdminController {
         try {
             employeeViewList = employeeAdminFeignClient.findEmployees(employeeView);
         } catch (FeignException e) {
-            throw new EmployeeViewBadRequestException();
+            throw new EmployeeViewRequestException();
         }
         modelMap.addAttribute("employeeList", employeeViewList);
         return "adminpagefullfindemployee";
@@ -73,7 +73,7 @@ public class EmployeeAdminController {
         try {
             employeeEditDTO = employeeAdminFeignClient.editEmployee(id);
         } catch (FeignException e) {
-            throw new EditEmployeeBadRequestException();
+            throw new EditEmployeeRequestException();
         }
         modelMap.addAttribute("employeeData", employeeEditDTO.getEmployeeDTO());
         modelMap.addAttribute("profileData", employeeEditDTO.getProfile());
@@ -88,7 +88,7 @@ public class EmployeeAdminController {
         try {
             employeeAdminFeignClient.saveEmployee(new EmployeeSaveDTO(id, employeeDTO, profileDTO));
         } catch (FeignException e) {
-            throw new SaveEmployeeBadRequestException();
+            throw new SaveEmployeeRequestException();
         }
 
         return "redirect:/admin/employees/";
@@ -105,7 +105,7 @@ public class EmployeeAdminController {
         try {
             employeeAdminFeignClient.deleteEmployee(id);
         } catch (FeignException e) {
-            throw new EmployeeBadRequestException();
+            throw new EmployeeRequestException();
         }
 
         return "redirect:/admin/employees/";

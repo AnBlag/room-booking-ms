@@ -63,10 +63,10 @@ public class RecordTableAndEmployeeServiceImpl implements RecordTableAndEmployee
                                 .getEmployeeId()))
                                 .getLogin().equals(login)));
             } catch (FeignException e) {
-                throw new EmployeeBadRequestException();
+                throw new EmployeeRequestException();
             }
         } catch (FeignException e) {
-            throw new SecurityBadRequestException();
+            throw new SecurityRequestException();
         }
     }
 
@@ -85,7 +85,7 @@ public class RecordTableAndEmployeeServiceImpl implements RecordTableAndEmployee
             recordTable.setNumberRoomId(getRoomFromRecordTableDTO(recordTableDTO).getId());
             return recordTable;
         } catch (FeignException e) {
-            throw new EmployeeBadRequestException();
+            throw new EmployeeRequestException();
         }
 
     }

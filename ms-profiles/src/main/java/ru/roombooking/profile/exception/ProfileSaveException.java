@@ -1,5 +1,10 @@
 package ru.roombooking.profile.exception;
 
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import static org.springframework.http.HttpStatus.*;
+
+@ResponseStatus(BAD_REQUEST)
 public class ProfileSaveException extends RuntimeException {
     public ProfileSaveException() {
         super();

@@ -5,20 +5,20 @@ import static org.springframework.http.HttpStatus.*;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(BAD_REQUEST)
-public class VscRoomBadRequestException extends IllegalArgumentException {
-    public VscRoomBadRequestException() {
+public class EmployeeRequestException extends IllegalArgumentException {
+    public EmployeeRequestException() {
         super();
     }
 
-    public VscRoomBadRequestException(String s) {
+    public EmployeeRequestException(String s) {
         super(s);
     }
 
-    public VscRoomBadRequestException(String message, Throwable cause) {
+    public EmployeeRequestException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public VscRoomBadRequestException(Throwable cause) {
+    public EmployeeRequestException(Throwable cause) {
         super(cause);
     }
 }
