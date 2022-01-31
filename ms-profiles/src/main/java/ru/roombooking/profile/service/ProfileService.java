@@ -10,4 +10,6 @@ public interface ProfileService extends RoomServiceCRUD<Profile, Long> {
     boolean doesProfileExist(String login);
 
     Profile changeAccountNonLocked(Boolean account_non_locked, Long id);
+
+    Profile deleteByProfile(Profile profile);
 }

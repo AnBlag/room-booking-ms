@@ -3,7 +3,7 @@ package ru.roombooking.resetpassword.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.roombooking.resetpassword.model.ProfileDTO;
+import ru.roombooking.resetpassword.model.dto.ProfileDTO;
 import ru.roombooking.resetpassword.service.impl.NotificationService;
 
 @RestController

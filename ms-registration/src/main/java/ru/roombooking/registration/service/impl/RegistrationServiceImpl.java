@@ -3,17 +3,13 @@ package ru.roombooking.registration.service.impl;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import ru.roombooking.registration.exception.DepartmentRequestException;
-import ru.roombooking.registration.exception.ProfileRequestException;
-import ru.roombooking.registration.exception.EmployeeSaveException;
-import ru.roombooking.registration.exception.ProfileSaveException;
+import ru.roombooking.registration.exception.*;
 import ru.roombooking.registration.feign.DepartmentFeignClient;
 import ru.roombooking.registration.feign.EmployeeFeignClient;
 import ru.roombooking.registration.feign.ProfileFeignClient;
 import ru.roombooking.registration.mapper.VCMapper;
-import ru.roombooking.registration.model.Profile;
+import ru.roombooking.registration.model.dto.ProfileDTO;
 import ru.roombooking.registration.model.dto.EmployeeDTO;
 import ru.roombooking.registration.model.dto.RegistrationDTO;
 import ru.roombooking.registration.service.RegistrationService;
@@ -25,14 +21,16 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final ProfileFeignClient profileFeignClient;
     private final DepartmentFeignClient departmentFeignClient;
     private final VCMapper<EmployeeDTO, RegistrationDTO> myEmployeeMapper;
-    private final VCMapper<Profile, RegistrationDTO> myProfileMapper;
+    private final VCMapper<ProfileDTO, RegistrationDTO> myProfileMapper;
 
+    // FIXME: 31.01.2022 костыль, если возникает ошибка при сохранении employee, то удаляем новый профиль
     @Override
-    @Transactional
     public void saveEmployeeAndProfile(RegistrationDTO model) {
 
+        ProfileDTO tempProfile;
+
         try {
-            profileFeignClient.saveProfile(myProfileMapper.toModel(model));
+            tempProfile = profileFeignClient.saveProfile(myProfileMapper.toModel(model));
         } catch (FeignException e) {
             throw new ProfileSaveException();
         }
@@ -40,6 +38,11 @@ public class RegistrationServiceImpl implements RegistrationService {
         try {
             employeeFeignClient.saveEmployee(toEmployee(model));
         } catch (FeignException e) {
+            try {
+                profileFeignClient.deleteByProfile(tempProfile);
+            } catch (FeignException exception) {
+                throw new ProfileRequestException();
+            }
             throw new EmployeeSaveException();
         }
     }

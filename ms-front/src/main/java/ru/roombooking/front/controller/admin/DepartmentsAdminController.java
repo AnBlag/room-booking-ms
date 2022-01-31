@@ -61,7 +61,7 @@ public class DepartmentsAdminController {
     }
 
     @GetMapping("/delete/{id}")
-    public String askDeleteDepartment(@PathVariable String id, ModelMap modelMap) {
+    public String askToDeleteDepartment(@PathVariable String id, ModelMap modelMap) {
         String message;
         try {
             message = departmentAdminFeignClient.askDeleteDepartment(id);

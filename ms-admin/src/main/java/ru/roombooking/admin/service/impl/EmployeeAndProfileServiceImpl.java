@@ -17,8 +17,8 @@ public class EmployeeAndProfileServiceImpl implements EmployeeAndProfileService 
     private final EmployeeFeignClient employeeFeignClient;
     private final ProfileFeignClient profileFeignClient;
 
+    // FIXME: 31.01.2022 вопрос с синхронным update и delete
     @Override
-    @Transactional
     public void update(EmployeeDTO employeeDTO, ProfileDTO profile) {
         try {
             employeeFeignClient.saveEmployee(employeeDTO);
@@ -29,7 +29,6 @@ public class EmployeeAndProfileServiceImpl implements EmployeeAndProfileService 
     }
 
     @Override
-    @Transactional
     public void deleteByProfileId(Long aLong) {
         employeeFeignClient.deleteEmployee(String.valueOf(findEmployeeByProfileId(aLong).getId()));
         profileFeignClient.deleteProfile(String.valueOf(aLong));

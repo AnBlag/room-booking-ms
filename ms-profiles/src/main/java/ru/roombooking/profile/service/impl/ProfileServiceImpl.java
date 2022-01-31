@@ -38,6 +38,13 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
+    public Profile deleteByProfile(Profile profile) {
+
+        profileRepository.delete(profile);
+        return profile;
+    }
+
+    @Override
     public Profile findByLogin(String login) {
         return profileRepository.findByLogin(login)
                 .orElseThrow(() -> new ProfileNotFoundException("Профиль не найден"));

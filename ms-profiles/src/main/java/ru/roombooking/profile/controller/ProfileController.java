@@ -34,6 +34,11 @@ public class ProfileController {
         return ResponseEntity.ok(notificationService.deleteProfile(id));
     }
 
+    @DeleteMapping("/delete-by-profile")
+    public ResponseEntity<Profile> deleteByProfile(@RequestBody Profile profile) {
+        return ResponseEntity.ok(notificationService.deleteByProfile(profile));
+    }
+
     @PutMapping("/temp-banned")
     public ResponseEntity<Profile> tempBanned(@RequestParam String id, @RequestParam String status) {
         return ResponseEntity.ok(notificationService.tempBanned(status, id));

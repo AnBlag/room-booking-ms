@@ -30,7 +30,7 @@
             <h2 class="form-heading">Регистрация</h2>
             <div class="form-group">
                 <p class="login-str"></p>
-                <p class="login-message" style="color: red" th:if="${loginErrorMessage == true}">Такой логин уже существует!</p>
+                <p class="login-message" style="color: red" th:text="${loginErrorMessage}"></p>
                 <input tabindex="1" placeholder="Логин" type="text" name="username" class="form-control" id="username" th:field="*{login}" required/>
                 </p>
                 <div class="form-group">

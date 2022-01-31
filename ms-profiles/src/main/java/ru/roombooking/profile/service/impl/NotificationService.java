@@ -37,6 +37,11 @@ public class NotificationService {
         return profileService.deleteById(Long.parseLong(id));
     }
 
+    @Transactional(rollbackFor = ProfileDeleteException.class)
+    public Profile deleteByProfile(Profile profile) {
+        return profileService.deleteByProfile(profile);
+    }
+
     @Transactional(rollbackFor = ChangeAccountNonLockedException.class)
     public Profile tempBanned(String id, String status) {
         return profileService.changeAccountNonLocked(Boolean.parseBoolean(status), Long.parseLong(id));

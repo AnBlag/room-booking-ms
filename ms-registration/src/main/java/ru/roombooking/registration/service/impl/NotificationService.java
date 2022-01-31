@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.roombooking.registration.exception.UserRegistrationException;
 import ru.roombooking.registration.model.Role;
 import ru.roombooking.registration.model.dto.RegistrationDTO;
@@ -15,7 +14,6 @@ import ru.roombooking.registration.service.RegistrationService;
 public class NotificationService {
     private final RegistrationService registrationService;
 
-    @Transactional(rollbackFor = UserRegistrationException.class)
     public void userRegistration(RegistrationDTO registrationDTO) {
         if (!registrationService.doesUserExist(registrationDTO)) {
             registrationDTO.setPassword(passwordEncoder().encode(registrationDTO.getPassword()));

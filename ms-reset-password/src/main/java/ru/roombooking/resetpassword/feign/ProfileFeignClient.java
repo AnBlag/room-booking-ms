@@ -5,7 +5,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
-import ru.roombooking.resetpassword.model.ProfileDTO;
+import ru.roombooking.resetpassword.model.dto.ProfileDTO;
 
 @FeignClient(name = "profile", url = "${feign.profile.url}", path = "/profile")
 public interface ProfileFeignClient {

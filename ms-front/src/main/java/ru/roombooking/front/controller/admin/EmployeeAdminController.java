@@ -95,7 +95,7 @@ public class EmployeeAdminController {
     }
 
     @GetMapping("/delete/{id}")
-    public String askDeleteEmployee(@PathVariable String id, ModelMap modelMap) {
+    public String askToDeleteEmployee(@PathVariable String id, ModelMap modelMap) {
         modelMap.addAttribute("profileId", id);
         return "deleteemployee";
     }

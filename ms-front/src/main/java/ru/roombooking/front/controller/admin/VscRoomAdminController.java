@@ -47,7 +47,7 @@ public class VscRoomAdminController {
     }
 
     @GetMapping("/delete/{id}")
-    public String askDeleteRoom(@PathVariable String id, ModelMap modelMap) {
+    public String askToDeleteRoom(@PathVariable String id, ModelMap modelMap) {
         modelMap.addAttribute("roomId", id);
         return "deleteroom";
     }

@@ -15,7 +15,7 @@ import ru.roombooking.resetpassword.feign.EmployeeFeignClient;
 import ru.roombooking.resetpassword.feign.MailFeignClient;
 import ru.roombooking.resetpassword.feign.ProfileFeignClient;
 import ru.roombooking.resetpassword.model.PasswordConfirmationToken;
-import ru.roombooking.resetpassword.model.ProfileDTO;
+import ru.roombooking.resetpassword.model.dto.ProfileDTO;
 import ru.roombooking.resetpassword.model.dto.EmployeeDTO;
 import ru.roombooking.resetpassword.model.dto.MailParams;
 import ru.roombooking.resetpassword.service.PasswordConfirmationTokenService;

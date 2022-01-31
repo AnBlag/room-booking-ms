@@ -5,7 +5,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
-import ru.roombooking.registration.model.Profile;
+import ru.roombooking.registration.model.dto.ProfileDTO;
 
 @FeignClient(name = "profile", url = "${feign.profile.url}", path = "/profile")
 public interface ProfileFeignClient {
@@ -14,35 +14,41 @@ public interface ProfileFeignClient {
             method = POST,
             value = "/save",
             produces = APPLICATION_JSON_VALUE)
-    Profile saveProfile(@RequestBody Profile profile);
+    ProfileDTO saveProfile(@RequestBody ProfileDTO profile);
 
     @RequestMapping(consumes = APPLICATION_JSON_VALUE,
             method = PUT,
             value = "/update/{id}",
             produces = APPLICATION_JSON_VALUE)
-    Profile updateProfile(@RequestBody Profile profile, @PathVariable String id);
+    ProfileDTO updateProfile(@RequestBody ProfileDTO profile, @PathVariable String id);
 
     @RequestMapping(consumes = APPLICATION_JSON_VALUE,
             method = DELETE,
             value = "/delete/{id}",
             produces = APPLICATION_JSON_VALUE)
-    Profile deleteProfile(@PathVariable String id);
+    ProfileDTO deleteProfile(@PathVariable String id);
+
+    @RequestMapping(consumes = APPLICATION_JSON_VALUE,
+            method = DELETE,
+            value = "/delete-by-profile",
+            produces = APPLICATION_JSON_VALUE)
+    ProfileDTO deleteByProfile(@RequestBody ProfileDTO profile);
 
     @RequestMapping(consumes = APPLICATION_JSON_VALUE,
             method = PUT,
             value = "/temp-banned",
             produces = APPLICATION_JSON_VALUE)
-    Profile tempBanned(@RequestParam("id") String id, @RequestParam String status);
+    ProfileDTO tempBanned(@RequestParam("id") String id, @RequestParam String status);
 
     @RequestMapping(consumes = APPLICATION_JSON_VALUE,
             method = GET,
             value = "/find-by-login")
-    Profile findByLogin(@RequestParam String login);
+    ProfileDTO findByLogin(@RequestParam String login);
 
     @RequestMapping(consumes = APPLICATION_JSON_VALUE,
             method = GET,
             value = "/find-by-id/{id}")
-    Profile findById(@PathVariable String id);
+    ProfileDTO findById(@PathVariable String id);
 
     @RequestMapping(consumes = APPLICATION_JSON_VALUE,
             method = GET,

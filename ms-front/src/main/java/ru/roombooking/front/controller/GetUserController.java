@@ -12,18 +12,16 @@ import ru.roombooking.front.exception.EmployeeNotFoundException;
 import ru.roombooking.front.feign.GetUserFeignClient;
 import ru.roombooking.front.model.dto.EmployeeDTO;
 
-import java.util.concurrent.Callable;
-
 @RestController
 @AllArgsConstructor
 public class GetUserController {
     private final GetUserFeignClient getUserFeignClient;
 
     @GetMapping("/get-user")
-    public Callable<ResponseEntity<EmployeeDTO>> getEmployee() {
+    public ResponseEntity<EmployeeDTO> getEmployee() {
 
         try {
-            return () -> ResponseEntity.ok(getUserFeignClient.getUser(getUserAuth().getUsername()));
+            return ResponseEntity.ok(getUserFeignClient.getUser(getUserAuth().getUsername()));
         } catch (FeignException e) {
             throw new EmployeeNotFoundException();
         }

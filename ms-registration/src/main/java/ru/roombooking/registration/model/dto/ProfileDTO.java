@@ -1,10 +1,8 @@
-package ru.roombooking.resetpassword.model;
+package ru.roombooking.registration.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import ru.roombooking.registration.model.Role;
 
 @Data
 @AllArgsConstructor

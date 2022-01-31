@@ -77,7 +77,7 @@ public class RecordTableAdminController {
     }
 
     @GetMapping("/delete/{id}")
-    public String askDeleteRecord(@PathVariable String id, ModelMap modelMap) {
+    public String askToDeleteRecord(@PathVariable String id, ModelMap modelMap) {
         modelMap.addAttribute("recordTableId", id);
         return "deleterecord";
     }

@@ -47,10 +47,14 @@ public class RegistrationController {
 
         try {
             registrationFeignClient.userRegistration(registrationDTO);
-            model.addAttribute("loginErrorMessage", false);
+            model.addAttribute("loginErrorMessage", "");
             return "redirect:/";
         } catch (FeignException e) {
-            model.addAttribute("loginErrorMessage", true);
+            if (e.status() == 400) {
+                model.addAttribute("loginErrorMessage", "Такой логин уже существует!");
+            } else {
+                model.addAttribute("loginErrorMessage", "Ошибка регистрации!");
+            }
             return "registration";
         }
     }
