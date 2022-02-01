@@ -35,7 +35,7 @@ public class EmployeeNotificationService {
                     employeeRequest.getEmail(),
                     employeeRequest.getBanned()));
         } catch (FeignException e) {
-            throw new UsersUpdateException();
+            throw new EmployeeUpdateException();
         }
     }
 

@@ -2,6 +2,9 @@ package ru.roombooking.front.controller.admin;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +21,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/admin/employees")
 public class EmployeeAdminController {
     private final EmployeeAdminFeignClient employeeAdminFeignClient;
@@ -69,15 +73,19 @@ public class EmployeeAdminController {
 
     @GetMapping("/edit/{id}")
     public String editEmployee(@PathVariable String id, ModelMap modelMap) {
+        log.info("Обновление данных о пользователе");
+
         EmployeeEditDTO employeeEditDTO;
         try {
             employeeEditDTO = employeeAdminFeignClient.editEmployee(id);
         } catch (FeignException e) {
+            log.info("Ошибка");
             throw new EditEmployeeRequestException();
         }
         modelMap.addAttribute("employeeData", employeeEditDTO.getEmployeeDTO());
         modelMap.addAttribute("profileData", employeeEditDTO.getProfile());
         modelMap.addAttribute("departmentData", employeeEditDTO.getDepartmentList());
+        log.info("Успешное обновление данных о пользователе");
         return "editemployee";
     }
 

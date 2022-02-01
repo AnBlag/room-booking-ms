@@ -28,7 +28,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDTO save(EmployeeDTO model) {
-        return myMapper.toDTO(employeeRepository.save(toEmployee(model)));
+        EmployeeDTO employeeDTO = myMapper.toDTO(employeeRepository.save(myMapper.toModel(model)));
+        return employeeDTO;
+        //return myMapper.toDTO(employeeRepository.save(toEmployee(model)));
     }
 
     @Override
