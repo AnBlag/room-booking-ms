@@ -2,6 +2,7 @@ package ru.roombooking.admin.service.notification;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.roombooking.admin.exception.RecordTableDeleteException;
 import ru.roombooking.admin.exception.RecordTableViewRequestException;
@@ -22,20 +23,25 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RecordTableNotificationService {
     private final RecordTableFeignClient recordTableFeignClient;
     private final VscRoomFeignClient vscRoomFeignClient;
     private final RecordTableViewFeignClient recordTableViewFeignClient;
 
     public RecordTableViewListAndVscRoomListDTO records(String search) {
+        log.info("Поиск бронирований");
         List<RecordTableView> recordTableViewList;
         try {
             if (search != null) {
+                log.info("Поиск бронирований по URL");
                 recordTableViewList = recordTableViewFeignClient.getRecordTableViewListByURLParams(search);
             } else {
+                log.info("Поиск всех бронирований");
                 recordTableViewList = recordTableViewFeignClient.findAll();
             }
             try {
+                log.info("Поиск всех комнат");
                 List<VscRoomDTO> vscRoomList = vscRoomFeignClient.findAll();
                 return new RecordTableViewListAndVscRoomListDTO(recordTableViewList, vscRoomList);
             } catch (FeignException e) {
@@ -47,9 +53,11 @@ public class RecordTableNotificationService {
     }
 
     public RecordTableViewListAndVscRoomListDTO findRecords(RecordTableView findRecord) {
+        log.info("Поиск бронирований по параметрам");
         try {
             List<RecordTableView> list = recordTableViewFeignClient.getRecordTableViewListByRecordTableViewParams(findRecord);
             try {
+                log.info("Поиск всех комнат");
                 List<VscRoomDTO> vscRoomList = vscRoomFeignClient.findAll();
                 return new RecordTableViewListAndVscRoomListDTO(list, vscRoomList);
             } catch (FeignException e) {
@@ -61,6 +69,7 @@ public class RecordTableNotificationService {
     }
 
     public void updateRecords(RecordTableRequest recordTableRequest) {
+        log.info("Обновление бронирований");
         try {
             recordTableFeignClient.batchUpdateRecords(getRecordTableListFromParams(recordTableRequest.getId(),
                     recordTableRequest.getEmail(),
@@ -70,14 +79,17 @@ public class RecordTableNotificationService {
                     recordTableRequest.getTitle(),
                     recordTableRequest.getStartEvent(),
                     recordTableRequest.getEndEvent()));
+            log.info("Обновление бронирований успешно завершено");
         } catch (FeignException e) {
             throw new RecordTableUpdateException();
         }
     }
 
     public void deleteRecord(String id) {
+        log.info("Удаление бронирования");
         try {
             recordTableFeignClient.deleteRecordById(id);
+            log.info("Удаление бронирования успешно завершено");
         } catch (FeignException e) {
             throw new RecordTableDeleteException();
         }

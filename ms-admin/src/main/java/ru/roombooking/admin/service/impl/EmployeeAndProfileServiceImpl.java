@@ -39,7 +39,7 @@ public class EmployeeAndProfileServiceImpl implements EmployeeAndProfileService 
         } catch (FeignException e) {
             try {
                 profileFeignClient.saveProfile(tempProfile);
-                log.info("Откат обновления профиля");
+                log.info("Успешный откат обновления профиля");
             } catch (FeignException exception) {
                 throw new ProfileUpdateException();
             }
@@ -79,7 +79,6 @@ public class EmployeeAndProfileServiceImpl implements EmployeeAndProfileService 
 
     @Override
     public EmployeeDTO findEmployeeByProfileId(Long aLong) {
-        log.info("Поиск сотрудника по profileId");
         try {
             return employeeFeignClient.findByProfileID(String.valueOf(aLong));
         } catch (FeignException e) {
@@ -89,6 +88,10 @@ public class EmployeeAndProfileServiceImpl implements EmployeeAndProfileService 
 
     @Override
     public ProfileDTO findProfileById(Long aLong) {
-        return profileFeignClient.findById(String.valueOf(aLong));
+        try {
+            return profileFeignClient.findById(String.valueOf(aLong));
+        } catch (FeignException e) {
+            throw new ProfileRequestException();
+        }
     }
 }

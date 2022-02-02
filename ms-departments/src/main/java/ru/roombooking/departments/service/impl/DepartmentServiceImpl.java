@@ -1,6 +1,7 @@
 package ru.roombooking.departments.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DepartmentServiceImpl implements DepartmentService {
     private final DepartmentRepository departmentRepository;
     private final JdbcTemplate jdbcTemplate;
@@ -25,30 +27,36 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Department save(Department model) {
+        log.info("Сохранение департамента");
         return departmentRepository.save(model);
     }
 
     @Override
     public Department update(Department model, Long id) {
+        log.info("Обновление департамента");
         model.setId(id);
         return departmentRepository.save(model);
     }
 
     @Override
     public List<Department> findAll() {
+        log.info("Поиск всех департаментов");
         return departmentRepository.findAll();
     }
 
     @Override
     public Department deleteById(Long aLong) {
+        log.info("Удаление департамента по ID");
         Department department = departmentRepository.findById(aLong)
                 .orElseThrow(() -> new DepartmentBadRequestException("Не найден ID"));
         departmentRepository.deleteById(aLong);
+        log.info("Удаление департамента по ID успешно завершено");
         return department;
     }
 
     @Override
     public Department findById(Long aLong) {
+        log.info("Поиск департамента по ID");
         return departmentRepository.findById(aLong)
                 .orElseThrow(() -> new DepartmentBadRequestException("Не найден ID"));
     }

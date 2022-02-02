@@ -2,6 +2,7 @@ package ru.roombooking.admin.service.notification;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.roombooking.admin.exception.DepartmentsDeleteException;
 import ru.roombooking.admin.exception.DepartmentRequestException;
@@ -17,45 +18,60 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DepartmentNotificationService {
     private final DepartmentFeignClient departmentFeignClient;
     private final EmployeeFeignClient employeeFeignClient;
 
     public List<DepartmentDTO> departments(String search) {
+        log.info("Поиск департаментов");
         List<DepartmentDTO> departmentList;
-        if (search != null) {
-            departmentList = departmentFeignClient.getDepartmentListByURLParams(search);
-        } else {
-            try {
+        try {
+            if (search != null) {
+                log.info("Поиск департаментов по параметрам URL");
+                departmentList = departmentFeignClient.getDepartmentListByURLParams(search);
+            } else {
+                log.info("Поиск всех департаментов");
                 departmentList = departmentFeignClient.findAll();
-            } catch (FeignException e) {
-                throw new DepartmentRequestException();
             }
+        } catch (FeignException e) {
+            throw new DepartmentRequestException();
         }
+        log.info("Поиск депортаментов завершен");
         return departmentList;
     }
 
     public List<DepartmentDTO> findDepartments(DepartmentDTO findDepartment) {
-        return departmentFeignClient.getDepartmentListByDepartmentParams(findDepartment);
+        try {
+            log.info("Поиск департаментов по параметрам");
+            return departmentFeignClient.getDepartmentListByDepartmentParams(findDepartment);
+        } catch (FeignException e) {
+            throw new DepartmentRequestException();
+        }
     }
 
     public void updateDepartments(DepartmentRequest departmentRequest) {
         try {
+            log.info("Обновление департаментов");
             departmentFeignClient.batchUpdateDepartment(getDepartmentListFromParams(String.valueOf(departmentRequest.getId()),
                     departmentRequest.getNameDepartment(),
                     departmentRequest.getPosition()));
+            log.info("Успешное обновление департаментов");
         } catch (FeignException e) {
             throw new DepartmentsUpdateException("Ошибка обновления департаментов");
         }
     }
 
     public String askToDeleteDepartment(String id) {
+        log.info("Запрос на удаление департамента");
         return getMessageForDeleteDepartmentPage(Long.parseLong(id));
     }
 
     public void deleteDepartment(String id) {
         try {
+            log.info("Удаление департамента");
             departmentFeignClient.deleteDepartment(id);
+            log.info("Успешное удаление департамента");
         } catch (FeignException e) {
             throw new DepartmentsDeleteException();
         }
@@ -63,7 +79,9 @@ public class DepartmentNotificationService {
 
     public void saveNewDepartment(DepartmentDTO department) {
         try {
+            log.info("Добавление нового департамента");
             departmentFeignClient.saveDepartment(department);
+            log.info("Департамент успешно добавлен");
         } catch (FeignException e) {
             throw new DepartmentsSaveException();
         }

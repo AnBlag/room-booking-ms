@@ -2,6 +2,7 @@ package ru.roombooking.admin.service.notification;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.roombooking.admin.exception.*;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmployeeNotificationService {
     private final EmployeeAndProfileService employeeAndProfileService;
     private final DepartmentFeignClient departmentFeignClient;
@@ -27,6 +29,7 @@ public class EmployeeNotificationService {
 
     public void updateUsers(EmployeeRequest employeeRequest) {
         try {
+            log.info("Обновление пользователей");
             employeeViewFeignClient.batchUpdateProfileAndEmployee(getEmployeeViewListFromParams(String.valueOf(employeeRequest.getId()),
                     employeeRequest.getName(),
                     employeeRequest.getSurname(),
@@ -34,20 +37,24 @@ public class EmployeeNotificationService {
                     employeeRequest.getPhone(),
                     employeeRequest.getEmail(),
                     employeeRequest.getBanned()));
+            log.info("Обновление пользователей успешно завершено");
         } catch (FeignException e) {
             throw new EmployeeUpdateException();
         }
     }
 
     public List<EmployeeView> getByParamPage(String search) {
+        log.info("Поиск сотрудников");
         List<EmployeeView> list;
         try {
             if (search != null) {
-                //list = profileViewSearchCriteriaRepository.search(searchByURLParams.getParamsFromSearch(search));
+                log.info("Поиск сотрудников по URL");
                 list = employeeViewFeignClient.getEmployeeViewListByURLParams(search);
             } else {
+                log.info("Поиск всех сотрудников");
                 list = employeeViewFeignClient.findAll();
             }
+            log.info("Поиск сотрудников успешно завершен");
             return list;
         } catch (FeignException e) {
             throw new EmployeeViewRequestException();
@@ -56,6 +63,7 @@ public class EmployeeNotificationService {
 
     public List<EmployeeView> findByParamPage(@RequestBody EmployeeView employeeView) {
         try {
+            log.info("Поиск сотрудников по параметрам");
             return employeeViewFeignClient.getEmployeeViewListByEmployeeViewParams(employeeView);
         } catch (FeignException e) {
             throw new EmployeeViewRequestException();
@@ -63,30 +71,37 @@ public class EmployeeNotificationService {
     }
 
     public EmployeeEditDTO editEmployee(String id) {
+        log.info("Редактирование сотрудников");
         EmployeeDTO employeeDTO = employeeAndProfileService.findEmployeeByProfileId(Long.parseLong(id));
         ProfileDTO profile = employeeAndProfileService.findProfileById(Long.parseLong(id));
         List<DepartmentDTO> departmentList;
         try {
+            log.info("Поиск всех департаментов");
             departmentList = departmentFeignClient.findAll();
         } catch (FeignException e) {
             throw new DepartmentRequestException();
         }
+        log.info("Редактирование сотрудников успешно завершено");
         return new EmployeeEditDTO(employeeDTO, profile, departmentList);
     }
 
     public void saveEmployee(String id,
                              EmployeeDTO employeeDTO,
                              ProfileDTO profile) {
+        log.info("Сохранение сотрудников");
         try {
             saveEmployeeFromPageData(Long.parseLong(id), employeeDTO, profile);
+            log.info("Сохранение сотрудников успешно завершено");
         } catch (Exception e) {
             throw new UsersSaveException();
         }
     }
 
     public void deleteEmployee(String id) {
+        log.info("Удаление сотрудников");
         try {
             employeeAndProfileService.deleteByProfileId(Long.parseLong(id));
+            log.info("Удаление сотрудников успешно завершено");
         } catch (Exception e) {
             throw new UsersDeleteException();
         }
