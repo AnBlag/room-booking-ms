@@ -13,4 +13,6 @@ public interface EmployeeService extends RoomServiceCRUD<EmployeeDTO, Long> {
     EmployeeDTO findById(Long aLong);
 
     ProfileDTO getProfileById(Long id);
+
+    void restore(EmployeeDTO model);
 }

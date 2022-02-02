@@ -2,6 +2,7 @@ package ru.roombooking.employee.service.impl;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import ru.roombooking.employee.exception.DepartmentRequestException;
 import ru.roombooking.employee.exception.EmployeeBadRequestException;
@@ -25,12 +26,26 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final VCMapper<Employee, EmployeeDTO> myMapper;
     private final ProfileFeignClient profileFeignClient;
     private final DepartmentFeignClient departmentFeignClient;
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public EmployeeDTO save(EmployeeDTO model) {
-        EmployeeDTO employeeDTO = myMapper.toDTO(employeeRepository.save(myMapper.toModel(model)));
-        return employeeDTO;
-        //return myMapper.toDTO(employeeRepository.save(toEmployee(model)));
+        return myMapper.toDTO(employeeRepository.save(myMapper.toModel(model)));
+    }
+
+    @Override
+    public void restore(EmployeeDTO model) {
+        Employee employee = myMapper.toModel(model);
+        jdbcTemplate.update("insert into employee (id, department_id, email, is_active, middle_name, name, phone, profile_id, surname) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                employee.getId(),
+                employee.getDepartmentId(),
+                employee.getEmail(),
+                employee.getIsActive(),
+                employee.getMiddleName(),
+                employee.getName(),
+                employee.getPhone(),
+                employee.getProfileId(),
+                employee.getSurname());
     }
 
     @Override

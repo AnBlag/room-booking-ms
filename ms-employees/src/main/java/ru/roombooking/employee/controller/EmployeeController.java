@@ -25,6 +25,11 @@ public class EmployeeController {
         return ResponseEntity.ok(notificationService.saveEmployee(employeeDTO));
     }
 
+    @PostMapping("/restore")
+    public void restoreEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        notificationService.restoreEmployee(employeeDTO);
+    }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employeeDTO, @PathVariable String id) {
         return ResponseEntity.ok(notificationService.updateEmployee(employeeDTO, id));

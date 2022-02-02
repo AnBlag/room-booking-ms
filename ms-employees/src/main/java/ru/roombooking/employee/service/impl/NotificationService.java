@@ -32,6 +32,11 @@ public class NotificationService {
         return employeeService.save(employeeDTO);
     }
 
+    @Transactional(rollbackFor = EmployeeSaveException.class)
+    public void restoreEmployee(EmployeeDTO employeeDTO) {
+        employeeService.restore(employeeDTO);
+    }
+
     @Transactional(rollbackFor = EmployeeUpdateException.class)
     public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO, String id) {
         return employeeService.update(employeeDTO, Long.parseLong(id));

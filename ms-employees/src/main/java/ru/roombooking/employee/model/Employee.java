@@ -79,6 +79,8 @@ public class Employee {
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", isActive=" + isActive +
+                ", profileId=" + profileId +
+                ", departmentId=" + departmentId +
                 '}';
     }
 }

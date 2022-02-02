@@ -22,6 +22,12 @@ public interface EmployeeFeignClient {
     EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO);
 
     @RequestMapping(consumes = APPLICATION_JSON_VALUE,
+            method = POST,
+            value = "/restore",
+            produces = APPLICATION_JSON_VALUE)
+    void restoreEmployee(@RequestBody EmployeeDTO employeeDTO);
+
+    @RequestMapping(consumes = APPLICATION_JSON_VALUE,
             method = DELETE,
             value = "/delete/{id}",
             produces = APPLICATION_JSON_VALUE)

@@ -66,7 +66,7 @@ public class EmployeeAndProfileServiceImpl implements EmployeeAndProfileService 
             log.info("Успешное удаление профиля");
         } catch (FeignException e) {
             try {
-                employeeFeignClient.saveEmployee(tempEmployee);
+                employeeFeignClient.restoreEmployee(tempEmployee);
                 log.info("Успешное восстановление данных о сотруднике");
             } catch (FeignException exception) {
                 throw new EmployeeSaveException();
