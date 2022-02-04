@@ -1,6 +1,6 @@
 spring:
   datasource:
-    password: 123
+    password: postgres
     driver-class-name: org.postgresql.Driver
     username: postgres
     url: jdbc:postgresql://localhost:5432/room
@@ -23,3 +23,5 @@ sql:
     batch-update:
       employee: update employee set email=?, name=?, middle_name=?, surname=?, phone=? where profile_id=?
       profile: update profile set account_non_locked = ? where id=?
+    update:
+      employee: insert into employee (id, department_id, email, is_active, middle_name, name, phone, profile_id, surname) values (?, ?, ?, ?, ?, ?, ?, ?, ?)

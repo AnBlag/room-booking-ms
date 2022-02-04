@@ -3,6 +3,7 @@ package ru.roombooking.front.controller.user.edit;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -21,12 +22,15 @@ import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class UserEditController {
     private final EmployeeAndProfileService employeeAndProfileService;
     private final DepartmentFeignClient departmentFeignClient;
 
     @GetMapping("/user/edit")
     public String editEmployee(ModelMap modelMap) {
+
+        log.info("Запрос на изменение данных о сотруднике");
         EmployeeDTO employeeDTO = employeeAndProfileService.findByLogin(getUserAuth().getUsername());
         ProfileDTO profile = employeeAndProfileService.findProfileById(employeeDTO.getProfileId());
 
@@ -46,6 +50,7 @@ public class UserEditController {
     public String saveEmployee(@ModelAttribute("employeeData") final @Valid EmployeeDTO employeeDTO,
                                @ModelAttribute("profileData") final @Valid ProfileDTO profile) {
 
+        log.info("Изменение данных о сотруднике");
         EmployeeDTO tempEmployeeDTO = employeeAndProfileService.findByLogin(profile.getLogin());
         ProfileDTO tempProfile = employeeAndProfileService.findProfileById(tempEmployeeDTO.getProfileId());
 
@@ -57,6 +62,7 @@ public class UserEditController {
         tempEmployeeDTO.setDepartmentId(employeeDTO.getDepartmentId());
 
         employeeAndProfileService.update(tempEmployeeDTO, tempProfile);
+        log.info("Изменение данных о сотруднике успешно завершено");
         return "redirect:/user/edit";
     }
 

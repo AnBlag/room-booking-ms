@@ -35,11 +35,13 @@ public class EmployeeAdminController {
                               @RequestParam(name = "email") String email,
                               @RequestParam(name = "banned") String banned
     ) {
+        log.info("Обновление сотрудников");
         try {
             employeeAdminFeignClient.updateUsers(new EmployeeRequest(id, surname, name, middleName, phone, email, banned));
         } catch (FeignException e) {
             throw new EmployeeRequestException();
         }
+        log.info("Обновление сотрудников успешно завершено");
 
         return "redirect:/admin/employees/";
     }
@@ -47,6 +49,7 @@ public class EmployeeAdminController {
     @GetMapping("/")
     public String employees(@RequestParam(value = "search", required = false) String search,
                             ModelMap modelMap) {
+        log.info("Поиск сотрудников");
         List<EmployeeView> employeeViewList;
         try {
             employeeViewList = employeeAdminFeignClient.employees(search);
@@ -61,6 +64,7 @@ public class EmployeeAdminController {
     @PostMapping("/")
     public String findEmployees(@ModelAttribute("findEmployeeView") EmployeeView employeeView,
                                 ModelMap modelMap) {
+        log.info("Поиск сотрудников по параметрам");
         List<EmployeeView> employeeViewList;
         try {
             employeeViewList = employeeAdminFeignClient.findEmployees(employeeView);
@@ -73,19 +77,18 @@ public class EmployeeAdminController {
 
     @GetMapping("/edit/{id}")
     public String editEmployee(@PathVariable String id, ModelMap modelMap) {
-        log.info("Обновление данных о пользователе");
 
+        log.info("Запрос на обновление данных о сотруднике");
         EmployeeEditDTO employeeEditDTO;
         try {
             employeeEditDTO = employeeAdminFeignClient.editEmployee(id);
         } catch (FeignException e) {
-            log.info("Ошибка");
             throw new EditEmployeeRequestException();
         }
         modelMap.addAttribute("employeeData", employeeEditDTO.getEmployeeDTO());
         modelMap.addAttribute("profileData", employeeEditDTO.getProfile());
         modelMap.addAttribute("departmentData", employeeEditDTO.getDepartmentList());
-        log.info("Успешное обновление данных о пользователе");
+        log.info("Обновление данных о сотруднике успешно завершено");
         return "editemployee";
     }
 
@@ -93,28 +96,34 @@ public class EmployeeAdminController {
     public String saveEmployee(@PathVariable String id,
                                @ModelAttribute("employeeData") final @Valid EmployeeDTO employeeDTO,
                                @ModelAttribute("profileData") final @Valid ProfileDTO profileDTO) {
+
+        log.info("Обновление данных о сотруднике");
         try {
             employeeAdminFeignClient.saveEmployee(new EmployeeSaveDTO(id, employeeDTO, profileDTO));
         } catch (FeignException e) {
             throw new SaveEmployeeRequestException();
         }
+        log.info("Обновление данных о сотруднике успешно завершено");
 
         return "redirect:/admin/employees/";
     }
 
     @GetMapping("/delete/{id}")
     public String askToDeleteEmployee(@PathVariable String id, ModelMap modelMap) {
+        log.info("Запрос на удаление сотрудника");
         modelMap.addAttribute("profileId", id);
         return "deleteemployee";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteEmployee(@PathVariable String id) {
+        log.info("Удаление сотрудника");
         try {
             employeeAdminFeignClient.deleteEmployee(id);
         } catch (FeignException e) {
             throw new EmployeeRequestException();
         }
+        log.info("Удаление сотрудника успешно завершено");
 
         return "redirect:/admin/employees/";
     }
