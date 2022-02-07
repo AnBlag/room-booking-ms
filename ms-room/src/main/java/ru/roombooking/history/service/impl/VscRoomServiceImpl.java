@@ -1,6 +1,7 @@
 package ru.roombooking.history.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class VscRoomServiceImpl implements VscRoomService {
     private final VscRoomRepository vscRepository;
     private final JdbcTemplate jdbcTemplate;
@@ -25,42 +27,43 @@ public class VscRoomServiceImpl implements VscRoomService {
 
     @Override
     public VscRoom save(VscRoom model) {
+        log.info("Сохранение новой комнаты");
         return vscRepository.save(model);
     }
 
     @Override
     public VscRoom update(VscRoom model, Long id) {
+        log.info("Обновление комнаты");
         model.setId(id);
         return vscRepository.save(model);
     }
 
     @Override
     public List<VscRoom> findAll() {
+        log.info("Поиск всех комнат");
         return vscRepository.findAll();
     }
 
     @Override
     public VscRoom deleteById(Long aLong) {
+        log.info("Удаление комнаты по ID");
         VscRoom vscRoom = vscRepository.findById(aLong)
                 .orElseThrow(() -> new VscRoomBadRequestException("Не найден ID"));
         vscRepository.deleteById(aLong);
+        log.info("Удаление комнаты по ID успешно завершено");
         return vscRoom;
     }
 
     @Override
-    public void findByNumberRoomIfNotFoundByNumberRoomThrowException(Long number) {
-        vscRepository.findByNumberRoom(number).orElseThrow(
-                () -> new VscRoomBadRequestException("Не найдена комната"));
-    }
-
-    @Override
     public VscRoom findById(Long aLong) {
+        log.info("Поиск комнаты по ID");
         return vscRepository.findById(aLong)
                 .orElseThrow(() -> new VscRoomBadRequestException("Не найден ID"));
     }
 
     @Override
     public VscRoom findByNumberRoomId(Long number) {
+        log.info("Поиск по номеру комнаты");
         return vscRepository.findByNumberRoom(number)
                 .orElseThrow(() -> new VscRoomBadRequestException("Не найден NumberRoomID"));
     }
@@ -68,6 +71,7 @@ public class VscRoomServiceImpl implements VscRoomService {
     @Transactional
     @Override
     public void batchUpdateVscRoom(List<VscRoom> vscRoomList) {
+        log.info("Обновление всех комнат");
         jdbcTemplate.batchUpdate(batchUpdateVscRoom,
                 new BatchPreparedStatementSetter() {
                     @Override

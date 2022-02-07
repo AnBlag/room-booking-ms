@@ -2,6 +2,7 @@ package ru.roombooking.history.service.impl;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.roombooking.history.exception.*;
 import ru.roombooking.history.feign.EmployeeFeignClient;
@@ -22,6 +23,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RecordTableAndEmployeeServiceImpl implements RecordTableAndEmployeeService {
     private final RecordTableRepository recordTableRepository;
     private final RecordTableViewRepository recordTableViewRepository;
@@ -32,6 +34,7 @@ public class RecordTableAndEmployeeServiceImpl implements RecordTableAndEmployee
 
     @Override
     public RecordTableDTO save(RecordTableDTO recordTableDTO, String login) {
+        log.info("Сохрание нового бронирования");
         Optional<RecordTable> overlappingRecordTable = recordTableRepository
                 .findOverlappingRecordsByStartEventAndEndEvent(recordTableDTO.getStart(), recordTableDTO.getEnd(),
                         getRoomFromRecordTableDTO(recordTableDTO).getId());
@@ -39,20 +42,24 @@ public class RecordTableAndEmployeeServiceImpl implements RecordTableAndEmployee
         if (overlappingRecordTable.isPresent()) {
             throw new RecordTableBadRequestException("Данное время занято");
         } else {
+            log.info("Сохрание нового бронирования успешно завершено");
             return mapper.toDTO(recordTableRepository.save(toRecordTable(recordTableDTO, login)));
         }
     }
 
     @Override
     public RecordTableDTO delete(RecordTableDTO recordTableDTO, String login) {
+        log.info("Удаление бронирования");
         RecordTable recordTable = recordTableRepository.findByLoginAndId(login, recordTableDTO.getId())
                 .orElseThrow(() -> new RecordTableBadRequestException("Не найдена запись"));
         recordTableRepository.delete(recordTable);
+        log.info("Удаление бронирования успешно завершено");
         return recordTableDTO;
     }
 
     @Override
     public boolean checkPermissionByUserAndRecordId(String login, Long recordId) {
+        log.info("Проверка прав пользователя");
 
         try {
             try {
@@ -71,6 +78,7 @@ public class RecordTableAndEmployeeServiceImpl implements RecordTableAndEmployee
     }
 
     public List<RecordTableView> findAll() {
+        log.info("Поиск всех бронирований");
         return recordTableViewRepository.findAll();
     }
 

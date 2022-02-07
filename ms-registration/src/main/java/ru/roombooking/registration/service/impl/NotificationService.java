@@ -1,6 +1,7 @@
 package ru.roombooking.registration.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,12 @@ import ru.roombooking.registration.service.RegistrationService;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationService {
     private final RegistrationService registrationService;
 
     public void userRegistration(RegistrationDTO registrationDTO) {
+        log.info("Создание регистрации");
         if (!registrationService.doesUserExist(registrationDTO)) {
             registrationDTO.setPassword(passwordEncoder().encode(registrationDTO.getPassword()));
             registrationDTO.setAccountNonLocked(true);

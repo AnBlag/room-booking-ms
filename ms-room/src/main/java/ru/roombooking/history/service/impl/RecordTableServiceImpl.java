@@ -2,13 +2,13 @@ package ru.roombooking.history.service.impl;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.roombooking.history.exception.EmployeeRequestException;
-import ru.roombooking.history.exception.RecordTableBadRequestException;
+import ru.roombooking.history.exception.*;
 import ru.roombooking.history.feign.EmployeeFeignClient;
 import ru.roombooking.history.maper.VCMapper;
 import ru.roombooking.history.model.RecordTable;
@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class RecordTableServiceImpl implements RecordTableService {
     private final RecordTableRepository recordTableRepository;
     private final RecordTableViewRepository recordTableViewRepository;
@@ -39,12 +40,16 @@ public class RecordTableServiceImpl implements RecordTableService {
     private String batchUpdateRecordTable;
 
     @Override
+    @Transactional(rollbackFor = RecordTableSaveException.class)
     public RecordTableDTO save(RecordTableDTO model) {
+        log.info("Сохранение бронирования");
         return mapper.toDTO(recordTableRepository.save(toRecordTable(model)));
     }
 
     @Override
+    @Transactional(rollbackFor = RecordTableUpdateException.class)
     public RecordTableDTO update(RecordTableDTO model, Long aLong) {
+        log.info("Обновление бронирования");
         model.setId(aLong);
 
         RecordTable recordTable = recordTableRepository.findById(aLong)
@@ -56,12 +61,15 @@ public class RecordTableServiceImpl implements RecordTableService {
         recordTable.setStartEvent(model.getStart());
         recordTable.setEndEvent(model.getEnd());
         recordTableRepository.save(recordTable);
+        log.info("Обновление бронирования успешно завершено");
 
         return mapper.toDTO(recordTable);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<RecordTableDTO> findAll() {
+        log.info("Поиск всех бронирований");
         return recordTableRepository.findAll()
                 .stream()
                 .map(mapper::toDTO)
@@ -69,10 +77,13 @@ public class RecordTableServiceImpl implements RecordTableService {
     }
 
     @Override
+    @Transactional(rollbackFor = RecordTableDeleteException.class)
     public RecordTableDTO deleteById(Long aLong) {
+        log.info("Удаление бронирования по ID");
         RecordTableDTO recordTableDTO = mapper.toDTO(recordTableRepository.findById(aLong)
                 .orElseThrow(() -> new RecordTableBadRequestException("Не найден ID")));
         recordTableRepository.deleteById(aLong);
+        log.info("Удаление бронирования по ID успешно завершено");
         return recordTableDTO;
     }
 
@@ -93,6 +104,7 @@ public class RecordTableServiceImpl implements RecordTableService {
                 .collect(Collectors.toList());
     }
 
+    // FIXME: 07.02.2022 Выяснить что это за метод
     @Override
     public RecordTableDTO save(RecordTableDTO recordTableDTO, String login) {
         Optional<RecordTable> recordTable = recordTableRepository.findByLogin(login);
@@ -117,15 +129,18 @@ public class RecordTableServiceImpl implements RecordTableService {
 
     @Override
     public RecordTableDTO delete(RecordTableDTO recordTableDTO) {
+        log.info("Удаление бронирования");
         RecordTable recordTable = recordTableRepository.findByStartEventAndEndEvent(
                 recordTableDTO.getStart(), recordTableDTO.getEnd()
         ).orElseThrow(() -> new RecordTableBadRequestException("Не найдена запись"));
         recordTableRepository.delete(recordTable);
+        log.info("Удаление бронирования успешно завершено");
         return recordTableDTO;
     }
 
     @Override
     public List<RecordTableDTO> findByNumberRoom(Long id) {
+        log.info("Поиск бронирования по номеру комнаты");
         return recordTableRepository.findAllByNumberRoom(id)
                 .stream()
                 .map(mapper::toDTO)
@@ -134,12 +149,15 @@ public class RecordTableServiceImpl implements RecordTableService {
 
     @Override
     public RecordTableDTO findById(Long id) {
-        return mapper.toDTO(recordTableRepository.findById(id).orElseThrow(() -> new RecordTableBadRequestException("Не найдена запись")));
+        log.info("Поиск бронирования по ID");
+        return mapper.toDTO(recordTableRepository.findById(id)
+                .orElseThrow(() -> new RecordTableBadRequestException("Не найдена запись")));
     }
 
     @Transactional
     @Override
     public void batchUpdateRecords(List<RecordTableDTO> recordTableList) {
+        log.info("Обновление всех бронирований");
         jdbcTemplate.batchUpdate(batchUpdateRecordTable,
                 new BatchPreparedStatementSetter() {
                     @Override

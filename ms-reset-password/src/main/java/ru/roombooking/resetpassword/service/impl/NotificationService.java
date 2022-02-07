@@ -2,6 +2,7 @@ package ru.roombooking.resetpassword.service.impl;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,6 +26,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @PropertySource("classpath:password-text.properties")
+@Slf4j
 public class NotificationService {
     @Value("${reset.url}")
     private String resetPasswordUrl;
@@ -34,10 +36,12 @@ public class NotificationService {
     private final EmployeeFeignClient employeeFeignClient;
 
     public void forgetPassword(String username) {
-
+        log.info("Запрос на восстановление пароля");
         try {
+            log.info("Поиск профиля по логину");
             ProfileDTO profile = profileFeignClient.findByLogin(username);
             try {
+                log.info("Отправка сообщения для смены пароля");
                 EmployeeDTO employeeDTO = employeeFeignClient.findByProfileID(String.valueOf(profile.getId()));
                 String email = employeeDTO.getEmail();
                 mailFeignClient.send(new MailParams(email, "Forget password", "You forgot password" +
@@ -48,16 +52,20 @@ public class NotificationService {
         } catch (FeignException e) {
             throw new ProfileNotFoundException();
         }
+        log.info("Сообщение пользоваателю успешно отправлено");
     }
 
     @Transactional(readOnly = true)
     public ProfileDTO resetPassword(String confirmationToken) {
+        log.info("Проверка токена для сброса пароля");
         PasswordConfirmationToken passwordConfirmationToken = passwordConfirmationTokenService.findByToken(confirmationToken);
 
         try {
+            log.info("Получение данных профиля");
             ProfileDTO profile = profileFeignClient
                     .findById(String.valueOf(passwordConfirmationToken.getProfileId()));
             passwordConfirmationTokenService.deleteById(passwordConfirmationToken.getId());
+            log.info("Данные профиля получены успешно");
             return profile;
         } catch (FeignException e) {
             throw new ProfileNotFoundException();
@@ -66,7 +74,7 @@ public class NotificationService {
 
     @Transactional(rollbackFor = Exception.class)
     public void saveNewPassword(ProfileDTO newProfileData) {
-
+        log.info("Сохранение нового пароля");
         try {
             ProfileDTO profile = profileFeignClient.findByLogin(newProfileData.getLogin());
             profile.setPassword(passwordEncoder().encode(newProfileData.getPassword()));
@@ -74,6 +82,7 @@ public class NotificationService {
         } catch (FeignException e) {
             throw new SetNewPasswordException();
         }
+        log.info("Пароль успешно обновлен");
     }
 
     private PasswordConfirmationToken saveToken(ProfileDTO profile) {

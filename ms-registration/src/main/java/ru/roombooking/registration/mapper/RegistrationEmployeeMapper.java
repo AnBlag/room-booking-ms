@@ -11,9 +11,11 @@ import ru.roombooking.registration.model.dto.RegistrationDTO;
 public interface RegistrationEmployeeMapper extends VCMapper<EmployeeDTO, RegistrationDTO> {
     @Override
     @Mappings({
+            @Mapping(target = "id", source = "employeeDTO.id"),
             @Mapping(target = "surname", source = "employeeDTO.surname"),
             @Mapping(target = "name", source = "employeeDTO.name"),
             @Mapping(target = "middleName", source = "employeeDTO.middleName"),
+            @Mapping(target = "isActive", source = "employeeDTO.isActive"),
             @Mapping(target = "profileId", source = "employeeDTO.profileId"),
             @Mapping(target = "departmentId", source = "employeeDTO.departmentId"),
             @Mapping(target = "phone", source = "employeeDTO.phone"),
@@ -23,9 +25,11 @@ public interface RegistrationEmployeeMapper extends VCMapper<EmployeeDTO, Regist
 
     @Override
     @Mappings({
+            @Mapping(target = "id", source = "registrationDTO.id"),
             @Mapping(target = "surname", source = "registrationDTO.surname"),
             @Mapping(target = "name", source = "registrationDTO.name"),
             @Mapping(target = "middleName", source = "registrationDTO.middleName"),
+            @Mapping(target = "isActive", source = "registrationDTO.isActive"),
             @Mapping(target = "profileId", source = "registrationDTO.profileId"),
             @Mapping(target = "departmentId", source = "registrationDTO.departmentId"),
             @Mapping(target = "phone", source = "registrationDTO.phone"),
