@@ -95,7 +95,6 @@ public class RecordTableAndEmployeeServiceImpl implements RecordTableAndEmployee
         } catch (FeignException e) {
             throw new EmployeeRequestException();
         }
-
     }
 
     private VscRoom getRoomFromRecordTableDTO(RecordTableDTO recordTableDTO) {

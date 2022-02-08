@@ -64,6 +64,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Transactional
     @Override
     public void batchUpdateDepartment(List<Department> departmentList) {
+        log.info("Обновление всех департаментов");
         jdbcTemplate.batchUpdate("" + batchUpdateQuery,
                 new BatchPreparedStatementSetter() {
                     @Override

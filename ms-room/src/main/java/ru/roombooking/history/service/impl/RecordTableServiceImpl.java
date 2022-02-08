@@ -1,6 +1,5 @@
 package ru.roombooking.history.service.impl;
 
-import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,12 +7,14 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.roombooking.history.exception.*;
+import ru.roombooking.history.exception.RecordTableBadRequestException;
+import ru.roombooking.history.exception.RecordTableDeleteException;
+import ru.roombooking.history.exception.RecordTableSaveException;
+import ru.roombooking.history.exception.RecordTableUpdateException;
 import ru.roombooking.history.feign.EmployeeFeignClient;
 import ru.roombooking.history.maper.VCMapper;
 import ru.roombooking.history.model.RecordTable;
 import ru.roombooking.history.model.RecordTableView;
-import ru.roombooking.history.model.dto.EmployeeDTO;
 import ru.roombooking.history.model.dto.RecordTableDTO;
 import ru.roombooking.history.repository.RecordTableRepository;
 import ru.roombooking.history.repository.RecordTableViewRepository;
@@ -23,7 +24,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -98,33 +98,11 @@ public class RecordTableServiceImpl implements RecordTableService {
 
     @Override
     public List<RecordTableDTO> findAllByEmployeeFullNameAndRecordAndIsActiveAndNumberRoom() {
+        log.info("Поиск бронирования по ФИО, дате, активности и номеру комнаты");
         return recordTableViewRepository.findAll()
                 .stream()
                 .map(mapperView::toDTO)
                 .collect(Collectors.toList());
-    }
-
-    // FIXME: 07.02.2022 Выяснить что это за метод
-    @Override
-    public RecordTableDTO save(RecordTableDTO recordTableDTO, String login) {
-        Optional<RecordTable> recordTable = recordTableRepository.findByLogin(login);
-        if (recordTable.isPresent()) {
-
-            try {
-                EmployeeDTO employeeDTO = employeeFeignClient
-                        .findById(String.valueOf(recordTable.get().getEmployeeId()));
-                recordTableDTO.setEmail(employeeDTO.getEmail());
-                recordTableDTO.setIsActive(employeeDTO.getIsActive());
-            } catch (FeignException e) {
-                throw new EmployeeRequestException();
-            }
-            RecordTable recordTable1 = mapper.toModel(recordTableDTO);
-            recordTable1.setEmployeeId(recordTable.get().getEmployeeId());
-            recordTable1.setNumberRoomId(recordTable.get().getNumberRoomId());
-            return mapper.toDTO(recordTableRepository.save(recordTable1));
-        } else {
-            throw new RecordTableBadRequestException();
-        }
     }
 
     @Override
