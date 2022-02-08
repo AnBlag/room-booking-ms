@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.roombooking.front.exception.VscRoomRequestException;
 import ru.roombooking.front.feign.VscRoomFeignClient;
 
 @Controller
@@ -21,7 +20,7 @@ public class MainPageController {
         try {
             modelMap.addAttribute("vscroomlist", vscRoomFeignClient.findAll());
         } catch (FeignException e) {
-            throw new VscRoomRequestException();
+            log.info("Ошибка загрузки комнат");
         }
 
         return "index";

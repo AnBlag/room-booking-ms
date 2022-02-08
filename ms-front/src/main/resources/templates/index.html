@@ -22,7 +22,7 @@
         <a href="/" class="nav__logo hidden-sm hidden-xs">
             <img width="223" src="/img/logo_rus.gif" height="41" alt="Метровагонмаш">
         </a>
-        <div sec:authorize = "isAuthenticated()" class="dropdown">
+        <div sec:authorize = "isAuthenticated()" th:if="${vscroomlist != null}" class="dropdown">
             <a class="btn btn-secondary btn-lg dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                 Список комнат ВКС
             </a>
@@ -32,6 +32,9 @@
                     <li><a class="dropdown-item" th:href="${'/room/' + vscroom.numberRoom}" th:text="${vscroom.numberRoom}"></a></li>
                 </div>
             </ul>
+        </div>
+        <div sec:authorize = "isAuthenticated()" th:if="${vscroomlist == null}" >
+            <p style="color: red">Ошибка загрузки комнат!</p>
         </div>
         <div class="auth-panel">
             <a sec:authorize="hasAuthority('admin:read')" class="btn btn-outline-secondary" href="/admin/vscrooms/">Панель администратора</a>
