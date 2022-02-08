@@ -21,5 +21,5 @@ public interface HistoryFeignClient {
             method = DELETE,
             value = "/delete-by-id/{id}",
             produces = APPLICATION_JSON_VALUE)
-    RecordTableDTO deleteRecordById(@PathVariable String id);
+    RecordTableDTO deleteById(@PathVariable String id);
 }

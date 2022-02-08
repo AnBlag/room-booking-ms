@@ -24,4 +24,13 @@ public class HistoryNotificationService {
             throw new RecordTableRequestException();
         }
     }
+
+    public RecordTableDTO deleteById(String id) {
+        log.info("Удаление бронирования из истории");
+        try {
+            return historyFeignClient.deleteById(id);
+        } catch (FeignException e) {
+            throw new RecordTableRequestException();
+        }
+    }
 }

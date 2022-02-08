@@ -126,12 +126,9 @@
             <td>
                 <input th:if="${record.end!= null}" th:value="${record.end}" type="text" size="2" id="endEvent" style="text-align: center" class="form-control" name="endEvent" readonly/>
             </td>
-            <!--
             <td>
-                <a th:href="${'/admin/records/delete/' + record.id}" class="btn btn-outline-danger">Удалить</a>
+                <a th:href="${'/admin/history/delete/' + record.id}" class="btn btn-outline-danger">Удалить</a>
             </td>
-            -->
-
         </tr>
         <!-- </form>-->
         </tbody>

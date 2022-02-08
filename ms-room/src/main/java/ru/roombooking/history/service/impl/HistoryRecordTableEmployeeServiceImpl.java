@@ -11,6 +11,7 @@ import ru.roombooking.history.repository.HistoryRecordTableEmployeeRepository;
 import ru.roombooking.history.service.HistoryRecordTableEmployeeService;
 
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,14 +40,18 @@ public class HistoryRecordTableEmployeeServiceImpl implements HistoryRecordTable
         log.info("Поиск всех бронирований в истории");
         return recordTableRepository.findAll()
                 .stream()
+                .sorted(Comparator.comparing(HistoryRecordTableEmployee::getId))
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public RecordTableDTO deleteById(Long aLong) {
-        log.info("Удаление бронирования в истории");
-        return mapper.toDTO(recordTableRepository.findById(aLong)
+        log.info("Удаление бронирования из истории");
+        RecordTableDTO recordTableDTO = mapper.toDTO(recordTableRepository.findById(aLong)
                 .orElseThrow(() -> new RecordTableBadRequestException("Не найден ID")));
+        recordTableRepository.deleteById(aLong);
+        log.info("Удаление бронирования из истории по ID успешно завершено");
+        return recordTableDTO;
     }
 }

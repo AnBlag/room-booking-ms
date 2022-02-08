@@ -27,5 +27,5 @@ public interface HistoryAdminFeignClient {
             method = DELETE,
             value = "/delete/{id}",
             produces = APPLICATION_JSON_VALUE)
-    void deleteRecord(@PathVariable String id);
+    RecordTableDTO deleteById(@PathVariable String id);
 }

@@ -23,7 +23,6 @@ public class HistoryController {
 
     @DeleteMapping("/delete-by-id/{id}")
     public ResponseEntity<RecordTableDTO> deleteHistoryRecordById(@PathVariable String id) {
-        //return ResponseEntity.ok(recordTableNotificationService.deleteRecordById(id));
-        return null;
+        return ResponseEntity.ok(historyNotificationService.deleteById(Long.parseLong(id)));
     }
 }

@@ -20,7 +20,7 @@ public class HistoryAdminController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteRecord(@PathVariable String id) {
-
+    public ResponseEntity<RecordTableDTO> deleteById(@PathVariable String id) {
+        return ResponseEntity.ok(historyNotificationService.deleteById(id));
     }
 }
