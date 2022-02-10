@@ -1,5 +1,4 @@
-<html xmlns:th="http://www.thymeleaf.org" lang="ru"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -12,8 +11,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="UTF-8" />
     <meta name="robots" content="none"/>
     <meta name="description" content="Метровагонмаш - производит вагоны метро, дизель поезда, рельсовые автобусы." />
     <meta name="format-detection" content="telephone=no">
@@ -23,22 +20,6 @@
 </head>
 <body>
 
-
-
-<!--<header>
-    <nav class="b-nav">
-
-        <a href="/templates/index.html" class="b-nav__logo hidden-sm hidden-xs">
-            <img width="223" src="/img/logo_rus.gif" height="41" alt="Метровагонмаш">
-        </a>
-        <div class="auth-panel">
-            <h2>
-                <a sec:authorize="isAnonymous()" class="btn btn-outline-primary" href="/auth/login" role="button">Вход</a>
-                <a sec:authorize="isAuthenticated()" class="btn btn-outline-primary" href="/auth/logout" role="button">Выход</a>
-            </h2>
-        </div>
-    </nav>
-</header>-->
 
 
 
@@ -69,7 +50,6 @@
 
         <tbody>
 
-        <!--    <form method="post" action="/save-user" accept-charset="UTF-8">-->
         <tr th:each="profile : ${employeeList}">
             <td>
                 <!--            <label for="id"></label>-->
@@ -89,11 +69,9 @@
                         <option value="red" th:text="${profile.banned}"></option>
                         <option value="true" th:if="${profile.banned != true}" >true</option>
                         <option value="false" th:if="${profile.banned != false}" >false</option>
-                        <!--                    <option selected value="green">НЕ активный</option>-->
                     </select>
                 </div></td>
         </tr>
-        <!-- </form>-->
         </tbody>
 
     </table>

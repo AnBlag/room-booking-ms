@@ -29,19 +29,8 @@
             <h2 class="form-heading">Редактирование профиля</h2>
             <div class="form-group">
                 <p class="login-str"></p>
-                <!--
-                <p class="login-message" style="color: red" th:if="${loginErrorMessage == true}">Такой логин уже существует!</p>
-                -->
                 <input tabindex="1" placeholder="Логин" type="text" name="username" class="form-control" id="username" th:field="${profileData.login}" readonly/>
                 </p>
-                <!--
-                <div class="form-group">
-                    <p class="pass-str"></p>
-                    <input tabindex="2" placeholder="Пароль" type="password" class="form-control" id="password" th:field="*{password}" required/>
-                    <p class="pass-str"></p>
-                    <input tabindex="3" placeholder="Повторите пароль" class="form-control" type="password" id="confirm_password" required/>
-                </div>
-                -->
                 <div class="form-floating">
                     <p class="name-str"></p>
                     <input tabindex="2" placeholder="Имя" type="text" class="form-control" id="name" th:field="${employeeData.name}" required/>

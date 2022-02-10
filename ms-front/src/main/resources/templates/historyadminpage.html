@@ -39,9 +39,6 @@
 </header>
 
 
-<!--
-<div th:if="${employeeList==null}">
--->
 <ul class="nav nav-pills ">
     <li class="nav-item">
         <a class="nav-link "  href="/admin/employees/">Сотрудники</a>
@@ -69,9 +66,6 @@
             <tr>
                 <th>ID</th>
                 <th>ID сотрудника</th>
-                <!--<th>Имя</th>
-                <th>Фамилия</th>
-                <th>Отчество</th>-->
                 <th>EMAIL</th>
                 <th>Комната</th>
                 <th>Блокировка</th>
@@ -82,66 +76,36 @@
             </tr>
 
         <tbody>
-
-        <!--    <form method="post" action="/save-user" accept-charset="UTF-8">-->
         <tr th:each="record : ${recordTableDTOList}">
             <td>
-                <!--<input th:if="${record.id!= null}" th:value="${record.id}" type="text" size="2" id="id" style="text-align: center" class="form-control" name="id" readonly/>-->
                 <a th:if="${record.id!= null}" th:text="${record.id}"></a>
             </td>
             <td>
-                <!--<input th:if="${record.employeeId!= null}" th:value="${record.employeeId}" type="text" size="2" id="employeeId" style="text-align: center" class="form-control" name="employeeId" readonly/>-->
                 <a th:if="${record.employeeId!= null}" th:text="${record.employeeId}"></a>
             </td>
-            <!--<td>
-                <input th:if="${record.employeeName!= null}" th:value="${record.employeeName}" type="text" size="2" id="employeeName" style="text-align: center" class="form-control" name="employeeName" readonly/>
-            </td>
             <td>
-                <input th:if="${record.employeeSurname!= null}" th:value="${record.employeeSurname}" type="text" size="2" id="employeeSurname" style="text-align: center" class="form-control" name="employeeSurname" readonly/>
-            </td>
-            <td>
-                <input th:if="${record.employeeMiddleName!= null}" th:value="${record.employeeMiddleName}" type="text" size="2" id="employeeMiddleName" style="text-align: center" class="form-control" name="employeeMiddleName" readonly/>
-            </td>-->
-            <td>
-                <!--<input th:if="${record.email!= null}" th:value="${record.email}" type="email" size="2" id="email" style="text-align: center" class="form-control" name="email" readonly/>-->
                 <a th:if="${record.email!= null}" th:text="${record.email}"></a>
             </td>
             <td>
-                <!--<input th:if="${record.numberRoomId!= null}" th:value="${record.numberRoomId}" type="text" size="2" id="vcsRoomNumberRoom" style="text-align: center" class="form-control" name="vcsRoomNumberRoom" readonly/>-->
                 <a th:if="${record.numberRoomId!= null}" th:text="${record.numberRoomId}"></a>
             </td>
             <td>
-                <!--<div>
-                    <select tabindex="10" class="form-select" name="isActive" th:value="${record.isActive}" >
-                        <option th:value="false" th:if="${!record.isActive}" >Заблокирован</option>
-                        <option th:value="true" th:if="${record.isActive}">Разблокирован</option>
-                        <option th:value="false" th:if="${record.isActive != false}">Заблокирован</option>
-                        <option th:value="true" th:if="${record.isActive != true}">Разблокирован</option>
-                    </select>
-                </div>-->
-
                 <a th:if="${record.isActive}">Разблокирован</a>
                 <a th:if="${!record.isActive}">Заблокирован</a>
-
-                <!-- <input th:if="${record.isActive!= null}" th:value="${record.isActive}" type="text" size="2" id="isActive" style="text-align: center" class="form-control" name="isActive"/> -->
             </td>
             <td>
-                <!--<input th:if="${record.title!= null}" th:value="${record.title}" type="text" size="2" id="title" style="text-align: center" class="form-control" name="title" readonly/>-->
                 <a th:if="${record.title!= null}" th:text="${record.title}"></a>
             </td>
             <td>
-                <!--<input th:if="${record.start!= null}" th:value="${record.start}" type="text" size="2" id="startEvent" style="text-align: center" class="form-control" name="startEvent" readonly/>-->
                 <a th:if="${record.start!= null}" th:text="${record.start}"></a>
             </td>
             <td>
-                <!--<input th:if="${record.end!= null}" th:value="${record.end}" type="text" size="2" id="endEvent" style="text-align: center" class="form-control" name="endEvent" readonly/>-->
                 <a th:if="${record.end!= null}" th:text="${record.end}"></a>
             </td>
             <td>
                 <a th:href="${'/admin/history/delete/' + record.id}" class="btn btn-outline-danger">Удалить</a>
             </td>
         </tr>
-        <!-- </form>-->
         </tbody>
         </thead>
 

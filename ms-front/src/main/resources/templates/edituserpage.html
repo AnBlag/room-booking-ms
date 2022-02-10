@@ -28,19 +28,8 @@
             <h2 class="form-heading">Редактирование пользователя</h2>
             <div class="form-group">
                 <p class="login-str"></p>
-                <!--
-                <p class="login-message" style="color: red" th:if="${loginErrorMessage == true}">Такой логин уже существует!</p>
-                -->
                 <input tabindex="1" placeholder="Логин" type="text" name="username" class="form-control" id="username" th:field="${profileData.login}" readonly/>
                 </p>
-                <!--
-                <div class="form-group">
-                    <p class="pass-str"></p>
-                    <input tabindex="2" placeholder="Пароль" type="password" class="form-control" id="password" th:field="*{password}" required/>
-                    <p class="pass-str"></p>
-                    <input tabindex="3" placeholder="Повторите пароль" class="form-control" type="password" id="confirm_password" required/>
-                </div>
-                -->
                 <div class="form-floating">
                     <p class="name-str"></p>
                     <input tabindex="2" placeholder="Имя" type="text" class="form-control" id="name" th:field="${employeeData.name}" required/>
@@ -75,39 +64,6 @@
                     </select>
                     <label for="floatingSelect">Укажите Ваш отдел</label>
                 </div>
-
-                <!--<div class="form-floating">
-                    <p class="role-sel"></p>
-                    <select tabindex="10" class="form-select" id="floatingSelectRole"
-                            aria-label="Default select example" th:field="${profileData.role}">
-                        <option th:each="role : ${profileData.role.values()}" th:value="${role}"
-                                th:text="${role}"></option>
-                    </select>
-                    <label for="floatingSelectRole">Роль</label>
-                </div>
-
-                <div class="form-floating">
-                    <p class="banned-sel"></p>
-                    <select tabindex="11" class="form-select" id="floatingSelectBanned"
-                            aria-label="Default select example" th:field="${profileData.accountNonLocked}">
-                        <option th:value="${profileData.accountNonLocked}" th:text="${profileData.accountNonLocked}" ></option>
-                        <option th:value="false" th:if="${profileData.accountNonLocked != false}" >false</option>
-                        <option th:value="true" th:if="${profileData.accountNonLocked != true}" >true</option>
-                    </select>
-                    <label for="floatingSelectRole">Banned</label>
-                </div>
-
-                <div class="form-floating">
-                    <p class="is-active-sel"></p>
-                    <select tabindex="12" class="form-select" id="floatingSelectIsActive"
-                            aria-label="Default select example" th:field="${profileData.isActive}">
-                        <option th:value="${profileData.isActive}" th:text="${profileData.isActive}" ></option>
-                        <option th:value="false" th:if="${profileData.isActive != false}" >false</option>
-                        <option th:value="true" th:if="${profileData.isActive != true}" >true</option>
-                    </select>
-                    <label for="floatingSelectIsActive">IsActive</label>
-                </div>-->
-
                 <div class="btn-group">
                     <input type="hidden" name="_csrf" value="{{_csrf.token}}">
                     <div>

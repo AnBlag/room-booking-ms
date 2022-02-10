@@ -22,7 +22,6 @@
 <body>
 
 
-
 <header>
     <nav class="nav ">
         <a href="/" class="nav__logo hidden-sm hidden-xs">
@@ -39,9 +38,6 @@
 </header>
 
 
-<!--
-<div th:if="${employeeList==null}">
--->
 <ul class="nav nav-pills ">
     <li class="nav-item">
         <a class="nav-link "  href="/admin/employees/">Сотрудники</a>
@@ -170,7 +166,6 @@
 
         <tbody>
 
-        <!--    <form method="post" action="/save-user" accept-charset="UTF-8">-->
         <tr th:each="record : ${recordTableViewList}">
             <td>
                 <input th:if="${record.id!= null}" th:value="${record.id}" type="text" size="2" id="id" style="text-align: center" class="form-control" name="id" readonly/>
@@ -202,7 +197,6 @@
                         <option th:value="true" th:if="${record.isActive != true}">Разблокирован</option>
                     </select>
                 </div>
-                <!-- <input th:if="${record.isActive!= null}" th:value="${record.isActive}" type="text" size="2" id="isActive" style="text-align: center" class="form-control" name="isActive"/> -->
             </td>
             <td>
                 <input th:if="${record.title!= null}" th:value="${record.title}" type="text" size="2" id="title" style="text-align: center" class="form-control" name="title"/>
@@ -218,7 +212,6 @@
             </td>
 
         </tr>
-        <!-- </form>-->
         </tbody>
         </thead>
 

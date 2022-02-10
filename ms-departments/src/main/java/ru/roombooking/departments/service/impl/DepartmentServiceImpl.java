@@ -48,7 +48,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department deleteById(Long aLong) {
         log.info("Удаление департамента по ID");
         Department department = departmentRepository.findById(aLong)
-                .orElseThrow(() -> new DepartmentBadRequestException("Не найден ID"));
+                .orElseThrow(DepartmentBadRequestException::new);
         departmentRepository.deleteById(aLong);
         log.info("Удаление департамента по ID успешно завершено");
         return department;
@@ -58,7 +58,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department findById(Long aLong) {
         log.info("Поиск департамента по ID");
         return departmentRepository.findById(aLong)
-                .orElseThrow(() -> new DepartmentBadRequestException("Не найден ID"));
+                .orElseThrow(DepartmentBadRequestException::new);
     }
 
     @Transactional

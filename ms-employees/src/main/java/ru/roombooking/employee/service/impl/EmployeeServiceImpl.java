@@ -28,7 +28,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final VCMapper<Employee, EmployeeDTO> myMapper;
     private final ProfileFeignClient profileFeignClient;
-    private final DepartmentFeignClient departmentFeignClient;
     private final JdbcTemplate jdbcTemplate;
     @Value("${sql.query.update.employee}")
     private String SQL_UPDATE_EMPLOYEE;
@@ -122,24 +121,5 @@ public class EmployeeServiceImpl implements EmployeeService {
         } catch (FeignException e) {
             throw new ProfileRequestException();
         }
-    }
-
-    private Employee toEmployee(EmployeeDTO model) {
-        Employee employee = myMapper.toModel(model);
-
-        try {
-            employee.setDepartmentId(departmentFeignClient
-                    .findById(String.valueOf(model.getDepartmentId())).getId());
-        } catch (FeignException e) {
-            throw new DepartmentRequestException();
-        }
-
-        try {
-            employee.setProfileId(profileFeignClient.findById(String.valueOf(model.getProfileId())).getId());
-        } catch (FeignException e) {
-            throw new ProfileRequestException();
-        }
-
-        return employee;
     }
 }

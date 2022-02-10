@@ -52,7 +52,6 @@
 
             <tbody>
 
-            <!--    <form method="post" action="/save-user" accept-charset="UTF-8">-->
             <tr th:each="profile : ${employeeList}">
                 <td>
                     <!--            <label for="id"></label>-->
@@ -72,11 +71,9 @@
                             <option value="red" th:text="${profile.banned}"></option>
                             <option value="true" th:if="${profile.banned != true}" >true</option>
                             <option value="false" th:if="${profile.banned != false}" >false</option>
-                            <!--                    <option selected value="green">НЕ активный</option>-->
                         </select>
                     </div></td>
             </tr>
-            <!-- </form>-->
             </tbody>
 
         </table>
