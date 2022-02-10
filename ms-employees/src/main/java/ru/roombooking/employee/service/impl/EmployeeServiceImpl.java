@@ -31,7 +31,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final DepartmentFeignClient departmentFeignClient;
     private final JdbcTemplate jdbcTemplate;
     @Value("${sql.query.update.employee}")
-    private String updateEmployeeQuery;
+    private String SQL_UPDATE_EMPLOYEE;
 
     @Override
     public EmployeeDTO save(EmployeeDTO model) {
@@ -43,7 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void restore(EmployeeDTO model) {
         log.info("Восстановление сотрудника");
         Employee employee = myMapper.toModel(model);
-        jdbcTemplate.update(updateEmployeeQuery,
+        jdbcTemplate.update(SQL_UPDATE_EMPLOYEE,
                 employee.getId(),
                 employee.getDepartmentId(),
                 employee.getEmail(),

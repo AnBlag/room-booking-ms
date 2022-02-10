@@ -11,7 +11,6 @@ import ru.roombooking.history.exception.RecordTableBadRequestException;
 import ru.roombooking.history.exception.RecordTableDeleteException;
 import ru.roombooking.history.exception.RecordTableSaveException;
 import ru.roombooking.history.exception.RecordTableUpdateException;
-import ru.roombooking.history.feign.EmployeeFeignClient;
 import ru.roombooking.history.maper.VCMapper;
 import ru.roombooking.history.model.RecordTable;
 import ru.roombooking.history.model.RecordTableView;
@@ -35,9 +34,8 @@ public class RecordTableServiceImpl implements RecordTableService {
     private final VCMapper<RecordTable, RecordTableDTO> mapper;
     private final VCMapper<RecordTableView, RecordTableDTO> mapperView;
     private final JdbcTemplate jdbcTemplate;
-    private final EmployeeFeignClient employeeFeignClient;
     @Value("${sql.query.batch-update.record-table}")
-    private String batchUpdateRecordTable;
+    private String SQL_BATCH_UPDATE_RECORD_TABLE;
 
     @Override
     @Transactional(rollbackFor = RecordTableSaveException.class)
@@ -136,7 +134,7 @@ public class RecordTableServiceImpl implements RecordTableService {
     @Override
     public void batchUpdateRecords(List<RecordTableDTO> recordTableList) {
         log.info("Обновление всех бронирований");
-        jdbcTemplate.batchUpdate(batchUpdateRecordTable,
+        jdbcTemplate.batchUpdate(SQL_BATCH_UPDATE_RECORD_TABLE,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {

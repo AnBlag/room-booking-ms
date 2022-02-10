@@ -23,7 +23,7 @@ public class VscRoomServiceImpl implements VscRoomService {
     private final VscRoomRepository vscRepository;
     private final JdbcTemplate jdbcTemplate;
     @Value("${sql.query.batch-update.vsc-room-list}")
-    private String batchUpdateVscRoom;
+    private String SQL_BATCH_UPDATE_VSC_ROOM;
 
     @Override
     public VscRoom save(VscRoom model) {
@@ -72,7 +72,7 @@ public class VscRoomServiceImpl implements VscRoomService {
     @Override
     public void batchUpdateVscRoom(List<VscRoom> vscRoomList) {
         log.info("Обновление всех комнат");
-        jdbcTemplate.batchUpdate(batchUpdateVscRoom,
+        jdbcTemplate.batchUpdate(SQL_BATCH_UPDATE_VSC_ROOM,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {

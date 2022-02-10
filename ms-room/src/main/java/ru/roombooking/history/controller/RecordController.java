@@ -1,7 +1,6 @@
 package ru.roombooking.history.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.roombooking.history.model.dto.RecordTableDTO;
@@ -11,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@PropertySource("classpath:record-text.properties")
 @RequestMapping("/record")
 public class RecordController {
     private final RecordTableNotificationService recordTableNotificationService;

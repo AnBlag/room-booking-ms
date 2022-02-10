@@ -23,7 +23,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     private final DepartmentRepository departmentRepository;
     private final JdbcTemplate jdbcTemplate;
     @Value("${sql.query.batch-update}")
-    private String batchUpdateQuery;
+    private String SQL_BATCH_UPDATE;
 
     @Override
     public Department save(Department model) {
@@ -65,7 +65,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public void batchUpdateDepartment(List<Department> departmentList) {
         log.info("Обновление всех департаментов");
-        jdbcTemplate.batchUpdate("" + batchUpdateQuery,
+        jdbcTemplate.batchUpdate(SQL_BATCH_UPDATE,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {

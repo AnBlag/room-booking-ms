@@ -25,9 +25,9 @@ public class EmployeeViewServiceImpl implements RoomService<EmployeeView, Long> 
     private final JdbcTemplate jdbcTemplate;
     private final EmployeeViewRepository employeeViewRepository;
     @Value("${sql.query.batch-update.employee}")
-    private String batchUpdateEmployeeQuery;
+    private String SQL_BATCH_UPDATE_EMPLOYEE;
     @Value("${sql.query.batch-update.profile}")
-    private String batchUpdateProfileQuery;
+    private String SQL_BATCH_UPDATE_PROFILE;
 
     @Transactional
     @Override
@@ -77,7 +77,7 @@ public class EmployeeViewServiceImpl implements RoomService<EmployeeView, Long> 
     }
 
     private void batchUpdateProfileAndEmployee(List<ProfileDTO> profileList, List<Employee> employeeList) {
-        jdbcTemplate.batchUpdate(batchUpdateEmployeeQuery,
+        jdbcTemplate.batchUpdate(SQL_BATCH_UPDATE_EMPLOYEE,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -96,7 +96,7 @@ public class EmployeeViewServiceImpl implements RoomService<EmployeeView, Long> 
                 });
         log.info("Сохранение сотрудников успешно завершено");
 
-        jdbcTemplate.batchUpdate(batchUpdateProfileQuery,
+        jdbcTemplate.batchUpdate(SQL_BATCH_UPDATE_PROFILE,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
