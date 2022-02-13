@@ -26,7 +26,7 @@ public class NotificationService {
 
             registrationService.saveEmployeeAndProfile(registrationDTO);
         } else {
-            throw new UserRegistrationException("Такой логин уже существует!");
+            throw new UserRegistrationException();
         }
     }
 

@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import static org.springframework.http.HttpStatus.*;
 
-@ResponseStatus(SERVICE_UNAVAILABLE)
+@ResponseStatus(value = SERVICE_UNAVAILABLE, reason = "Ошибка обновления департаментов")
 public class DepartmentsUpdateException extends RuntimeException {
     public DepartmentsUpdateException() {
         super();

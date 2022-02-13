@@ -4,6 +4,7 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import static ru.roombooking.history.exception.ExceptionMessage.*;
 import ru.roombooking.history.exception.MailDoNotSendException;
 import ru.roombooking.history.exception.RecordTableBadRequestException;
 import ru.roombooking.history.exception.RecordTableUpdateException;
@@ -104,7 +105,7 @@ public class RecordTableNotificationService {
 
     private void checkPermissionToEditRecord(String login, RecordTableDTO recordTableDTO) {
         if (!recordTableAndEmployeeService.checkPermissionByUserAndRecordId(login, recordTableDTO.getId())) {
-            throw new RecordTableBadRequestException("Нет доступа к записи!");
+            throw new RecordTableBadRequestException(NO_RECORD_ACCESS.getMessage());
         }
     }
 

@@ -18,7 +18,6 @@ public class EmployeeAndProfileServiceImpl implements EmployeeAndProfileService 
     private final EmployeeFeignClient employeeFeignClient;
     private final ProfileFeignClient profileFeignClient;
 
-    // FIXME: 31.01.2022 вопрос с синхронным update и delete
     @Override
     public void update(EmployeeDTO employeeDTO, ProfileDTO profile) {
         log.info("Обновление данных о пользователе");

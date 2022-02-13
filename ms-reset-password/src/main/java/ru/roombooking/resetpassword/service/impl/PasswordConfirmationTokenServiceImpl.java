@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.roombooking.resetpassword.exception.TokenDeleteException;
+import ru.roombooking.resetpassword.exception.TokenNotFoundException;
 import ru.roombooking.resetpassword.exception.TokenSaveException;
 import ru.roombooking.resetpassword.model.PasswordConfirmationToken;
 import ru.roombooking.resetpassword.repository.PasswordConfirmationTokenRepository;
@@ -23,7 +24,7 @@ public class PasswordConfirmationTokenServiceImpl implements PasswordConfirmatio
     public PasswordConfirmationToken findByToken(String token) {
         log.info("Поиск токена");
         return passwordConfirmationTokenRepository.findByToken(token)
-                .orElseThrow(() -> new NoSuchElementException("Не найден токен"));
+                .orElseThrow(TokenNotFoundException::new);
     }
 
     @Override
@@ -38,7 +39,7 @@ public class PasswordConfirmationTokenServiceImpl implements PasswordConfirmatio
     public PasswordConfirmationToken deleteById(Long aLong) {
         log.info("Удаление токена по ID");
         PasswordConfirmationToken passwordConfirmationToken = passwordConfirmationTokenRepository.findById(aLong)
-                .orElseThrow(() -> new NoSuchElementException("Не найден токен"));
+                .orElseThrow(TokenNotFoundException::new);
         passwordConfirmationTokenRepository.deleteById(aLong);
         return passwordConfirmationToken;
     }

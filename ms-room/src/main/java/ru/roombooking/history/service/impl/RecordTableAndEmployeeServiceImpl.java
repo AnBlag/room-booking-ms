@@ -17,6 +17,7 @@ import ru.roombooking.history.repository.RecordTableRepository;
 import ru.roombooking.history.repository.RecordTableViewRepository;
 import ru.roombooking.history.repository.VscRoomRepository;
 import ru.roombooking.history.service.RecordTableAndEmployeeService;
+import static ru.roombooking.history.exception.ExceptionMessage.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +41,7 @@ public class RecordTableAndEmployeeServiceImpl implements RecordTableAndEmployee
                         getRoomFromRecordTableDTO(recordTableDTO).getId());
 
         if (overlappingRecordTable.isPresent()) {
-            throw new RecordTableBadRequestException("Данное время занято");
+            throw new RecordTableBadRequestException(THIS_TIME_IS_BUSY.getMessage());
         } else {
             log.info("Сохрание нового бронирования успешно завершено");
             return mapper.toDTO(recordTableRepository.save(toRecordTable(recordTableDTO, login)));
@@ -51,7 +52,7 @@ public class RecordTableAndEmployeeServiceImpl implements RecordTableAndEmployee
     public RecordTableDTO delete(RecordTableDTO recordTableDTO, String login) {
         log.info("Удаление бронирования");
         RecordTable recordTable = recordTableRepository.findByLoginAndId(login, recordTableDTO.getId())
-                .orElseThrow(() -> new RecordTableBadRequestException("Не найдена запись"));
+                .orElseThrow(() -> new RecordTableBadRequestException(RECORD_NOT_FOUND.getMessage()));
         recordTableRepository.delete(recordTable);
         log.info("Удаление бронирования успешно завершено");
         return recordTableDTO;
@@ -99,6 +100,6 @@ public class RecordTableAndEmployeeServiceImpl implements RecordTableAndEmployee
 
     private VscRoom getRoomFromRecordTableDTO(RecordTableDTO recordTableDTO) {
         return vscRoomRepository.findByNumberRoom(Long.parseLong(recordTableDTO.getRoomId()))
-                .orElseThrow(() -> new VscRoomBadRequestException("Не найден id комнаты"));
+                .orElseThrow(() -> new VscRoomBadRequestException(ID_ROOM_NOT_FOUND.getMessage()));
     }
 }

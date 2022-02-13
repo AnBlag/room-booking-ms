@@ -24,10 +24,10 @@ import java.util.stream.Collectors;
 public class EmployeeViewServiceImpl implements RoomService<EmployeeView, Long> {
     private final JdbcTemplate jdbcTemplate;
     private final EmployeeViewRepository employeeViewRepository;
-    @Value("${sql.query.batch-update.employee}")
-    private String SQL_BATCH_UPDATE_EMPLOYEE;
-    @Value("${sql.query.batch-update.profile}")
-    private String SQL_BATCH_UPDATE_PROFILE;
+    private String SQL_BATCH_UPDATE_EMPLOYEE =
+            "update employee set email=?, name=?, middle_name=?, surname=?, phone=? where profile_id=?";
+    private String SQL_BATCH_UPDATE_PROFILE
+            = "update profile set account_non_locked = ? where id=?";
 
     @Transactional
     @Override

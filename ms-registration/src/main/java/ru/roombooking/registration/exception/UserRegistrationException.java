@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import static org.springframework.http.HttpStatus.*;
 
-@ResponseStatus(BAD_REQUEST)
+@ResponseStatus(value = BAD_REQUEST, reason = "Такой логин уже существует!")
 public class UserRegistrationException extends RuntimeException {
     public UserRegistrationException() {
         super();

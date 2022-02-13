@@ -18,6 +18,7 @@ import ru.roombooking.history.model.dto.RecordTableDTO;
 import ru.roombooking.history.repository.RecordTableRepository;
 import ru.roombooking.history.repository.RecordTableViewRepository;
 import ru.roombooking.history.service.RecordTableService;
+import static ru.roombooking.history.exception.ExceptionMessage.*;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -34,8 +35,8 @@ public class RecordTableServiceImpl implements RecordTableService {
     private final VCMapper<RecordTable, RecordTableDTO> mapper;
     private final VCMapper<RecordTableView, RecordTableDTO> mapperView;
     private final JdbcTemplate jdbcTemplate;
-    @Value("${sql.query.batch-update.record-table}")
-    private String SQL_BATCH_UPDATE_RECORD_TABLE;
+    private String SQL_BATCH_UPDATE_RECORD_TABLE =
+            "update record_table set employee_id=?, number_room_id=?, is_active=?, email=?, title=?, start_event=?, end_event=? where id=?";
 
     @Override
     @Transactional(rollbackFor = RecordTableSaveException.class)
@@ -51,7 +52,7 @@ public class RecordTableServiceImpl implements RecordTableService {
         model.setId(aLong);
 
         RecordTable recordTable = recordTableRepository.findById(aLong)
-                .orElseThrow(() -> new RecordTableBadRequestException("Не найдена запись"));
+                .orElseThrow(() -> new RecordTableBadRequestException(RECORD_NOT_FOUND.getMessage()));
 
         recordTable.setTitle(model.getTitle());
         recordTable.setEmail(model.getEmail());
@@ -79,7 +80,7 @@ public class RecordTableServiceImpl implements RecordTableService {
     public RecordTableDTO deleteById(Long aLong) {
         log.info("Удаление бронирования по ID");
         RecordTableDTO recordTableDTO = mapper.toDTO(recordTableRepository.findById(aLong)
-                .orElseThrow(() -> new RecordTableBadRequestException("Не найден ID")));
+                .orElseThrow(() -> new RecordTableBadRequestException(ID_NOT_FOUND.getMessage())));
         recordTableRepository.deleteById(aLong);
         log.info("Удаление бронирования по ID успешно завершено");
         return recordTableDTO;
@@ -88,7 +89,8 @@ public class RecordTableServiceImpl implements RecordTableService {
     private RecordTable toRecordTable(RecordTableDTO model) {
         RecordTable recordTable = mapper.toModel(model);
         RecordTable temp = recordTableRepository.findByNumberRoomIdAndEmployeeId(recordTable.getNumberRoomId(),
-                recordTable.getEmployeeId()).orElseThrow(() -> new RecordTableBadRequestException("Не найден"));
+                recordTable.getEmployeeId()).orElseThrow(() ->
+                new RecordTableBadRequestException(RECORD_NOT_FOUND.getMessage()));
         recordTable.setNumberRoomId(temp.getNumberRoomId());
         recordTable.setEmployeeId(temp.getEmployeeId());
         return recordTable;
@@ -108,7 +110,7 @@ public class RecordTableServiceImpl implements RecordTableService {
         log.info("Удаление бронирования");
         RecordTable recordTable = recordTableRepository.findByStartEventAndEndEvent(
                 recordTableDTO.getStart(), recordTableDTO.getEnd()
-        ).orElseThrow(() -> new RecordTableBadRequestException("Не найдена запись"));
+        ).orElseThrow(() -> new RecordTableBadRequestException(RECORD_NOT_FOUND.getMessage()));
         recordTableRepository.delete(recordTable);
         log.info("Удаление бронирования успешно завершено");
         return recordTableDTO;
@@ -127,7 +129,7 @@ public class RecordTableServiceImpl implements RecordTableService {
     public RecordTableDTO findById(Long id) {
         log.info("Поиск бронирования по ID");
         return mapper.toDTO(recordTableRepository.findById(id)
-                .orElseThrow(() -> new RecordTableBadRequestException("Не найдена запись")));
+                .orElseThrow(() -> new RecordTableBadRequestException(RECORD_NOT_FOUND.getMessage())));
     }
 
     @Transactional

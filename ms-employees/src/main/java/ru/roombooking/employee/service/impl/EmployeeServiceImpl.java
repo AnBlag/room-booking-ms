@@ -29,8 +29,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final VCMapper<Employee, EmployeeDTO> myMapper;
     private final ProfileFeignClient profileFeignClient;
     private final JdbcTemplate jdbcTemplate;
-    @Value("${sql.query.update.employee}")
-    private String SQL_UPDATE_EMPLOYEE;
+    private String SQL_UPDATE_EMPLOYEE =
+            "insert into employee (id, department_id, email, is_active, middle_name, name, phone, profile_id, surname)" +
+                    " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     @Override
     public EmployeeDTO save(EmployeeDTO model) {

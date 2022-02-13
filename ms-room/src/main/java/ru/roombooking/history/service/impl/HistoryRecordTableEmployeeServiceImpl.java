@@ -3,6 +3,7 @@ package ru.roombooking.history.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import static ru.roombooking.history.exception.ExceptionMessage.*;
 import ru.roombooking.history.exception.RecordTableBadRequestException;
 import ru.roombooking.history.maper.VCMapper;
 import ru.roombooking.history.model.HistoryRecordTableEmployee;
@@ -49,7 +50,7 @@ public class HistoryRecordTableEmployeeServiceImpl implements HistoryRecordTable
     public RecordTableDTO deleteById(Long aLong) {
         log.info("Удаление бронирования из истории");
         RecordTableDTO recordTableDTO = mapper.toDTO(recordTableRepository.findById(aLong)
-                .orElseThrow(() -> new RecordTableBadRequestException("Не найден ID")));
+                .orElseThrow(() -> new RecordTableBadRequestException(ID_NOT_FOUND.getMessage())));
         recordTableRepository.deleteById(aLong);
         log.info("Удаление бронирования из истории по ID успешно завершено");
         return recordTableDTO;

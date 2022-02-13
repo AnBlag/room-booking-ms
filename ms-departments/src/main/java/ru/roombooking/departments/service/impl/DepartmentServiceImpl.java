@@ -22,8 +22,7 @@ import java.util.List;
 public class DepartmentServiceImpl implements DepartmentService {
     private final DepartmentRepository departmentRepository;
     private final JdbcTemplate jdbcTemplate;
-    @Value("${sql.query.batch-update}")
-    private String SQL_BATCH_UPDATE;
+    private final String SQL_BATCH_UPDATE = "UPDATE department SET name_department=?, position=? WHERE id=?";
 
     @Override
     public Department save(Department model) {

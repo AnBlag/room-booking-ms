@@ -11,6 +11,7 @@ import ru.roombooking.history.exception.VscRoomBadRequestException;
 import ru.roombooking.history.model.VscRoom;
 import ru.roombooking.history.repository.VscRoomRepository;
 import ru.roombooking.history.service.VscRoomService;
+import static ru.roombooking.history.exception.ExceptionMessage.*;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -22,8 +23,7 @@ import java.util.List;
 public class VscRoomServiceImpl implements VscRoomService {
     private final VscRoomRepository vscRepository;
     private final JdbcTemplate jdbcTemplate;
-    @Value("${sql.query.batch-update.vsc-room-list}")
-    private String SQL_BATCH_UPDATE_VSC_ROOM;
+    private String SQL_BATCH_UPDATE_VSC_ROOM = "update vsc_room set is_active=?, number_room=? where id=?";
 
     @Override
     public VscRoom save(VscRoom model) {
@@ -48,7 +48,7 @@ public class VscRoomServiceImpl implements VscRoomService {
     public VscRoom deleteById(Long aLong) {
         log.info("Удаление комнаты по ID");
         VscRoom vscRoom = vscRepository.findById(aLong)
-                .orElseThrow(() -> new VscRoomBadRequestException("Не найден ID"));
+                .orElseThrow(() -> new VscRoomBadRequestException(ID_NOT_FOUND.getMessage()));
         vscRepository.deleteById(aLong);
         log.info("Удаление комнаты по ID успешно завершено");
         return vscRoom;
@@ -58,14 +58,14 @@ public class VscRoomServiceImpl implements VscRoomService {
     public VscRoom findById(Long aLong) {
         log.info("Поиск комнаты по ID");
         return vscRepository.findById(aLong)
-                .orElseThrow(() -> new VscRoomBadRequestException("Не найден ID"));
+                .orElseThrow(() -> new VscRoomBadRequestException(ID_NOT_FOUND.getMessage()));
     }
 
     @Override
     public VscRoom findByNumberRoomId(Long number) {
         log.info("Поиск по номеру комнаты");
         return vscRepository.findByNumberRoom(number)
-                .orElseThrow(() -> new VscRoomBadRequestException("Не найден NumberRoomID"));
+                .orElseThrow(() -> new VscRoomBadRequestException(NUMBER_ROOM_ID_NOT_FOUND.getMessage()));
     }
 
     @Transactional

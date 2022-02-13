@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import static ru.roombooking.profile.exception.ExceptionMessage.*;
 import ru.roombooking.profile.exception.ProfileNotFoundException;
 import ru.roombooking.profile.model.Profile;
 import ru.roombooking.profile.repository.ProfileRepository;
@@ -16,8 +17,7 @@ import java.util.List;
 @Service
 @Slf4j
 public class ProfileServiceImpl implements ProfileService {
-    @Value("${sql.query.sql-change-account-non-locked}")
-    private String SQL_CHANGE_ACCOUNT_NON_LOCKED;
+    private String SQL_CHANGE_ACCOUNT_NON_LOCKED = "update profile set account_non_locked = ? where id = ?";
     private final JdbcTemplate jdbcTemplate;
     private final ProfileRepository profileRepository;
 
@@ -37,7 +37,7 @@ public class ProfileServiceImpl implements ProfileService {
     public Profile deleteById(Long aLong) {
         log.info("Удаление профиля по ID");
         Profile profile = profileRepository.findById(aLong)
-                .orElseThrow(() -> new ProfileNotFoundException("Не найден ID"));
+                .orElseThrow(() -> new ProfileNotFoundException(ID_NOT_FOUND.getMessage()));
         profileRepository.deleteById(aLong);
         log.info("Удаление профиля по ID успешно завершена");
         return profile;
@@ -55,14 +55,14 @@ public class ProfileServiceImpl implements ProfileService {
     public Profile findByLogin(String login) {
         log.info("Поиск профиля по логину");
         return profileRepository.findByLogin(login)
-                .orElseThrow(() -> new ProfileNotFoundException("Профиль не найден"));
+                .orElseThrow(() -> new ProfileNotFoundException(PROFILE_NOT_FOUND.getMessage()));
     }
 
     @Override
     public Profile findById(Long profId) {
         log.info("Поиск профиля по ID");
         return profileRepository.findById(profId)
-                .orElseThrow(() -> new ProfileNotFoundException("Профиль не найден"));
+                .orElseThrow(() -> new ProfileNotFoundException(PROFILE_NOT_FOUND.getMessage()));
     }
 
     @Override
@@ -76,7 +76,7 @@ public class ProfileServiceImpl implements ProfileService {
         log.info("Смена активности профиля");
         jdbcTemplate.update(SQL_CHANGE_ACCOUNT_NON_LOCKED, account_non_locked, id);
         return profileRepository.findById(id)
-                .orElseThrow(() -> new ProfileNotFoundException("Не найден ID"));
+                .orElseThrow(() -> new ProfileNotFoundException(ID_NOT_FOUND.getMessage()));
     }
 
     @Override

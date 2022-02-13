@@ -17,11 +17,3 @@ feign:
     url: http://localhost:8084
   profile:
     url: http://localhost:8086
-
-sql:
-  query:
-    batch-update:
-      employee: update employee set email=?, name=?, middle_name=?, surname=?, phone=? where profile_id=?
-      profile: update profile set account_non_locked = ? where id=?
-    update:
-      employee: insert into employee (id, department_id, email, is_active, middle_name, name, phone, profile_id, surname) values (?, ?, ?, ?, ?, ?, ?, ?, ?)

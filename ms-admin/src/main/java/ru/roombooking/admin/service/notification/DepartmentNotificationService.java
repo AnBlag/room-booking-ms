@@ -58,7 +58,7 @@ public class DepartmentNotificationService {
                     departmentRequest.getPosition()));
             log.info("Успешное обновление департаментов");
         } catch (FeignException e) {
-            throw new DepartmentsUpdateException("Ошибка обновления департаментов");
+            throw new DepartmentsUpdateException();
         }
     }
 

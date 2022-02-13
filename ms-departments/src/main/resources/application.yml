@@ -12,8 +12,3 @@ server:
   port: 8084
   error:
     include-message: always
-
-sql:
-  query:
-    batch-update: UPDATE department SET name_department=?, position=? WHERE id=?
-
