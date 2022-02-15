@@ -6,20 +6,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import ru.roombooking.employee.exception.DepartmentRequestException;
 import ru.roombooking.employee.exception.EmployeeBadRequestException;
 import ru.roombooking.employee.exception.ProfileRequestException;
-import ru.roombooking.employee.feign.DepartmentFeignClient;
 import ru.roombooking.employee.feign.ProfileFeignClient;
 import ru.roombooking.employee.mapper.VCMapper;
 import ru.roombooking.employee.model.Employee;
-import ru.roombooking.employee.model.dto.ProfileDTO;
 import ru.roombooking.employee.model.dto.EmployeeDTO;
+import ru.roombooking.employee.model.dto.ProfileDTO;
 import ru.roombooking.employee.repository.EmployeeRepository;
 import ru.roombooking.employee.service.EmployeeService;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static ru.roombooking.employee.exception.ExceptionMessages.*;
 
 @RequiredArgsConstructor
 @Service
@@ -76,7 +76,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDTO deleteById(Long aLong) {
         log.info("Удаление сотрудника по ID");
         EmployeeDTO employeeDTO = myMapper.toDTO(employeeRepository.findById(aLong)
-                .orElseThrow(() -> new EmployeeBadRequestException("Не найден ID")));
+                .orElseThrow(() -> new EmployeeBadRequestException(ID_NOT_FOUND.getMessage())));
         employeeRepository.deleteById(aLong);
         log.info("Удаление сотрудника по ID успешно завершено");
         return employeeDTO;
@@ -86,7 +86,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDTO findByProfileID(Long profileID) {
         log.info("Поиск сотрудника по ID профиля");
         return myMapper.toDTO(employeeRepository.findByProfileId(profileID)
-                .orElseThrow(() -> new EmployeeBadRequestException("Не найден ID")));
+                .orElseThrow(() -> new EmployeeBadRequestException(ID_NOT_FOUND.getMessage())));
     }
 
     @Override
@@ -94,7 +94,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         log.info("Поиск сотрудника по логину");
         try {
             return myMapper.toDTO(employeeRepository.findByProfileId(profileFeignClient.findByLogin(login).getId())
-                    .orElseThrow(() -> new EmployeeBadRequestException("Не найден employee с таким profileId")));
+                    .orElseThrow(() -> new EmployeeBadRequestException(EMPLOYEE_NOT_FOUND_BY_PROFILE_ID.getMessage())));
         } catch (FeignException e) {
             throw new ProfileRequestException();
         }
@@ -110,7 +110,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDTO findById(Long aLong) {
         log.info("Поиск сотрудника по ID");
         return myMapper.toDTO(employeeRepository.findById(aLong)
-                .orElseThrow(() -> new EmployeeBadRequestException("Не найден ID")));
+                .orElseThrow(() -> new EmployeeBadRequestException(ID_NOT_FOUND.getMessage())));
     }
 
     @Override
