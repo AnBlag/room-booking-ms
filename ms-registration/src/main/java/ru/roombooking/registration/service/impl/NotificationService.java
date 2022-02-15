@@ -15,11 +15,12 @@ import ru.roombooking.registration.service.RegistrationService;
 @Slf4j
 public class NotificationService {
     private final RegistrationService registrationService;
+    private final PasswordEncoder passwordEncoder;
 
     public void userRegistration(RegistrationDTO registrationDTO) {
         log.info("Создание регистрации");
         if (!registrationService.doesUserExist(registrationDTO)) {
-            registrationDTO.setPassword(passwordEncoder().encode(registrationDTO.getPassword()));
+            registrationDTO.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
             registrationDTO.setAccountNonLocked(true);
             registrationDTO.setIsActive(true);
             registrationDTO.setRole(Role.EMPLOYEE);
@@ -28,9 +29,5 @@ public class NotificationService {
         } else {
             throw new UserRegistrationException();
         }
-    }
-
-    protected PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2Y, 12);
     }
 }

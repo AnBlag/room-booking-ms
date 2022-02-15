@@ -34,6 +34,7 @@ public class NotificationService {
     private final ProfileFeignClient profileFeignClient;
     private final MailFeignClient mailFeignClient;
     private final EmployeeFeignClient employeeFeignClient;
+    private final PasswordEncoder passwordEncoder;
 
     public void forgetPassword(String username) {
         log.info("Запрос на восстановление пароля");
@@ -77,7 +78,7 @@ public class NotificationService {
         log.info("Сохранение нового пароля");
         try {
             ProfileDTO profile = profileFeignClient.findByLogin(newProfileData.getLogin());
-            profile.setPassword(passwordEncoder().encode(newProfileData.getPassword()));
+            profile.setPassword(passwordEncoder.encode(newProfileData.getPassword()));
             profileFeignClient.saveProfile(profile);
         } catch (FeignException e) {
             throw new SetNewPasswordException();
@@ -91,9 +92,5 @@ public class NotificationService {
                 .token(UUID.randomUUID().toString())
                 .build();
         return passwordConfirmationTokenService.save(passwordConfirmationToken);
-    }
-
-    protected PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2Y, 12);
     }
 }
