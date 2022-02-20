@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.roombooking.departments.DepartmentsApplication;
+import ru.roombooking.departments.exception.DepartmentDeleteException;
 import ru.roombooking.departments.model.Department;
 import ru.roombooking.departments.service.impl.NotificationService;
 
@@ -133,22 +134,19 @@ class DepartmentControllerTest {
     }
 
     @Test
-    void deleteDepartment_checkDeleting() throws Exception {
-        final String url = "/department/delete/1";
-        Department department = departmentList.get(0);
-        List<Department> departments = notificationService.findAll();
-        when(notificationService.deleteDepartment("1")).thenReturn(department);
+    void delete_nonexistentDepartment() throws Exception {
+        final String url = "/department/delete/10";
+        when(notificationService.deleteDepartment("10")).thenThrow(DepartmentDeleteException.class);
         MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.delete(url)
-                .contentType(APPLICATION_JSON)
-                .content(mapToJson(department)))
+                .contentType(APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().is4xxClientError())
                 .andReturn();
 
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        Department result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Department.class);
-        assertNull(notificationService.findById("3"));
+        /*ObjectMapper objectMapper = new ObjectMapper();
+        Department result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Department.class);*/
+        assertEquals(400, mvcResult.getResponse().getStatus());
     }
 
     @Test
