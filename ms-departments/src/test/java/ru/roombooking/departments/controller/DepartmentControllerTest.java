@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -21,11 +20,13 @@ import ru.roombooking.departments.service.impl.NotificationService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.http.MediaType.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.junit.jupiter.api.Assertions.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest(classes = {DepartmentsApplication.class})
@@ -37,7 +38,6 @@ class DepartmentControllerTest {
     private NotificationService notificationService;
 
     private List<Department> departmentList;
-
 
     @BeforeEach
     void init() {
@@ -63,7 +63,8 @@ class DepartmentControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         ObjectMapper objectMapper = new ObjectMapper();
-        List<Department> result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {});
+        List<Department> result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+        });
 
         assertEquals(departmentList, result);
     }
@@ -89,48 +90,12 @@ class DepartmentControllerTest {
         assertEquals(department, result);
     }
 
-/*    @Test
-    void saveDepartment_thenReturnNotOk() throws Exception {
-        final String url = "/department/save/sdas";
-        Department department = Department.builder()
-                .id(3L)
-                .nameDepartment("")
-                .position("")
-                .build();
-        when(notificationService.saveDepartment(any())).thenReturn(department);
-        MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.post(url)
-                .contentType(APPLICATION_JSON)
-                .content(mapToJson(department)))
-                .andDo(print())
-                .andExpect(status().is4xxClientError())
-                .andReturn();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        Department result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Department.class);
-        assertNotEquals(200, mvcResult.getResponse().getStatus());
-    }*/
-
     @Test
-    void updateDepartment() {
-
-    }
-
-    @Test
-    void deleteDepartment_thenReturnOk() throws Exception {
+    void deleteDepartment_thenReturnOk() {
         final String url = "/department/delete/1";
         Department department = departmentList.get(0);
         when(notificationService.deleteDepartment("1")).thenReturn(department);
-        MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.delete(url)
-                .contentType(APPLICATION_JSON)
-                .content(mapToJson(department)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        Department result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Department.class);
         assertNull(notificationService.findById("1"));
-        //assertEquals(department, result);
     }
 
     @Test
@@ -143,18 +108,22 @@ class DepartmentControllerTest {
                 .andExpect(status().is4xxClientError())
                 .andReturn();
 
-
-        /*ObjectMapper objectMapper = new ObjectMapper();
-        Department result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Department.class);*/
         assertEquals(400, mvcResult.getResponse().getStatus());
     }
 
     @Test
-    void findById() {
-    }
+    void findById_thenReturnOk() throws Exception {
+        final String url = "/department/find-by-id/{id}";
+        String id = "1";
+        when(notificationService.findById(id)).thenReturn(departmentList.get(0));
+        MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.get(url, id))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+        ObjectMapper objectMapper = new ObjectMapper();
+        Department result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Department.class);
 
-    @Test
-    void batchUpdateDepartment() {
+        assertEquals(departmentList.get(0), result);
     }
 
     private String mapToJson(Object obj) throws JsonProcessingException {
