@@ -11,6 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ru.roombooking.employee.EmployeeApplication;
 import ru.roombooking.employee.model.dto.EmployeeDTO;
 import ru.roombooking.employee.service.impl.NotificationService;
 
@@ -23,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@SpringBootTest(classes = {EmployeeController.class})
+@SpringBootTest(classes = {EmployeeApplication.class})
 class EmployeeControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -59,7 +60,7 @@ class EmployeeControllerTest {
                 .departmentId(1L)
                 .build());
         employeeList.add(EmployeeDTO.builder()
-                .id(1L)
+                .id(3L)
                 .surname("Petrov")
                 .name("Ivan")
                 .middleName("Fedorovich")
@@ -77,7 +78,7 @@ class EmployeeControllerTest {
         when(notificationService.findAll()).thenReturn(employeeList);
         MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.get(url))
                 .andDo(print())
-                .andExpect(status().is4xxClientError())
+                .andExpect(status().isOk())
                 .andReturn();
         ObjectMapper objectMapper = new ObjectMapper();
         List<EmployeeDTO> result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
