@@ -1,5 +1,6 @@
 package ru.roombooking.employee.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -88,34 +90,106 @@ class EmployeeControllerTest {
     }
 
     @Test
-    void saveEmployee() {
+    void saveEmployee_thenReturnOk() throws Exception {
+        final String url = "/employee/save";
+        EmployeeDTO employeeDTO = EmployeeDTO.builder()
+                .id(4L)
+                .surname("Sidortov")
+                .name("Alex")
+                .middleName("Alexeevich")
+                .phone("444444")
+                .email("vvv@mail.ru")
+                .isActive(true)
+                .profileId(4L)
+                .departmentId(2L)
+                .build();
+        when(notificationService.saveEmployee(any())).thenReturn(employeeDTO);
+        MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.post(url)
+                .contentType(APPLICATION_JSON)
+                .content(mapToJson(employeeDTO)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        EmployeeDTO result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeDTO.class);
+        assertEquals(employeeDTO, result);
     }
 
     @Test
-    void restoreEmployee() {
+    void updateEmployee_thenReturnOk() throws Exception {
+        final String url = "/employee/update/4";
+        EmployeeDTO employeeDTO = EmployeeDTO.builder()
+                .surname("Belkin_upd")
+                .name("Mikhail_upd")
+                .middleName("Olegovich_upd")
+                .phone("555555")
+                .email("bbb@mail.ru")
+                .isActive(true)
+                .profileId(4L)
+                .departmentId(2L)
+                .build();
+        when(notificationService.updateEmployee(employeeDTO, "4")).thenReturn(employeeDTO);
+        MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.put(url)
+                .contentType(APPLICATION_JSON)
+                .content(mapToJson(employeeDTO)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        EmployeeDTO result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeDTO.class);
+        assertEquals(employeeDTO, result);
     }
 
     @Test
-    void updateEmployee() {
+    void deleteEmployee_thenReturnOk() throws Exception {
+        final String url = "/employee/delete/1";
+        EmployeeDTO employeeDTO = employeeList.get(0);
+        when(notificationService.deleteEmployee("1")).thenReturn(employeeDTO);
+        MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.delete(url)
+                .contentType(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        EmployeeDTO result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeDTO.class);
+        assertEquals(employeeDTO, result);
     }
 
     @Test
-    void deleteEmployee() {
+    void findByProfileID() throws Exception {
+        final String url = "/employee/find-by-profile/{profileId}";
+        String profileId = "1";
+        when(notificationService.findByProfileID(profileId)).thenReturn(employeeList.get(0));
+        MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.get(url, profileId))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+        ObjectMapper objectMapper = new ObjectMapper();
+        EmployeeDTO result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeDTO.class);
+
+        assertEquals(employeeList.get(0), result);
     }
 
     @Test
-    void findByProfileID() {
+    void findById_thenReturnOk() throws Exception {
+        final String url = "/employee/find-by-id/{id}";
+        String id = "1";
+        when(notificationService.findById(id)).thenReturn(employeeList.get(0));
+        MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.get(url, id))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+        ObjectMapper objectMapper = new ObjectMapper();
+        EmployeeDTO result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), EmployeeDTO.class);
+
+        assertEquals(employeeList.get(0), result);
     }
 
-    @Test
-    void findByLogin() {
-    }
-
-    @Test
-    void getProfileById() {
-    }
-
-    @Test
-    void findById() {
+    private String mapToJson(Object obj) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(obj);
     }
 }

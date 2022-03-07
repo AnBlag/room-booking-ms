@@ -92,7 +92,6 @@ class DepartmentControllerTest {
 
     @Test
     void deleteDepartment_thenReturnOk() {
-        final String url = "/department/delete/1";
         Department department = departmentList.get(0);
         when(notificationService.deleteDepartment("1")).thenReturn(department);
         assertNull(notificationService.findById("1"));
