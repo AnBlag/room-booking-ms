@@ -13,22 +13,22 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/employee-view")
 public class EmployeeViewController {
-    private final EmployeeViewServiceImpl profileViewService;
+    private final EmployeeViewServiceImpl employeeViewService;
     private final NotificationService notificationService;
 
     @GetMapping("/")
     public ResponseEntity<List<EmployeeView>> findAll() {
-        return ResponseEntity.ok(profileViewService.findAll());
+        return ResponseEntity.ok(employeeViewService.findAll());
     }
 
     @PostMapping("/save")
     public ResponseEntity<EmployeeView> saveEmployeeView(@RequestBody EmployeeView employeeView) {
-        return ResponseEntity.ok(profileViewService.save(employeeView));
+        return ResponseEntity.ok(employeeViewService.save(employeeView));
     }
 
     @PutMapping("/batch-update-profile-and-employee")
     public void batchUpdateProfileAndEmployee(@RequestBody List<EmployeeView> employeeViewList) {
-        profileViewService.batchUpdateProfileAndEmployee(employeeViewList);
+        employeeViewService.batchUpdateProfileAndEmployee(employeeViewList);
     }
 
     @GetMapping("/get-employee-view-list-by-URL-params")
