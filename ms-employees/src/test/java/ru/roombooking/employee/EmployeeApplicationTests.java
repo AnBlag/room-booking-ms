@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootTest
 @ComponentScan("ru.roombooking")
-@EnableJpaRepositories(basePackages = "ru.roombooking.employees.repository")
-@EntityScan(basePackages = "ru.roombooking.employees.model")
+@EnableJpaRepositories(basePackages = "ru.roombooking.employee.repository")
+@EntityScan(basePackages = "ru.roombooking.employee.model")
 public class EmployeeApplicationTests {
 
 	@Test
