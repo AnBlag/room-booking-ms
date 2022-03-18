@@ -3,23 +3,26 @@ package ru.roombooking.employee.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ContextConfiguration;
 import ru.roombooking.employee.EmployeeApplication;
+import ru.roombooking.employee.EmployeeApplicationTests;
 import ru.roombooking.employee.model.dto.EmployeeDTO;
+import ru.roombooking.employee.service.impl.EmployeeViewServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @ContextConfiguration(classes = {EmployeeApplication.class})
-class EmployeeServiceTest {
+class EmployeeViewServiceTest {
 
     /*@Autowired
-    private EmployeeService employeeService;*/
+    private EmployeeViewServiceImpl employeeService;*/
 
     @Autowired
     private TestEntityManager testEntityManager;

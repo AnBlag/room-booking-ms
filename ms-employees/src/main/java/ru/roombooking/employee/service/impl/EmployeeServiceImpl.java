@@ -3,7 +3,6 @@ package ru.roombooking.employee.service.impl;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import ru.roombooking.employee.exception.EmployeeBadRequestException;
@@ -21,8 +20,8 @@ import java.util.stream.Collectors;
 
 import static ru.roombooking.employee.exception.ExceptionMessages.*;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
