@@ -17,6 +17,7 @@ import ru.roombooking.departments.exception.DepartmentDeleteException;
 import ru.roombooking.departments.model.Department;
 import ru.roombooking.departments.service.impl.NotificationService;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,10 +92,18 @@ class DepartmentControllerTest {
     }
 
     @Test
-    void deleteDepartment_thenReturnOk() {
+    void deleteDepartment_thenReturnOk() throws Exception {
+        final String url = "/department/delete/1";
         Department department = departmentList.get(0);
         when(notificationService.deleteDepartment("1")).thenReturn(department);
-        assertNull(notificationService.findById("1"));
+        MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.delete(url))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Department result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Department.class);
+        assertEquals(department, result);
     }
 
     @Test

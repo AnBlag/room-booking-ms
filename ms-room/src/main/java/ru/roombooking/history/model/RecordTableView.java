@@ -1,9 +1,6 @@
 package ru.roombooking.history.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Subselect;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,6 +18,7 @@ import java.time.ZonedDateTime;
 @Entity
 @Table(name = "record_table_view")
 @Immutable
+@Builder
 @Subselect("select record_table.id, record_table.email, record_table.employee_id, employee.name, employee.surname, employee.middle_name, record_table.title, record_table.start_event, record_table.end_event, record_table.is_active, vsc_room.number_room\n" +
         "from record_table inner join employee on record_table.employee_id = employee.id\n" +
         "join vsc_room  on record_table.number_room_id = vsc_room.id")

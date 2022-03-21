@@ -116,48 +116,6 @@ class EmployeeViewControllerTest {
         assertEquals(employeeView, result);
     }
 
-    /*@Test
-    void batchUpdateProfileAndEmployee_thenReturnOk() throws Exception {
-        final String url = "/employee-view/batch-update-profile-and-employee";
-        List<EmployeeView> updatedEmployeeViewList = new ArrayList<>();
-        updatedEmployeeViewList.add(EmployeeView.builder()
-                .id(1L)
-                .surname("Sidorov_upd")
-                .name("Valera_upd")
-                .middleName("Vladimirovich_upd")
-                .phone("222222")
-                .email("zzz@mail.ru")
-                .banned(true)
-                .build());
-        updatedEmployeeViewList.add(EmployeeView.builder()
-                .id(2L)
-                .surname("Moiseev_upd")
-                .name("Vitaliy_upd")
-                .middleName("Vladimirovich_upd")
-                .phone("111111")
-                .email("xxx@mail.ru")
-                .banned(true)
-                .build());
-        updatedEmployeeViewList.add(EmployeeView.builder()
-                .id(3L)
-                .surname("Petrov_upd")
-                .name("Ivan_upd")
-                .middleName("Fedorovich_upd")
-                .phone("333333")
-                .email("ccc@mail.ru")
-                .banned(true)
-                .build());
-        doNothing().when(employeeViewService).batchUpdateProfileAndEmployee(updatedEmployeeViewList);
-
-        MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.put(url)
-                .contentType(APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn();
-
-        assertEquals(200, mvcResult.getResponse().getStatus());
-
-    }*/
 
     @Test
     void getEmployeeViewListByURLParams_thenReturnOk() throws Exception {
@@ -202,10 +160,10 @@ class EmployeeViewControllerTest {
                 .banned(true)
                 .build());
 
-        when(notificationService.getEmployeeViewListByEmployeeViewParams(resultEmployeeViewList.get(0))).thenReturn(resultEmployeeViewList);
+        when(notificationService.getEmployeeViewListByEmployeeViewParams(employeeViewList.get(0))).thenReturn(resultEmployeeViewList);
         MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.post(url)
                 .contentType(APPLICATION_JSON)
-                .content(mapToJson(resultEmployeeViewList.get(0))))
+                .content(mapToJson(employeeViewList.get(0))))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();

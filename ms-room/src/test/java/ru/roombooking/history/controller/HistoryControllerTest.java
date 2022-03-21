@@ -2,6 +2,7 @@ package ru.roombooking.history.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,8 @@ class HistoryControllerTest {
         recordTableList.add(RecordTableDTO.builder()
                 .id(1L)
                 .email("zzz@mail.ru")
-                .start(ZonedDateTime.parse("2021-10-21T08:00:00+03:00"))
-                .end(ZonedDateTime.parse("2021-10-21T09:00:00+03:00"))
+                .start(ZonedDateTime.parse("2021-10-21T08:00Z[UTC]"))
+                .end(ZonedDateTime.parse("2021-10-21T09:00Z[UTC]"))
                 .title("zzz")
                 .isActive(true)
                 .numberRoomId(11L)
@@ -58,8 +59,8 @@ class HistoryControllerTest {
         recordTableList.add(RecordTableDTO.builder()
                 .id(2L)
                 .email("xxx@mail.ru")
-                .start(ZonedDateTime.parse("2021-10-22T09:00:00+03:00"))
-                .end(ZonedDateTime.parse("2021-10-22T10:00:00+03:00"))
+                .start(ZonedDateTime.parse("2021-10-22T09:00Z[UTC]"))
+                .end(ZonedDateTime.parse("2021-10-22T10:00Z[UTC]"))
                 .title("xxx")
                 .isActive(true)
                 .numberRoomId(22L)
@@ -72,7 +73,7 @@ class HistoryControllerTest {
     }
 
     @Test
-    void findAll() throws Exception {
+    void findAll_thenReturnOk() throws Exception {
         final String url = "/history/";
         when(historyNotificationService.findAll()).thenReturn(recordTableList);
         MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.get(url))
@@ -80,6 +81,7 @@ class HistoryControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         List<RecordTableDTO> result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
         });
 
@@ -87,6 +89,18 @@ class HistoryControllerTest {
     }
 
     @Test
-    void deleteHistoryRecordById() {
+    void deleteHistoryRecordById_thenReturnOk() throws Exception {
+        final String url = "/history/delete-by-id/1";
+        RecordTableDTO recordTableDTO = recordTableList.get(0);
+        when(historyNotificationService.deleteById(1L)).thenReturn(recordTableDTO);
+        MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.delete(url))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        RecordTableDTO result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), RecordTableDTO.class);
+        assertEquals(recordTableDTO, result);
     }
 }
