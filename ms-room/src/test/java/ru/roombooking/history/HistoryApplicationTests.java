@@ -1,16 +1,20 @@
 package ru.roombooking.history;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootTest
 @ComponentScan("ru.roombooking")
 @EnableJpaRepositories(basePackages = "ru.roombooking.history.repository")
 @EntityScan(basePackages = "ru.roombooking.history.model")
-class HistoryApplicationTests {
+@EnableFeignClients
+public class HistoryApplicationTests {
 
 	@Test
 	void contextLoads() {
