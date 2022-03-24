@@ -6,10 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.roombooking.history.exception.*;
 import ru.roombooking.history.feign.EmployeeFeignClient;
-import ru.roombooking.history.feign.SecurityFeignClient;
+import ru.roombooking.history.feign.ProfileFeignClient;
 import ru.roombooking.history.maper.VCMapper;
 import ru.roombooking.history.model.RecordTable;
 import ru.roombooking.history.model.RecordTableView;
+import ru.roombooking.history.model.Role;
 import ru.roombooking.history.model.VscRoom;
 import ru.roombooking.history.model.dto.EmployeeDTO;
 import ru.roombooking.history.model.dto.RecordTableDTO;
@@ -29,9 +30,9 @@ public class RecordTableAndEmployeeServiceImpl implements RecordTableAndEmployee
     private final RecordTableRepository recordTableRepository;
     private final RecordTableViewRepository recordTableViewRepository;
     private final EmployeeFeignClient employeeFeignClient;
-    private final SecurityFeignClient securityFeignClient;
     private final VscRoomRepository vscRoomRepository;
     private final VCMapper<RecordTable, RecordTableDTO> mapper;
+    private final ProfileFeignClient profileFeignClient;
 
     @Override
     public RecordTableDTO save(RecordTableDTO recordTableDTO, String login) {
@@ -63,18 +64,14 @@ public class RecordTableAndEmployeeServiceImpl implements RecordTableAndEmployee
         log.info("Проверка прав пользователя");
 
         try {
-            try {
-                return ((securityFeignClient.isAdmin(login)) |
-                        (employeeFeignClient.getProfileById(String.valueOf(recordTableRepository
-                                .findById(recordId)
-                                .orElseThrow(RecordTableAndEmployeeException::new)
-                                .getEmployeeId()))
-                                .getLogin().equals(login)));
-            } catch (FeignException e) {
-                throw new EmployeeRequestException();
-            }
+            return ((isAdmin(login)) |
+                    (employeeFeignClient.getProfileById(String.valueOf(recordTableRepository
+                            .findById(recordId)
+                            .orElseThrow(RecordTableAndEmployeeException::new)
+                            .getEmployeeId()))
+                            .getLogin().equals(login)));
         } catch (FeignException e) {
-            throw new SecurityRequestException();
+            throw new EmployeeRequestException();
         }
     }
 
@@ -101,5 +98,13 @@ public class RecordTableAndEmployeeServiceImpl implements RecordTableAndEmployee
     private VscRoom getRoomFromRecordTableDTO(RecordTableDTO recordTableDTO) {
         return vscRoomRepository.findByNumberRoom(Long.parseLong(recordTableDTO.getRoomId()))
                 .orElseThrow(() -> new VscRoomBadRequestException(ID_ROOM_NOT_FOUND.getMessage()));
+    }
+
+    private Boolean isAdmin(String login) {
+        try {
+            return profileFeignClient.findByLogin(login).getRole().equals(Role.ADMIN);
+        } catch (FeignException e) {
+            throw new ProfileRequestException();
+        }
     }
 }
