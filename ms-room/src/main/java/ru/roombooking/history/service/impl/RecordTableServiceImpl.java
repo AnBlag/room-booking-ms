@@ -42,7 +42,7 @@ public class RecordTableServiceImpl implements RecordTableService {
     @Transactional(rollbackFor = RecordTableSaveException.class)
     public RecordTableDTO save(RecordTableDTO model) {
         log.info("Сохранение бронирования");
-        return mapper.toDTO(recordTableRepository.save(toRecordTable(model)));
+        return mapper.toDTO(recordTableRepository.save(mapper.toModel(model)));
     }
 
     @Override
@@ -86,7 +86,7 @@ public class RecordTableServiceImpl implements RecordTableService {
         return recordTableDTO;
     }
 
-    private RecordTable toRecordTable(RecordTableDTO model) {
+    /*private RecordTable toRecordTable(RecordTableDTO model) {
         RecordTable recordTable = mapper.toModel(model);
         RecordTable temp = recordTableRepository.findByNumberRoomIdAndEmployeeId(recordTable.getNumberRoomId(),
                 recordTable.getEmployeeId()).orElseThrow(() ->
@@ -94,7 +94,7 @@ public class RecordTableServiceImpl implements RecordTableService {
         recordTable.setNumberRoomId(temp.getNumberRoomId());
         recordTable.setEmployeeId(temp.getEmployeeId());
         return recordTable;
-    }
+    }*/
 
     @Override
     public List<RecordTableDTO> findAllByEmployeeFullNameAndRecordAndIsActiveAndNumberRoom() {
