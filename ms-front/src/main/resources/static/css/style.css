@@ -97,7 +97,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 header {
-  position: static;
+  position: absolute;
   z-index: 101;
   top: 0;
   left: 0;
@@ -155,13 +155,13 @@ body {
 body .back-img {
   -webkit-box-sizing: content-box;
           box-sizing: content-box;
-  background: url("/img/content_dzerjinskaya.jpg") 0 0/100% 100% no-repeat;
+  background: url("/img/meeting_room_bkg-4.png") 0 0/auto 100% no-repeat;
   height: 100%;
 }
 
 @media only screen and (max-width: 767px) {
   body .back-img .back-img {
-    background: url(/img/content_dzerjinskaya.jpg) 0 0/100% 100% no-repeat;
+    background: url(/img/meeting_room_bkg-4.png) 0 0/auto 100% no-repeat;
     height: 100%;
   }
 }
