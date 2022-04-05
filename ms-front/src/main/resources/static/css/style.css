@@ -97,7 +97,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 header {
-  position: absolute;
+  position: static;
   z-index: 101;
   top: 0;
   left: 0;
@@ -107,6 +107,10 @@ header {
 
 .nav__logo {
   padding-left: 13px;
+}
+
+.nav-pills {
+  height: 50px;
 }
 
 article,
@@ -156,13 +160,17 @@ body .back-img {
   -webkit-box-sizing: content-box;
           box-sizing: content-box;
   background: url("/img/meeting_room_bkg-4.png") 0 0/auto 100% no-repeat;
-  height: 100%;
+  height: 90%;
+  position: relative;
+  z-index: -1;
 }
 
 @media only screen and (max-width: 767px) {
   body .back-img .back-img {
     background: url(/img/meeting_room_bkg-4.png) 0 0/auto 100% no-repeat;
-    height: 100%;
+    height: 90%;
+    position: relative;
+    z-index: -1;
   }
 }
 

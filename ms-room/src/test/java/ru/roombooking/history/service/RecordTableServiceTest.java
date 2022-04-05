@@ -5,10 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
-import ru.roombooking.history.HistoryApplication;
 import ru.roombooking.history.HistoryApplicationTests;
 import ru.roombooking.history.feign.EmployeeFeignClient;
 import ru.roombooking.history.feign.MailFeignClient;
@@ -20,9 +18,8 @@ import ru.roombooking.history.model.dto.RecordTableDTO;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @ContextConfiguration(classes = {HistoryApplicationTests.class})
@@ -133,33 +130,6 @@ class RecordTableServiceTest {
         RecordTableDTO recordTableDTOResult = recordTableService.findById(recordTableDTO.getId());
         assertEquals(recordTableDTO, recordTableDTOResult);
     }
-
-    /*@Test
-    void findByNumberRoom() {
-        List<RecordTableDTO> resultRecordTableList = new ArrayList<>();
-        resultRecordTableList.add(RecordTableDTO.builder()
-                .id(1L)
-                .email("zzz@mail.ru")
-                .start(ZonedDateTime.parse("2021-10-21T08:00Z[UTC]"))
-                .end(ZonedDateTime.parse("2021-10-21T09:00Z[UTC]"))
-                .title("zzz")
-                .isActive(true)
-                .numberRoomId(11L)
-                .employeeId(1L)
-                .build());
-        resultRecordTableList.add(RecordTableDTO.builder()
-                .id(3L)
-                .email("zzz@mail.ru")
-                .start(ZonedDateTime.parse("2022-05-01T11:00Z[UTC]"))
-                .end(ZonedDateTime.parse("2022-05-01T12:00Z[UTC]"))
-                .title("zzz")
-                .isActive(true)
-                .numberRoomId(11L)
-                .employeeId(1L)
-                .build());
-        resultRecordTableList = recordTableService.findByNumberRoom(11L);
-        assertEquals(resultRecordTableList, recordTableService.findByNumberRoom(11L));
-    }*/
 
     private void initDb() {
         testEntityManager.persist(RecordTable.builder()

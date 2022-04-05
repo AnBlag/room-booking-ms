@@ -15,15 +15,13 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.roombooking.history.HistoryApplication;
 import ru.roombooking.history.model.RecordTableView;
-import ru.roombooking.history.model.dto.RecordTableDTO;
-import ru.roombooking.history.service.impl.RecordTableNotificationService;
 import ru.roombooking.history.service.impl.RecordTableViewNotificationService;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

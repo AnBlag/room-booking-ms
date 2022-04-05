@@ -17,12 +17,10 @@ import ru.roombooking.departments.exception.DepartmentDeleteException;
 import ru.roombooking.departments.model.Department;
 import ru.roombooking.departments.service.impl.NotificationService;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;

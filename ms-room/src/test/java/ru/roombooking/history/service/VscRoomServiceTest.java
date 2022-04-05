@@ -7,20 +7,16 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
-import ru.roombooking.history.HistoryApplication;
 import ru.roombooking.history.HistoryApplicationTests;
 import ru.roombooking.history.feign.EmployeeFeignClient;
 import ru.roombooking.history.feign.MailFeignClient;
 import ru.roombooking.history.feign.ProfileFeignClient;
 import ru.roombooking.history.model.VscRoom;
-import ru.roombooking.history.model.dto.RecordTableDTO;
 
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @ContextConfiguration(classes = {HistoryApplicationTests.class})

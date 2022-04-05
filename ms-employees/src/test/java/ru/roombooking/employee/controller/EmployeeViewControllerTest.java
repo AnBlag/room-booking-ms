@@ -14,16 +14,15 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.roombooking.employee.EmployeeApplication;
 import ru.roombooking.employee.model.EmployeeView;
-import ru.roombooking.employee.model.dto.EmployeeDTO;
 import ru.roombooking.employee.service.impl.EmployeeViewServiceImpl;
 import ru.roombooking.employee.service.impl.NotificationService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -73,7 +72,6 @@ class EmployeeViewControllerTest {
                 .email("ccc@mail.ru")
                 .banned(true)
                 .build());
-
     }
 
     @Test

@@ -45,8 +45,8 @@ public class NotificationService {
                 log.info("Отправка сообщения для смены пароля");
                 EmployeeDTO employeeDTO = employeeFeignClient.findByProfileID(String.valueOf(profile.getId()));
                 String email = employeeDTO.getEmail();
-                mailFeignClient.send(new MailParams(email, "Forget password", "You forgot password" +
-                        " link: " + resetPasswordUrl + saveToken(profile).getToken()));
+                mailFeignClient.send(new MailParams(email, "Восстановление пароля", "Для восстановления пароля передите по ссылке: " +
+                          resetPasswordUrl + saveToken(profile).getToken()));
             } catch (FeignException e) {
                 throw new EmployeeNotFoundException();
             }

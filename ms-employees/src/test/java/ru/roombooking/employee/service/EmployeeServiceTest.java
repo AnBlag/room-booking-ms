@@ -7,18 +7,16 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
-import ru.roombooking.employee.EmployeeApplication;
 import ru.roombooking.employee.EmployeeApplicationTests;
 import ru.roombooking.employee.feign.DepartmentFeignClient;
 import ru.roombooking.employee.feign.ProfileFeignClient;
-import ru.roombooking.employee.mapper.EmployeeMyMapper;
 import ru.roombooking.employee.model.Employee;
 import ru.roombooking.employee.model.dto.EmployeeDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @ContextConfiguration(classes = {EmployeeApplicationTests.class})

@@ -50,7 +50,6 @@ public class DepartmentServiceTest {
                 .position("Cleaner")
                 .build());
 
-        //departmentList.forEach(department -> testEntityManager.persist(department));
         initDb();
     }
 
@@ -114,17 +113,14 @@ public class DepartmentServiceTest {
 
     private void initDb() {
         testEntityManager.persist(Department.builder()
-                //  .id(1L)
                 .nameDepartment("IT")
                 .position("It Employees")
                 .build());
         testEntityManager.persist(Department.builder()
-                //   .id(2L)
                 .nameDepartment("Management")
                 .position("Manager")
                 .build());
         testEntityManager.persist(Department.builder()
-                //  .id(2L)
                 .nameDepartment("Cleaning")
                 .position("Cleaner")
                 .build());
