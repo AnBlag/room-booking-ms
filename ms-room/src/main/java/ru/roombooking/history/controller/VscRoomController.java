@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.roombooking.history.model.VscRoom;
-
 import ru.roombooking.history.service.impl.VscRoomNotificationService;
 
 import java.util.List;

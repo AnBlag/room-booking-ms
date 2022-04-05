@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.roombooking.registration.model.Role;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

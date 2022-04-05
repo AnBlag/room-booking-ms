@@ -1,16 +1,17 @@
 package ru.roombooking.resetpassword.exception;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Ошибка токена")
-public class TokenNotFoundException extends RuntimeException {
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
+@ResponseStatus(value = NOT_FOUND, reason = "Не найден токен")
+public class TokenNotFoundException extends IllegalArgumentException {
     public TokenNotFoundException() {
         super();
     }
 
-    public TokenNotFoundException(String message) {
-        super(message);
+    public TokenNotFoundException(String s) {
+        super(s);
     }
 
     public TokenNotFoundException(String message, Throwable cause) {
@@ -19,9 +20,5 @@ public class TokenNotFoundException extends RuntimeException {
 
     public TokenNotFoundException(Throwable cause) {
         super(cause);
-    }
-
-    protected TokenNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

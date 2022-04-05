@@ -2,6 +2,8 @@ package ru.roombooking.departments.model;
 
 import lombok.*;
 
+import static javax.persistence.GenerationType.*;
+
 import javax.persistence.*;
 
 @NoArgsConstructor
@@ -14,18 +16,18 @@ import javax.persistence.*;
 public class Department {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
     @Column(name = "name_department")
     private String nameDepartment;
     @Column(name = "position")
     private String position;
 
-
     @Override
     public int hashCode() {
         return 13;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -39,12 +41,13 @@ public class Department {
             return false;
         } else return id.equals(other.getId());
     }
+
     @Override
     public String toString() {
         return "Department{" +
-            "id=" + id +
-            ", nameDepartment='" + nameDepartment + '\'' +
-            ", position='" + position + '\'' +
-            '}';
+                "id=" + id +
+                ", nameDepartment='" + nameDepartment + '\'' +
+                ", position='" + position + '\'' +
+                '}';
     }
 }

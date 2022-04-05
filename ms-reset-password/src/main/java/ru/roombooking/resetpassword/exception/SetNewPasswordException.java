@@ -1,9 +1,9 @@
 package ru.roombooking.resetpassword.exception;
 
-import org.springframework.http.HttpStatus;
+import static org.springframework.http.HttpStatus.*;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Ошибка установки нового пароля")
+@ResponseStatus(value = INTERNAL_SERVER_ERROR, reason="Ошибка установки нового пароля")
 public class SetNewPasswordException extends RuntimeException {
     public SetNewPasswordException() {
         super();

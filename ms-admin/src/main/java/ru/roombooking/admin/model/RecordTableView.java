@@ -24,5 +24,5 @@ public class RecordTableView {
     private Boolean isActive;
     private String title;
     private ZonedDateTime startEvent;
-    private ZonedDateTime  endEvent;
+    private ZonedDateTime endEvent;
 }

@@ -14,4 +14,10 @@ server:
   port: 8083
   error:
     include-message: always
-
+feign:
+  mail:
+    url: http://localhost:8081
+  employee:
+    url: http://localhost:8085
+  profile:
+    url: http://localhost:8086

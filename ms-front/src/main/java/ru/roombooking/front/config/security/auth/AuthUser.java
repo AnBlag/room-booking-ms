@@ -54,7 +54,7 @@ public class AuthUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return active ;
+        return active;
     }
 
     public static UserDetails fromUser(ProfileDTO profile) {

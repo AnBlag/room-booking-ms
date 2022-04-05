@@ -2,92 +2,59 @@ package ru.roombooking.registration.service.impl;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-
-import ru.roombooking.registration.exception.DepartmentBadRequestException;
-import ru.roombooking.registration.exception.ProfileBadRequestException;
-import ru.roombooking.registration.exception.SaveEmployeeException;
-import ru.roombooking.registration.exception.SaveProfileException;
-import ru.roombooking.registration.feign.DepartmentFeignClient;
+import ru.roombooking.registration.exception.EmployeeSaveException;
+import ru.roombooking.registration.exception.ProfileRequestException;
+import ru.roombooking.registration.exception.ProfileSaveException;
 import ru.roombooking.registration.feign.EmployeeFeignClient;
 import ru.roombooking.registration.feign.ProfileFeignClient;
 import ru.roombooking.registration.mapper.VCMapper;
-import ru.roombooking.registration.model.Profile;
 import ru.roombooking.registration.model.dto.EmployeeDTO;
+import ru.roombooking.registration.model.dto.ProfileDTO;
 import ru.roombooking.registration.model.dto.RegistrationDTO;
 import ru.roombooking.registration.service.RegistrationService;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class RegistrationServiceImpl implements RegistrationService {
-
-    //private final EmployeeService employeeService;
     private final EmployeeFeignClient employeeFeignClient;
-    //private final ProfileService profileService;
     private final ProfileFeignClient profileFeignClient;
-    //private final DepartmentService departmentService;
-    private final DepartmentFeignClient departmentFeignClient;
     private final VCMapper<EmployeeDTO, RegistrationDTO> myEmployeeMapper;
-    private final VCMapper<Profile, RegistrationDTO> myProfileMapper;
+    private final VCMapper<ProfileDTO, RegistrationDTO> myProfileMapper;
 
-
+    // FIXME: 31.01.2022 костыль, если возникает ошибка при сохранении employee, то удаляем новый профиль
     @Override
-    @Transactional
     public void saveEmployeeAndProfile(RegistrationDTO model) {
-        //myProfileMapper.toDTO(profileService.save(myProfileMapper.toModel(model)));
-
-
+        ProfileDTO tempProfile;
 
         try {
-            profileFeignClient.saveProfile(myProfileMapper.toModel(model));
-        }
-        catch (FeignException e) {
-            throw new SaveProfileException();
-        }
-
-        //myEmployeeMapper.toDTO(employeeService.save(toEmployee(model)));
-
-        try {
-            employeeFeignClient.saveEmployee(toEmployee(model));
-        }
-        catch (FeignException e) {
-            throw new SaveEmployeeException();
-        }
-
-
-    }
-
-
-    private EmployeeDTO toEmployee(RegistrationDTO model) {
-        EmployeeDTO employeeDTO = myEmployeeMapper.toModel(model);
-
-        try {
-            employeeDTO.setProfileId(profileFeignClient.findByLogin(model.getLogin()).getId());
-        } catch (FeignException e){
-            throw new ProfileBadRequestException();
+            log.info("Создание профиля сотрудника");
+            tempProfile = profileFeignClient.saveProfile(myProfileMapper.toModel(model));
+        } catch (FeignException e) {
+            throw new ProfileSaveException();
         }
 
         try {
-            employeeDTO.setDepartmentId(departmentFeignClient.findById(String.valueOf(model.getDepartmentId())).getId());
-        } catch (FeignException e){
-            throw new DepartmentBadRequestException();
+            log.info("Создание сотрудника");
+            model.setProfileId(tempProfile.getId());
+            employeeFeignClient.saveEmployee(myEmployeeMapper.toModel(model));
+        } catch (FeignException e) {
+            try {
+                log.info("Ошибка создания сотрудника, удаление профиля сотрудника");
+                profileFeignClient.deleteByProfile(tempProfile);
+            } catch (FeignException exception) {
+                throw new ProfileRequestException();
+            }
+            throw new EmployeeSaveException();
         }
-
-        return employeeDTO;
+        log.info("Создание сотрудника и профиля успешно завершено");
     }
 
     @Override
     public boolean doesUserExist(RegistrationDTO model) {
-        /*
-        if (model != null)
-            return profileService.doesProfileExist(model.getLogin());
-        else return false;
-
-         */
-
+        log.info("Проверка существования профиля");
         return profileFeignClient.doesProfileExist(model.getLogin());
-
     }
 }

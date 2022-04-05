@@ -1,10 +1,9 @@
 package ru.roombooking.employee.controller;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.roombooking.employee.model.Profile;
+import ru.roombooking.employee.model.dto.ProfileDTO;
 import ru.roombooking.employee.model.dto.EmployeeDTO;
 import ru.roombooking.employee.service.impl.NotificationService;
 
@@ -24,6 +23,11 @@ public class EmployeeController {
     @PostMapping("/save")
     public ResponseEntity<EmployeeDTO> saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
         return ResponseEntity.ok(notificationService.saveEmployee(employeeDTO));
+    }
+
+    @PostMapping("/restore")
+    public void restoreEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        notificationService.restoreEmployee(employeeDTO);
     }
 
     @PutMapping("/update/{id}")
@@ -47,7 +51,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/get-profile-by-id/{id}")
-    public ResponseEntity<Profile> getProfileById(@PathVariable String id) {
+    public ResponseEntity<ProfileDTO> getProfileById(@PathVariable String id) {
         return ResponseEntity.ok(notificationService.getProfileById(id));
     }
 

@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.roombooking.front.config.security.Role;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

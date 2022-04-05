@@ -14,12 +14,9 @@ import ru.roombooking.registration.service.impl.NotificationService;
 public class RegistrationController {
     private final NotificationService notificationService;
 
-
-
     @PostMapping("/registration")
     public void userRegistration(@RequestBody RegistrationDTO registrationDTO) {
 
         notificationService.userRegistration(registrationDTO);
     }
-
 }

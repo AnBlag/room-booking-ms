@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru"xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ru"xmlns:th="http://www.thymeleaf.org">
 <head>
 
 
@@ -8,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8" />
     <meta name="robots" content="none" />
-    <meta name="description" content="Метровагонмаш - производит вагоны метро, дизель поезда, рельсовые автобусы." />
+    <meta name="description" content="Meeting room service." />
     <meta name="format-detection" content="telephone=no">
     <link
             href="/css/style.css"
@@ -24,7 +23,7 @@
     <form class="form-signin" method="post" th:action="'/admin/vscrooms/delete/' + ${roomId}">
         <h2 class="form-signin-heading" >Удалить комнату?</h2>
         <a class="btn btn-lg btn-primary btn-block" href="/admin/vscrooms/">Назад</a>
-        <button class="btn btn-lg btn-primary btn-block " type="submit">Удалить</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Удалить</button>
     </form>
 
     </form>

@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8" />
     <meta name="robots" content="none" />
-    <meta name="description" content="Метровагонмаш - производит вагоны метро, дизель поезда, рельсовые автобусы." />
+    <meta name="description" content="Meeting room service." />
     <meta name="format-detection" content="telephone=no">
     <link href="/css/style.css" type="text/css" data-template-style="true" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -17,7 +17,7 @@
 <header>
     <nav class="nav">
         <a href="/" class="nav__logo hidden-sm hidden-xs">
-            <img width="223" src="/img/logo_rus.gif" height="41" alt="Метровагонмаш">
+            <img width="80" src="/img/logo2.png" height="41" alt="Meeting room service.">
 
         </a>
     </nav>
@@ -29,19 +29,8 @@
             <h2 class="form-heading">Редактирование профиля</h2>
             <div class="form-group">
                 <p class="login-str"></p>
-                <!--
-                <p class="login-message" style="color: red" th:if="${loginErrorMessage == true}">Такой логин уже существует!</p>
-                -->
                 <input tabindex="1" placeholder="Логин" type="text" name="username" class="form-control" id="username" th:field="${profileData.login}" readonly/>
                 </p>
-                <!--
-                <div class="form-group">
-                    <p class="pass-str"></p>
-                    <input tabindex="2" placeholder="Пароль" type="password" class="form-control" id="password" th:field="*{password}" required/>
-                    <p class="pass-str"></p>
-                    <input tabindex="3" placeholder="Повторите пароль" class="form-control" type="password" id="confirm_password" required/>
-                </div>
-                -->
                 <div class="form-floating">
                     <p class="name-str"></p>
                     <input tabindex="2" placeholder="Имя" type="text" class="form-control" id="name" th:field="${employeeData.name}" required/>

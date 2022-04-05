@@ -1,9 +1,10 @@
 package ru.roombooking.departments.exception;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.BAD_REQUEST)
+import static org.springframework.http.HttpStatus.*;
+
+@ResponseStatus(value = BAD_REQUEST, reason = "Не найден ID")
 public class DepartmentBadRequestException extends IllegalArgumentException {
     public DepartmentBadRequestException() {
         super();

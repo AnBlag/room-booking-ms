@@ -1,13 +1,12 @@
 package ru.roombooking.departments.service.impl;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.roombooking.departments.config.search.SearchByParams;
-import ru.roombooking.departments.exception.DeleteDepartmentException;
-import ru.roombooking.departments.exception.SaveDepartmentException;
-import ru.roombooking.departments.exception.UpdateDepartmentException;
+import ru.roombooking.departments.exception.DepartmentDeleteException;
+import ru.roombooking.departments.exception.DepartmentSaveException;
+import ru.roombooking.departments.exception.DepartmentUpdateException;
 import ru.roombooking.departments.model.Department;
 import ru.roombooking.departments.repository.SearchCriteriaViewRepository;
 import ru.roombooking.departments.service.DepartmentService;
@@ -27,17 +26,17 @@ public class NotificationService {
         return departmentService.findAll();
     }
 
-    @Transactional(rollbackFor = SaveDepartmentException.class)
+    @Transactional(rollbackFor = DepartmentSaveException.class)
     public Department saveDepartment(Department department) {
         return departmentService.save(department);
     }
 
-    @Transactional(rollbackFor = UpdateDepartmentException.class)
+    @Transactional(rollbackFor = DepartmentUpdateException.class)
     public Department updateDepartment(Department department, String id) {
-        return departmentService.update(department,Long.parseLong(id));
+        return departmentService.update(department, Long.parseLong(id));
     }
 
-    @Transactional(rollbackFor = DeleteDepartmentException.class)
+    @Transactional(rollbackFor = DepartmentDeleteException.class)
     public Department deleteDepartment(String id) {
         return departmentService.deleteById(Long.parseLong(id));
     }
@@ -60,7 +59,4 @@ public class NotificationService {
     public List<Department> getDepartmentListByDepartmentParams(Department departmentParams) {
         return searchCriteriaViewRepository.search(searchByParams.getParamsFromDepartment(departmentParams));
     }
-
-
 }
-

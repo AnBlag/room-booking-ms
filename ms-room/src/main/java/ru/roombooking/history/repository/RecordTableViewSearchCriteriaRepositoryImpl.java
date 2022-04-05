@@ -5,7 +5,6 @@ import ru.roombooking.history.config.search.specification.SearchCriteria;
 import ru.roombooking.history.config.search.specification.ViewConsumer;
 import ru.roombooking.history.model.RecordTableView;
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -18,6 +17,7 @@ import java.util.List;
 public class RecordTableViewSearchCriteriaRepositoryImpl implements SearchCriteriaViewRepository<RecordTableView> {
     @PersistenceContext
     private EntityManager entityManager;
+
     @Override
     public List<RecordTableView> search(List<SearchCriteria> params) {
         final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -37,5 +37,4 @@ public class RecordTableViewSearchCriteriaRepositoryImpl implements SearchCriter
     public void save(RecordTableView entity) {
         entityManager.persist(entity);
     }
-
 }

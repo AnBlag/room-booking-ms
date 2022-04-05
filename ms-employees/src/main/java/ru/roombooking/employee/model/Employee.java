@@ -1,5 +1,7 @@
 package ru.roombooking.employee.model;
 
+import static javax.persistence.GenerationType.*;
+
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,10 +16,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "employee")
 public class Employee {
-
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @NotNull
@@ -54,6 +54,7 @@ public class Employee {
     public int hashCode() {
         return 13;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -71,13 +72,15 @@ public class Employee {
     @Override
     public String toString() {
         return "Employee{" +
-            "id=" + id +
-            ", surname='" + surname + '\'' +
-            ", name='" + name + '\'' +
-            ", middleName='" + middleName + '\'' +
-            ", phone='" + phone + '\'' +
-            ", email='" + email + '\'' +
-            ", isActive=" + isActive +
-            '}';
+                "id=" + id +
+                ", surname='" + surname + '\'' +
+                ", name='" + name + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", isActive=" + isActive +
+                ", profileId=" + profileId +
+                ", departmentId=" + departmentId +
+                '}';
     }
 }

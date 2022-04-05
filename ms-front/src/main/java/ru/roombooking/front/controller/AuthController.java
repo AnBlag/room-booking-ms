@@ -17,6 +17,4 @@ public class AuthController {
     public String logoutPage() {
         return "logout";
     }
-
-
 }

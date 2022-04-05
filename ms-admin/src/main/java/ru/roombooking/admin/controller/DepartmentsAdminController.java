@@ -3,7 +3,7 @@ package ru.roombooking.admin.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.roombooking.admin.model.Department;
+import ru.roombooking.admin.model.dto.DepartmentDTO;
 import ru.roombooking.admin.model.dto.DepartmentRequest;
 import ru.roombooking.admin.service.notification.DepartmentNotificationService;
 
@@ -16,12 +16,12 @@ public class DepartmentsAdminController {
     private final DepartmentNotificationService departmentNotificationService;
 
     @GetMapping("/")
-    public ResponseEntity<List<Department>> departments(@RequestParam(required = false) String search) {
+    public ResponseEntity<List<DepartmentDTO>> departments(@RequestParam(required = false) String search) {
         return ResponseEntity.ok(departmentNotificationService.departments(search));
     }
 
     @PostMapping("/")
-    public ResponseEntity<List<Department>> findDepartments(@RequestBody Department findDepartment) {
+    public ResponseEntity<List<DepartmentDTO>> findDepartments(@RequestBody DepartmentDTO findDepartment) {
         return ResponseEntity.ok(departmentNotificationService.findDepartments(findDepartment));
     }
 
@@ -32,7 +32,7 @@ public class DepartmentsAdminController {
 
     @GetMapping("/delete/{id}")
     public ResponseEntity<String> askDeleteDepartment(@PathVariable String id) {
-        return ResponseEntity.ok(departmentNotificationService.askDeleteDepartment(id));
+        return ResponseEntity.ok(departmentNotificationService.askToDeleteDepartment(id));
     }
 
     @DeleteMapping("/delete/{id}")
@@ -40,14 +40,8 @@ public class DepartmentsAdminController {
         departmentNotificationService.deleteDepartment(id);
     }
 
-    /*@GetMapping("/add")
-    public String addDepartment(ModelMap modelMap) {
-        modelMap.addAttribute("departmentData", new Department());
-        return "addingdepartment";
-    }*/
-
     @PostMapping("/add")
-    public void saveNewDepartment(@RequestBody Department department) {
+    public void saveNewDepartment(@RequestBody DepartmentDTO department) {
         departmentNotificationService.saveNewDepartment(department);
     }
 }

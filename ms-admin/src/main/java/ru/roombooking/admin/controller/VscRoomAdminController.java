@@ -3,7 +3,7 @@ package ru.roombooking.admin.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.roombooking.admin.model.VscRoom;
+import ru.roombooking.admin.model.dto.VscRoomDTO;
 import ru.roombooking.admin.model.dto.VscRoomRequest;
 import ru.roombooking.admin.service.notification.VscRoomNotificationService;
 
@@ -16,7 +16,7 @@ public class VscRoomAdminController {
     private final VscRoomNotificationService vscRoomNotificationService;
 
     @GetMapping("/")
-    public ResponseEntity<List<VscRoom>> vscRooms() {
+    public ResponseEntity<List<VscRoomDTO>> vscRooms() {
         return ResponseEntity.ok(vscRoomNotificationService.vscRooms());
     }
 
@@ -25,26 +25,13 @@ public class VscRoomAdminController {
         vscRoomNotificationService.updateVscRoom(vscRoomRequest);
     }
 
-    /*@GetMapping("/delete/{id}")
-    public String askDeleteRoom(@PathVariable String id, ModelMap modelMap) {
-        modelMap.addAttribute("roomId", id);
-        return "deleteroom";
-    }*/
-
     @DeleteMapping("/delete/{id}")
     public void deleteRoom(@PathVariable String id) {
         vscRoomNotificationService.deleteRoom(id);
     }
 
-    /*@GetMapping("/addroom")
-    public String addRoom(ModelMap modelMap) {
-        modelMap.addAttribute("roomData", new VscRoom());
-        return "addingroom";
-    }*/
-
     @PostMapping("/addroom")
-    public void saveNewRoom(@RequestBody VscRoom vscRoom) {
+    public void saveNewRoom(@RequestBody VscRoomDTO vscRoom) {
         vscRoomNotificationService.saveNewRoom(vscRoom);
     }
-
 }

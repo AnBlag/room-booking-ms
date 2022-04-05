@@ -1,35 +1,35 @@
 package ru.roombooking.history.feign;
 
+import static org.springframework.http.MediaType.*;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
+
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.roombooking.history.model.Profile;
+import ru.roombooking.history.model.dto.ProfileDTO;
 import ru.roombooking.history.model.dto.EmployeeDTO;
 
-
-@FeignClient(name = "employee", url = "http://localhost:8085", path = "/employee")
+@FeignClient(name = "employee", url = "${feign.employee.url}", path = "/employee")
 public interface EmployeeFeignClient {
 
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-                    method = RequestMethod.GET,
-                    value ="/find-by-profile/{profileId}")
+    @RequestMapping(consumes = APPLICATION_JSON_VALUE,
+            method = GET,
+            value = "/find-by-profile/{profileId}")
     EmployeeDTO findByProfileID(@PathVariable String profileId);
 
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-            method = RequestMethod.GET,
-            value ="/find-by-login")
+    @RequestMapping(consumes = APPLICATION_JSON_VALUE,
+            method = GET,
+            value = "/find-by-login")
     EmployeeDTO findByLogin(@RequestParam String login);
 
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-            method = RequestMethod.GET,
-            value ="get-profile-by-id/{id}")
-    Profile getProfileById(@PathVariable String id);
+    @RequestMapping(consumes = APPLICATION_JSON_VALUE,
+            method = GET,
+            value = "get-profile-by-id/{id}")
+    ProfileDTO getProfileById(@PathVariable String id);
 
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-            method = RequestMethod.GET,
-            value ="/find-by-id/{id}")
+    @RequestMapping(consumes = APPLICATION_JSON_VALUE,
+            method = GET,
+            value = "/find-by-id/{id}")
     EmployeeDTO findById(@PathVariable String id);
 }

@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.roombooking.employee.config.search.SearchByURLParams;
-import ru.roombooking.employee.exception.DeleteEmployeeException;
-import ru.roombooking.employee.exception.SaveEmployeeException;
-import ru.roombooking.employee.exception.UpdateEmployeeException;
+import ru.roombooking.employee.exception.EmployeeDeleteException;
+import ru.roombooking.employee.exception.EmployeeSaveException;
+import ru.roombooking.employee.exception.EmployeeUpdateException;
 import ru.roombooking.employee.model.EmployeeView;
-import ru.roombooking.employee.model.Profile;
+import ru.roombooking.employee.model.dto.ProfileDTO;
 import ru.roombooking.employee.model.dto.EmployeeDTO;
 import ru.roombooking.employee.repository.SearchCriteriaViewRepository;
 import ru.roombooking.employee.service.EmployeeService;
@@ -27,20 +27,26 @@ public class NotificationService {
         return employeeService.findAll();
     }
 
-    @Transactional(rollbackFor = SaveEmployeeException.class)
+    @Transactional(rollbackFor = EmployeeSaveException.class)
     public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO) {
         return employeeService.save(employeeDTO);
     }
 
-    @Transactional(rollbackFor = UpdateEmployeeException.class)
+    @Transactional(rollbackFor = EmployeeSaveException.class)
+    public void restoreEmployee(EmployeeDTO employeeDTO) {
+        employeeService.restore(employeeDTO);
+    }
+
+    @Transactional(rollbackFor = EmployeeUpdateException.class)
     public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO, String id) {
         return employeeService.update(employeeDTO, Long.parseLong(id));
     }
 
-    @Transactional(rollbackFor = DeleteEmployeeException.class)
+    @Transactional(rollbackFor = EmployeeDeleteException.class)
     public EmployeeDTO deleteEmployee(String id) {
         return employeeService.deleteById(Long.parseLong(id));
     }
+
     @Transactional(readOnly = true)
     public EmployeeDTO getEmployee(String login) {
         return employeeService.findByLogin(login);
@@ -57,7 +63,7 @@ public class NotificationService {
     }
 
     @Transactional(readOnly = true)
-    public Profile getProfileById(String id) {
+    public ProfileDTO getProfileById(String id) {
         return employeeService.getProfileById(Long.parseLong(id));
     }
 
@@ -80,6 +86,4 @@ public class NotificationService {
     public List<EmployeeView> getEmployeeViewListByEmployeeViewParams(EmployeeView employeeView) {
         return searchCriteriaViewRepository.search(searchByURLParams.getParamsFromProfileView(employeeView));
     }
-
-
 }

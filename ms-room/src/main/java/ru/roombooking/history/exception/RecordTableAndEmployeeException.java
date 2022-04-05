@@ -1,9 +1,10 @@
 package ru.roombooking.history.exception;
 
-import org.springframework.http.HttpStatus;
+import static org.springframework.http.HttpStatus.*;
+
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND, reason="Не найдена запись")
+@ResponseStatus(value = NOT_FOUND, reason = "Не найдена запись")
 public class RecordTableAndEmployeeException extends RuntimeException {
     public RecordTableAndEmployeeException() {
     }
@@ -21,10 +22,10 @@ public class RecordTableAndEmployeeException extends RuntimeException {
     }
 
     public RecordTableAndEmployeeException(
-        String message,
-        Throwable cause,
-        boolean enableSuppression,
-        boolean writableStackTrace
+            String message,
+            Throwable cause,
+            boolean enableSuppression,
+            boolean writableStackTrace
     ) {
         super(message, cause, enableSuppression, writableStackTrace);
     }

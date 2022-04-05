@@ -1,42 +1,44 @@
 package ru.roombooking.admin.feign;
 
+import static org.springframework.http.MediaType.*;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import ru.roombooking.admin.model.Department;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import ru.roombooking.admin.model.dto.DepartmentDTO;
 
 import java.util.List;
 
-
-@FeignClient(name = "department", url = "http://localhost:8084", path = "/department")
+@FeignClient(name = "department", url = "${feign.department.url}", path = "/department")
 public interface DepartmentFeignClient {
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET, value = "/find-by-id/{id}")
-    Department findById(@PathVariable String id);
+    @RequestMapping(consumes = APPLICATION_JSON_VALUE, method = GET, value = "/find-by-id/{id}")
+    DepartmentDTO findById(@PathVariable String id);
 
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET, value = "/")
-    List<Department> findAll();
+    @RequestMapping(consumes = APPLICATION_JSON_VALUE, method = GET, value = "/")
+    List<DepartmentDTO> findAll();
 
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PUT, value = "/batch-update-department",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    void batchUpdateDepartment(@RequestBody List<Department> departmentList);
+    @RequestMapping(consumes = APPLICATION_JSON_VALUE, method = PUT, value = "/batch-update-department",
+            produces = APPLICATION_JSON_VALUE)
+    void batchUpdateDepartment(@RequestBody List<DepartmentDTO> departmentList);
 
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.DELETE, value = "/delete/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    Department deleteDepartment(@PathVariable String id);
+    @RequestMapping(consumes = APPLICATION_JSON_VALUE, method = DELETE, value = "/delete/{id}",
+            produces = APPLICATION_JSON_VALUE)
+    DepartmentDTO deleteDepartment(@PathVariable String id);
 
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST, value = "/save",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    Department saveDepartment(@RequestBody Department department);
+    @RequestMapping(consumes = APPLICATION_JSON_VALUE, method = POST, value = "/save",
+            produces = APPLICATION_JSON_VALUE)
+    DepartmentDTO saveDepartment(@RequestBody DepartmentDTO department);
 
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-            method = RequestMethod.GET, value = "/get-department-list-by-URL-params")
-    List<Department> getDepartmentListByURLParams(@RequestParam String search);
+    @RequestMapping(consumes = APPLICATION_JSON_VALUE,
+            method = GET, value = "/get-department-list-by-URL-params")
+    List<DepartmentDTO> getDepartmentListByURLParams(@RequestParam String search);
 
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-                    method = RequestMethod.POST,
-                    value = "/get-department-list-by-department-params",
-                    produces = MediaType.APPLICATION_JSON_VALUE)
-    List<Department> getDepartmentListByDepartmentParams(@RequestBody Department departmentParams);
+    @RequestMapping(consumes = APPLICATION_JSON_VALUE,
+            method = POST,
+            value = "/get-department-list-by-department-params",
+            produces = APPLICATION_JSON_VALUE)
+    List<DepartmentDTO> getDepartmentListByDepartmentParams(@RequestBody DepartmentDTO departmentParams);
 }

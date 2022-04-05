@@ -1,6 +1,7 @@
 package ru.roombooking.mail.service.mail.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import ru.roombooking.mail.service.mail.MailSenderService;
 @Service
 @RequiredArgsConstructor
 @PropertySource("classpath:record-text.properties")
+@Slf4j
 public class NotificationService {
     @Value("${record.url}")
     private String recordUrl;
@@ -19,6 +21,7 @@ public class NotificationService {
 
     public void sendConfirmMessageToEmployee(RecordTableDTO recordTableDTO, String roomId) {
         try {
+            log.info("Отправка сообщения с подтверждением о бронировании комнаты");
             recordTableDTO.setRoomId(roomId);
             setCurrentZone(recordTableDTO);
             String subject = "Бронирование комнаты №" + recordTableDTO.getRoomId();
@@ -40,6 +43,7 @@ public class NotificationService {
 
     public void sendConfirmUpdateMessageToEmployee(RecordTableDTO previousRecordTableDTO, RecordTableDTO recordTableDTO) {
         try {
+            log.info("Отправка сообщения с информацией об изменении бронирования комнаты");
             setCurrentZone(recordTableDTO);
             setCurrentZone(previousRecordTableDTO);
             String subject = "Изменение в бронирование комнаты №" + recordTableDTO.getRoomId();
@@ -61,18 +65,18 @@ public class NotificationService {
                 + "Дата бронирования: " + recordTableDTO.getStart().toLocalDate() + "\n"
                 + "Время бронирования: с " + recordTableDTO.getStart().toLocalTime()
                 + " по " + recordTableDTO.getEnd().toLocalTime() + "\n"
-                + "Подробнее: " + recordUrl  + recordTableDTO.getRoomId();
+                + "Подробнее: " + recordUrl + recordTableDTO.getRoomId();
     }
 
     public void sendConfirmDeleteMessageToEmployee(RecordTableDTO recordTableDTO) {
         try {
+            log.info("Отправка сообщения об отмене бронирования комнаты");
             setCurrentZone(recordTableDTO);
             String subject = "Отмена бронирования комнаты №" + recordTableDTO.getRoomId();
             mailSenderService.send(recordTableDTO.getEmail(), subject, getMessageForDeleteRecord(recordTableDTO));
         } catch (Exception e) {
             throw new MailDoNotSendException();
         }
-
     }
 
     private String getMessageForDeleteRecord(RecordTableDTO recordTableDTO) {
@@ -81,18 +85,17 @@ public class NotificationService {
                 + "Дата бронирования: " + recordTableDTO.getStart().toLocalDate() + "\n"
                 + "Время бронирования: с " + recordTableDTO.getStart().toLocalTime()
                 + " по " + recordTableDTO.getEnd().toLocalTime() + "\n"
-                + "Подробнее: " + recordUrl  + recordTableDTO.getRoomId();
+                + "Подробнее: " + recordUrl + recordTableDTO.getRoomId();
     }
-
 
     private void setCurrentZone(RecordTableDTO recordTableDTO) {
         recordTableDTO.setStart(recordTableDTO.getStart().withZoneSameInstant(recordTableDTO.getTimeZone()));
         recordTableDTO.setEnd(recordTableDTO.getEnd().withZoneSameInstant(recordTableDTO.getTimeZone()));
     }
 
-
-    public void send (MailRequest mailRequest) {
+    public void send(MailRequest mailRequest) {
         try {
+            log.info("Отправка сообщения");
             mailSenderService.send(mailRequest.getEmailTo(), mailRequest.getSubject(), mailRequest.getMessage());
         } catch (Exception e) {
             throw new MailDoNotSendException();

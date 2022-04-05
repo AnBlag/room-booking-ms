@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     password: 123
     driver-class-name: org.postgresql.Driver
@@ -12,3 +14,12 @@ server:
   port: 8087
   error:
     include-message: always
+feign:
+  front:
+    url: http://localhost:8080
+  mail:
+    url: http://localhost:8081
+  employee:
+    url: http://localhost:8085
+  profile:
+    url: http://localhost:8086

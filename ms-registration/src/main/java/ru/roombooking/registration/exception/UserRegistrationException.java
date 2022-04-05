@@ -1,6 +1,11 @@
 package ru.roombooking.registration.exception;
 
-public class UserRegistrationException extends RuntimeException{
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import static org.springframework.http.HttpStatus.*;
+
+@ResponseStatus(value = BAD_REQUEST, reason = "Такой логин уже существует!")
+public class UserRegistrationException extends RuntimeException {
     public UserRegistrationException() {
         super();
     }

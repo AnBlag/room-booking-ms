@@ -1,13 +1,11 @@
-
 package ru.roombooking.resetpassword.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.roombooking.resetpassword.model.Role;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -21,6 +19,4 @@ public class ProfileDTO {
     private Role role;
     private Boolean isActive;
     private Boolean accountNonLocked;
-
 }
-

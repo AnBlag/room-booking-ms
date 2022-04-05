@@ -1,5 +1,6 @@
-
 package ru.roombooking.history.model;
+
+import static javax.persistence.GenerationType.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -16,10 +17,8 @@ import java.time.ZonedDateTime;
 @Table(name = "record_table")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecordTable {
-
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
     @Column(name = "email")
     private String email;
@@ -31,7 +30,7 @@ public class RecordTable {
     private ZonedDateTime startEvent;
 
     @Column(name = "end_event")
-    private ZonedDateTime  endEvent;
+    private ZonedDateTime endEvent;
 
     @Column(name = "is_active")
     private Boolean isActive;
@@ -46,6 +45,7 @@ public class RecordTable {
     public int hashCode() {
         return 13;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -63,12 +63,12 @@ public class RecordTable {
     @Override
     public String toString() {
         return "RecordTable{" +
-            "id=" + id +
-            ", email='" + email + '\'' +
-            ", title='" + title + '\'' +
-            ", startEvent=" + startEvent +
-            ", endEvent=" + endEvent +
-            ", isActive=" + isActive +
-            '}';
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", title='" + title + '\'' +
+                ", startEvent=" + startEvent +
+                ", endEvent=" + endEvent +
+                ", isActive=" + isActive +
+                '}';
     }
 }

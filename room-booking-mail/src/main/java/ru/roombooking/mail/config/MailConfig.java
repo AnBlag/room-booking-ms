@@ -49,7 +49,5 @@ public class MailConfig {
         properties.put("mail.smtp.starttls.enable", starttlsEnable);
         properties.setProperty("mail.debug", debug);
         return javaMailSender;
-
-
     }
 }

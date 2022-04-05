@@ -2,19 +2,20 @@ package ru.roombooking.admin.service.notification;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.roombooking.admin.exception.DeleteRecordTableException;
-import ru.roombooking.admin.exception.RecordTableViewBadRequestException;
-import ru.roombooking.admin.exception.UpdateRecordTableException;
-import ru.roombooking.admin.exception.VscRoomBadRequestException;
+import ru.roombooking.admin.exception.RecordTableDeleteException;
+import ru.roombooking.admin.exception.RecordTableViewRequestException;
+import ru.roombooking.admin.exception.RecordTableUpdateException;
+import ru.roombooking.admin.exception.VscRoomRequestException;
 import ru.roombooking.admin.feign.RecordTableFeignClient;
 import ru.roombooking.admin.feign.RecordTableViewFeignClient;
 import ru.roombooking.admin.feign.VscRoomFeignClient;
-import ru.roombooking.admin.model.RecordTable;
 import ru.roombooking.admin.model.RecordTableView;
-import ru.roombooking.admin.model.VscRoom;
+import ru.roombooking.admin.model.dto.VscRoomDTO;
+import ru.roombooking.admin.model.dto.RecordTableDTO;
 import ru.roombooking.admin.model.dto.RecordTableRequest;
-import ru.roombooking.admin.model.dto.RecordTableViewListAndVscRoomListRequest;
+import ru.roombooking.admin.model.dto.RecordTableViewListAndVscRoomListDTO;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -22,51 +23,53 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RecordTableNotificationService {
     private final RecordTableFeignClient recordTableFeignClient;
     private final VscRoomFeignClient vscRoomFeignClient;
     private final RecordTableViewFeignClient recordTableViewFeignClient;
 
-
-    // FIXME: 19.01.2022 разобраться с try catch
-    public RecordTableViewListAndVscRoomListRequest records(String search) {
+    public RecordTableViewListAndVscRoomListDTO records(String search) {
+        log.info("Поиск бронирований");
         List<RecordTableView> recordTableViewList;
         try {
             if (search != null) {
+                log.info("Поиск бронирований по URL");
                 recordTableViewList = recordTableViewFeignClient.getRecordTableViewListByURLParams(search);
-            }
-            else {
+            } else {
+                log.info("Поиск всех бронирований");
                 recordTableViewList = recordTableViewFeignClient.findAll();
             }
             try {
-                List<VscRoom> vscRoomList = vscRoomFeignClient.findAll();
-                return new RecordTableViewListAndVscRoomListRequest(recordTableViewList, vscRoomList);
+                log.info("Поиск всех комнат");
+                List<VscRoomDTO> vscRoomList = vscRoomFeignClient.findAll();
+                return new RecordTableViewListAndVscRoomListDTO(recordTableViewList, vscRoomList);
             } catch (FeignException e) {
-                throw new VscRoomBadRequestException();
+                throw new VscRoomRequestException();
             }
         } catch (FeignException e) {
-            throw new RecordTableViewBadRequestException();
+            throw new RecordTableViewRequestException();
         }
-
     }
 
-
-    public RecordTableViewListAndVscRoomListRequest findRecords(RecordTableView findRecord) {
+    public RecordTableViewListAndVscRoomListDTO findRecords(RecordTableView findRecord) {
+        log.info("Поиск бронирований по параметрам");
         try {
             List<RecordTableView> list = recordTableViewFeignClient.getRecordTableViewListByRecordTableViewParams(findRecord);
             try {
-                List<VscRoom> vscRoomList = vscRoomFeignClient.findAll();
-                return new RecordTableViewListAndVscRoomListRequest(list, vscRoomList);
+                log.info("Поиск всех комнат");
+                List<VscRoomDTO> vscRoomList = vscRoomFeignClient.findAll();
+                return new RecordTableViewListAndVscRoomListDTO(list, vscRoomList);
             } catch (FeignException e) {
-                throw new VscRoomBadRequestException();
+                throw new VscRoomRequestException();
             }
         } catch (FeignException e) {
-            throw new RecordTableViewBadRequestException();
+            throw new RecordTableViewRequestException();
         }
     }
 
     public void updateRecords(RecordTableRequest recordTableRequest) {
-
+        log.info("Обновление бронирований");
         try {
             recordTableFeignClient.batchUpdateRecords(getRecordTableListFromParams(recordTableRequest.getId(),
                     recordTableRequest.getEmail(),
@@ -76,27 +79,30 @@ public class RecordTableNotificationService {
                     recordTableRequest.getTitle(),
                     recordTableRequest.getStartEvent(),
                     recordTableRequest.getEndEvent()));
+            log.info("Обновление бронирований успешно завершено");
         } catch (FeignException e) {
-            throw new UpdateRecordTableException();
+            throw new RecordTableUpdateException();
         }
     }
 
     public void deleteRecord(String id) {
+        log.info("Удаление бронирования");
         try {
             recordTableFeignClient.deleteRecordById(id);
+            log.info("Удаление бронирования успешно завершено");
         } catch (FeignException e) {
-            throw new DeleteRecordTableException();
+            throw new RecordTableDeleteException();
         }
     }
 
-    private List<RecordTable> getRecordTableListFromParams(String id,
-                                                           String email,
-                                                           String employeeId,
-                                                           String vcsRoomNumberRoom,
-                                                           String isActive,
-                                                           String title,
-                                                           String startEvent,
-                                                           String endEvent) {
+    private List<RecordTableDTO> getRecordTableListFromParams(String id,
+                                                              String email,
+                                                              String employeeId,
+                                                              String vcsRoomNumberRoom,
+                                                              String isActive,
+                                                              String title,
+                                                              String startEvent,
+                                                              String endEvent) {
         String[] idMas = id.split(",");
         String[] emailMas = email.split(",");
         String[] employeeIdMas = employeeId.split(",");
@@ -106,11 +112,11 @@ public class RecordTableNotificationService {
         String[] startEventMas = startEvent.split(",");
         String[] endEventMas = endEvent.split(",");
 
-        List<RecordTable> recordTableList = new ArrayList<>();
+        List<RecordTableDTO> recordTableList = new ArrayList<>();
         try {
-            for (int i=0; i<idMas.length; i++) {
+            for (int i = 0; i < idMas.length; i++) {
                 recordTableList.add(
-                        RecordTable.builder()
+                        RecordTableDTO.builder()
                                 .id(Long.parseLong(idMas[i]))
                                 .email(emailMas[i])
                                 .employeeId(Long.parseLong(employeeIdMas[i]))
@@ -118,13 +124,13 @@ public class RecordTableNotificationService {
                                         .getId())
                                 .isActive(Boolean.valueOf(isActiveMas[i]))
                                 .title(titleMas[i])
-                                .startEvent(ZonedDateTime.parse(startEventMas[i]))
-                                .endEvent(ZonedDateTime.parse(endEventMas[i]))
+                                .start(ZonedDateTime.parse(startEventMas[i]))
+                                .end(ZonedDateTime.parse(endEventMas[i]))
                                 .build()
                 );
             }
         } catch (FeignException e) {
-            throw new VscRoomBadRequestException();
+            throw new VscRoomRequestException();
         }
         return recordTableList;
     }

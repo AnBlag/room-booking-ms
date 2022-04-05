@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8" />
     <meta name="robots" content="none" />
-    <meta name="description" content="Метровагонмаш - производит вагоны метро, дизель поезда, рельсовые автобусы." />
+    <meta name="description" content="Meeting room service." />
     <meta name="format-detection" content="telephone=no">
     <link
             href="/css/style.css"
@@ -22,11 +22,10 @@
 <body>
 
 
-
 <header>
     <nav class="nav ">
         <a href="/" class="nav__logo hidden-sm hidden-xs">
-            <img width="223" src="/img/logo_rus.gif" height="41" alt="Метровагонмаш">
+            <img width="80" src="/img/logo2.png" height="41" alt="Meeting room service.">
         </a>
         <div class="auth-panel">
             <a sec:authorize="hasAuthority('admin:read')" class="btn btn-outline-secondary" href="/admin/vscrooms/">Панель администратора</a>
@@ -39,9 +38,6 @@
 </header>
 
 
-<!--
-<div th:if="${employeeList==null}">
--->
 <ul class="nav nav-pills ">
     <li class="nav-item">
         <a class="nav-link "  href="/admin/employees/">Сотрудники</a>
@@ -55,7 +51,9 @@
     <li class="nav-item">
         <a class="nav-link active" href="/admin/records/">Записи</a>
     </li>
-
+    <li class="nav-item">
+        <a class="nav-link" href="/admin/history/">История</a>
+    </li>
 </ul>
 
 
@@ -168,7 +166,6 @@
 
         <tbody>
 
-        <!--    <form method="post" action="/save-user" accept-charset="UTF-8">-->
         <tr th:each="record : ${recordTableViewList}">
             <td>
                 <input th:if="${record.id!= null}" th:value="${record.id}" type="text" size="2" id="id" style="text-align: center" class="form-control" name="id" readonly/>
@@ -200,7 +197,6 @@
                         <option th:value="true" th:if="${record.isActive != true}">Разблокирован</option>
                     </select>
                 </div>
-                <!-- <input th:if="${record.isActive!= null}" th:value="${record.isActive}" type="text" size="2" id="isActive" style="text-align: center" class="form-control" name="isActive"/> -->
             </td>
             <td>
                 <input th:if="${record.title!= null}" th:value="${record.title}" type="text" size="2" id="title" style="text-align: center" class="form-control" name="title"/>
@@ -216,7 +212,6 @@
             </td>
 
         </tr>
-        <!-- </form>-->
         </tbody>
         </thead>
 

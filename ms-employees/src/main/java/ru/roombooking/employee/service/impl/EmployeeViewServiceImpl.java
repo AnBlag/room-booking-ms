@@ -1,16 +1,17 @@
 package ru.roombooking.employee.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.roombooking.employee.model.Employee;
-import ru.roombooking.employee.model.Profile;
+import ru.roombooking.employee.model.dto.ProfileDTO;
 import ru.roombooking.employee.model.EmployeeView;
 import ru.roombooking.employee.repository.EmployeeViewRepository;
 import ru.roombooking.employee.service.RoomService;
-
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -19,35 +20,42 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class EmployeeViewServiceImpl implements RoomService<EmployeeView,Long> {
-
+@Slf4j
+public class EmployeeViewServiceImpl implements RoomService<EmployeeView, Long> {
     private final JdbcTemplate jdbcTemplate;
     private final EmployeeViewRepository employeeViewRepository;
+    private String SQL_BATCH_UPDATE_EMPLOYEE =
+            "update employee set email=?, name=?, middle_name=?, surname=?, phone=? where profile_id=?";
+    private String SQL_BATCH_UPDATE_PROFILE
+            = "update profile set account_non_locked = ? where id=?";
 
     @Transactional
     @Override
     public EmployeeView save(EmployeeView model) {
+        log.info("Сохранение сотрудника");
         return employeeViewRepository.save(model);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<EmployeeView> findAll() {
+        log.info("Поиск сотрудников");
         return employeeViewRepository.findAll();
     }
 
     @Transactional
     public void batchUpdateProfileAndEmployee(List<EmployeeView> employeeViewList) {
-
+        log.info("Сохранение сотрудников и профилей");
         List<Employee> employeeList = employeeViewList.stream()
                 .map(this::toEmployee)
                 .collect(Collectors.toList());
 
-        List<Profile> profileList = employeeViewList.stream()
+        List<ProfileDTO> profileList = employeeViewList.stream()
                 .map(this::toProfile)
                 .collect(Collectors.toList());
 
-        batchUpdateProfileAndEmployee(profileList,employeeList);
+        batchUpdateProfileAndEmployee(profileList, employeeList);
+        log.info("Сохранение сотрудников и профилей успешно завершено");
     }
 
     private Employee toEmployee(EmployeeView employeeView) {
@@ -60,24 +68,25 @@ public class EmployeeViewServiceImpl implements RoomService<EmployeeView,Long> {
                 .profileId(employeeView.getId())
                 .build();
     }
-    private Profile toProfile(EmployeeView employeeView) {
-        return Profile.builder()
+
+    private ProfileDTO toProfile(EmployeeView employeeView) {
+        return ProfileDTO.builder()
                 .id(employeeView.getId())
                 .accountNonLocked(employeeView.getBanned())
                 .build();
     }
-    private void batchUpdateProfileAndEmployee(List<Profile> profileList, List<Employee> employeeList) {
-        jdbcTemplate.batchUpdate("" +
-                        "update employee set email=?, name=?, middle_name=?, surname=?, phone=? where profile_id=?",
+
+    private void batchUpdateProfileAndEmployee(List<ProfileDTO> profileList, List<Employee> employeeList) {
+        jdbcTemplate.batchUpdate(SQL_BATCH_UPDATE_EMPLOYEE,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setString(1,employeeList.get(i).getEmail());
-                        ps.setString(2,employeeList.get(i).getName());
-                        ps.setString(3,employeeList.get(i).getMiddleName());
-                        ps.setString(4,employeeList.get(i).getSurname());
-                        ps.setString(5,employeeList.get(i).getPhone());
-                        ps.setLong(6,employeeList.get(i).getProfileId());
+                        ps.setString(1, employeeList.get(i).getEmail());
+                        ps.setString(2, employeeList.get(i).getName());
+                        ps.setString(3, employeeList.get(i).getMiddleName());
+                        ps.setString(4, employeeList.get(i).getSurname());
+                        ps.setString(5, employeeList.get(i).getPhone());
+                        ps.setLong(6, employeeList.get(i).getProfileId());
                     }
 
                     @Override
@@ -85,15 +94,14 @@ public class EmployeeViewServiceImpl implements RoomService<EmployeeView,Long> {
                         return employeeList.size();
                     }
                 });
+        log.info("Сохранение сотрудников успешно завершено");
 
-        jdbcTemplate.batchUpdate("update profile set account_non_locked = ? where id=?",
+        jdbcTemplate.batchUpdate(SQL_BATCH_UPDATE_PROFILE,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        // Здесь можно увидеть работу транзации, если мы раскоментируем.
-                        //  ps.setLong(1,4);
-                        ps.setBoolean(1,profileList.get(i).getAccountNonLocked());
-                        ps.setLong(2,profileList.get(i).getId());
+                        ps.setBoolean(1, profileList.get(i).getAccountNonLocked());
+                        ps.setLong(2, profileList.get(i).getId());
                     }
 
                     @Override
@@ -101,6 +109,6 @@ public class EmployeeViewServiceImpl implements RoomService<EmployeeView,Long> {
                         return profileList.size();
                     }
                 });
+        log.info("Сохранение профилей успешно завершено");
     }
-
 }

@@ -4,11 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.roombooking.profile.model.Profile;
-//import ru.roombooking.profile.response.BinarySuccessResponse;
-/*import ru.roombooking.profile.response.ProfileListSuccessResponse;
-import ru.roombooking.profile.response.ProfileSuccessResponse;*/
 import ru.roombooking.profile.service.impl.NotificationService;
-
 
 import java.util.List;
 
@@ -38,18 +34,23 @@ public class ProfileController {
         return ResponseEntity.ok(notificationService.deleteProfile(id));
     }
 
+    @DeleteMapping("/delete-by-profile")
+    public ResponseEntity<Profile> deleteByProfile(@RequestBody Profile profile) {
+        return ResponseEntity.ok(notificationService.deleteByProfile(profile));
+    }
+
     @PutMapping("/temp-banned")
     public ResponseEntity<Profile> tempBanned(@RequestParam String id, @RequestParam String status) {
         return ResponseEntity.ok(notificationService.tempBanned(status, id));
     }
 
     @GetMapping("/find-by-login")
-    public ResponseEntity<Profile> findByLogin (@RequestParam String login) {
+    public ResponseEntity<Profile> findByLogin(@RequestParam String login) {
         return ResponseEntity.ok(notificationService.findByLogin(login));
     }
 
     @GetMapping("/find-by-id/{id}")
-    public ResponseEntity<Profile> findById (@PathVariable String id) {
+    public ResponseEntity<Profile> findById(@PathVariable String id) {
         return ResponseEntity.ok(notificationService.findByID(id));
     }
 

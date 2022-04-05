@@ -1,0 +1,121 @@
+<html lang="ru"xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="robots" content="none" />
+    <meta name="description" content="Meeting room service." />
+    <meta name="format-detection" content="telephone=no">
+    <link
+            href="/css/style.css"
+            type="text/css" data-template-style="true" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="icon" href="/img/icons/favicon.ico?v=1" type="image/x-icon">
+    <title>ВКС</title>
+
+
+</head>
+
+<body>
+
+
+
+<header>
+    <nav class="nav ">
+        <a href="/" class="nav__logo hidden-sm hidden-xs">
+            <img width="80" src="/img/logo2.png" height="41" alt="Meeting room service.">
+        </a>
+        <div class="auth-panel">
+            <a sec:authorize="hasAuthority('admin:read')" class="btn btn-outline-secondary" href="/admin/vscrooms/">Панель администратора</a>
+            <a sec:authorize="hasAuthority('user:read')" class="btn btn-outline-info" href="/user">Профиль</a>
+            <a sec:authorize="isAnonymous()" class="btn btn-outline-secondary" href="/auth/login" role="button">Вход</a>
+            <a sec:authorize="isAnonymous()" class="btn btn-outline-secondary" href="/registration">Регистрация</a>
+            <a sec:authorize="isAuthenticated()" class="btn btn-danger" href="/auth/logout">Выход</a>
+        </div>
+    </nav>
+</header>
+
+
+<ul class="nav nav-pills ">
+    <li class="nav-item">
+        <a class="nav-link "  href="/admin/employees/">Сотрудники</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " href="/admin/departments/">Департаменты</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/admin/vscrooms/">Комнаты</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/admin/records/">Записи</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="/admin/history/">История</a>
+    </li>
+</ul>
+
+<div class="container">
+
+    <div th:if="${recordTableDTOList!=null}">
+    <table class="table table-striped table-bordered table-responsive-sm text-center caption-top">
+        <caption>История записей о бронировании</caption>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ID сотрудника</th>
+                <th>EMAIL</th>
+                <th>Комната</th>
+                <th>Блокировка</th>
+                <th>Название</th>
+                <th>Начало</th>
+                <th>Конец</th>
+                <th>Удаление</th>
+            </tr>
+
+        <tbody>
+        <tr th:each="record : ${recordTableDTOList}">
+            <td>
+                <a th:if="${record.id!= null}" th:text="${record.id}"></a>
+            </td>
+            <td>
+                <a th:if="${record.employeeId!= null}" th:text="${record.employeeId}"></a>
+            </td>
+            <td>
+                <a th:if="${record.email!= null}" th:text="${record.email}"></a>
+            </td>
+            <td>
+                <a th:if="${record.numberRoomId!= null}" th:text="${record.numberRoomId}"></a>
+            </td>
+            <td>
+                <a th:if="${record.isActive}">Разблокирован</a>
+                <a th:if="${!record.isActive}">Заблокирован</a>
+            </td>
+            <td>
+                <a th:if="${record.title!= null}" th:text="${record.title}"></a>
+            </td>
+            <td>
+                <a th:if="${record.start!= null}" th:text="${record.start}"></a>
+            </td>
+            <td>
+                <a th:if="${record.end!= null}" th:text="${record.end}"></a>
+            </td>
+            <td>
+                <a th:href="${'/admin/history/delete/' + record.id}" class="btn btn-outline-danger">Удалить</a>
+            </td>
+        </tr>
+        </tbody>
+        </thead>
+
+    </table>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+</script>
+</body>
+</html>

@@ -1,12 +1,11 @@
 package ru.roombooking.history.service.impl;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.roombooking.history.exception.DeleteVscRoomException;
-import ru.roombooking.history.exception.SaveVscRoomException;
-import ru.roombooking.history.exception.UpdateVscRoomException;
+import ru.roombooking.history.exception.VscRoomDeleteException;
+import ru.roombooking.history.exception.VscRoomSaveException;
+import ru.roombooking.history.exception.VscRoomUpdateException;
 import ru.roombooking.history.model.VscRoom;
 import ru.roombooking.history.service.VscRoomService;
 
@@ -22,17 +21,17 @@ public class VscRoomNotificationService {
         return vscRoomService.findAll();
     }
 
-    @Transactional(rollbackFor = SaveVscRoomException.class)
+    @Transactional(rollbackFor = VscRoomSaveException.class)
     public VscRoom saveRoom(VscRoom vscRoom) {
         return vscRoomService.save(vscRoom);
     }
 
-    @Transactional(rollbackFor = UpdateVscRoomException.class)
+    @Transactional(rollbackFor = VscRoomUpdateException.class)
     public VscRoom updateRoom(VscRoom vscRoom, String id) {
-        return vscRoomService.update(vscRoom,Long.parseLong(id));
+        return vscRoomService.update(vscRoom, Long.parseLong(id));
     }
 
-    @Transactional(rollbackFor = DeleteVscRoomException.class)
+    @Transactional(rollbackFor = VscRoomDeleteException.class)
     public VscRoom deleteRoom(String id) {
         return vscRoomService.deleteById(Long.parseLong(id));
     }
@@ -42,7 +41,7 @@ public class VscRoomNotificationService {
         return vscRoomService.findByNumberRoomId(Long.parseLong(number));
     }
 
-    @Transactional(rollbackFor = UpdateVscRoomException.class)
+    @Transactional(rollbackFor = VscRoomUpdateException.class)
     public void batchUpdateVscRoom(List<VscRoom> vscRoomList) {
         vscRoomService.batchUpdateVscRoom(vscRoomList);
     }

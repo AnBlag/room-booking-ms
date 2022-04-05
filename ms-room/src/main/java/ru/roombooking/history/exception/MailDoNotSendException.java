@@ -1,9 +1,10 @@
 package ru.roombooking.history.exception;
 
-import org.springframework.http.HttpStatus;
+import static org.springframework.http.HttpStatus.*;
+
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Ошибка отправки уведомления")
+@ResponseStatus(value = INTERNAL_SERVER_ERROR, reason = "Ошибка отправки уведомления")
 public class MailDoNotSendException extends RuntimeException {
     public MailDoNotSendException() {
         super();

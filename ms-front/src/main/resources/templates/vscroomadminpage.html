@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8" />
     <meta name="robots" content="none" />
-    <meta name="description" content="Метровагонмаш - производит вагоны метро, дизель поезда, рельсовые автобусы." />
+    <meta name="description" content="Meeting room service." />
     <meta name="format-detection" content="telephone=no">
     <link
             href="/css/style.css"
@@ -26,7 +26,7 @@
 <header>
     <nav class="nav">
         <a href="/" class="nav__logo hidden-sm hidden-xs">
-            <img width="223" src="/img/logo_rus.gif" height="41" alt="Метровагонмаш">
+            <img width="80" src="/img/logo2.png" height="41" alt="Meeting room service.">
         </a>
 
         <div class="auth-panel">
@@ -40,9 +40,6 @@
 </header>
 
 
-<!--
-<div th:if="${employeeList==null}">
--->
 <ul class="nav nav-pills ">
     <li class="nav-item">
         <a class="nav-link "  href="/admin/employees/">Сотрудники</a>
@@ -56,7 +53,9 @@
     <li class="nav-item">
         <a class="nav-link" href="/admin/records/">Записи</a>
     </li>
-
+    <li class="nav-item">
+        <a class="nav-link" href="/admin/history/">История</a>
+    </li>
 </ul>
 
 <p style="text-align: center; padding-top: 15px;" size="10">
@@ -79,10 +78,8 @@
 
         <tbody>
 
-        <!--    <form method="post" action="/save-user" accept-charset="UTF-8">-->
         <tr th:each="vscroom : ${vscRoomList}">
             <td>
-                <!--            <label for="id"></label>-->
                 <input th:if="${vscroom.id!= null}" th:value="${vscroom.id}" type="text" size="2" id="id" style="text-align: center" class="form-control" name="id" readonly/>
             </td>
             <td>
@@ -102,7 +99,6 @@
                 <a th:href="${'/admin/vscrooms/delete/' + vscroom.id}" class="btn btn-outline-danger">Удалить</a>
             </td>
         </tr>
-        <!-- </form>-->
         </tbody>
         </thead>
 
@@ -114,20 +110,6 @@
 
 </form>
 </div>
-
-<!--
-<div th:if="${employeeList!=null}">
-    <div class="container">
-        <form action="#" th:action="@{/admin/find-by-surname/}" method="post">
-
-    <span class="content">
-       <input type="text" size="2" id="findBySurname1" style="text-align: center" class="form-control" name="findBySurname">
-        <p style="text-align: center" size="10"><input type="submit" class="btn btn-outline-danger"   style="text-align: center; " value="Отправить"></p>
-    </span>
-        </form>
-    </div>
-</div>
--->
 
 </body>
 </html>

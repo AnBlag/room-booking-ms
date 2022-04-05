@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class RecordTableViewNotificationService {
-
     private final RecordTableAndEmployeeService recordTableAndEmployeeService;
     private final SearchCriteriaViewRepository<RecordTableView> searchCriteriaViewRepository;
     private final SearchByParams searchByParams;

@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @JsonIgnoreProperties(value = "true")
 public class PreviousAndCurrentRecordTableDTO {
-
     private RecordTableDTO previous;
     private RecordTableDTO current;
-
 }

@@ -12,3 +12,8 @@ server:
   port: 8085
   error:
     include-message: always
+feign:
+  department:
+    url: http://localhost:8084
+  profile:
+    url: http://localhost:8086
